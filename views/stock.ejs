@@ -1,0 +1,166 @@
+<%- include header %>
+
+<div class="container " style="padding-top:70px;">
+	<div class="row">
+	  <div class="col-md-2">
+	  	<div class="list-group">
+            <a href="#" class="list-group-item text-primary">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+          </div>
+	  </div>
+	  <div class="col-md-7">
+      <h2>名称<button type="button" class="btn btn-info col-md-offset-4">关注</button></h2>
+      <p class="red lead">
+        <strong class="red" data-current="7.38">￥7.38</strong>
+        <span class="stockDown">
+          <span>-0.11</span>
+          <span class="quote-percentage">&nbsp;&nbsp;(-1.47%)</span>
+        </span>
+      </p>
+      <p>
+        <span id="timeInfo">2013-11-12 13:40:30 (北京时间)&nbsp;&nbsp;</span>
+        <span>实时行情</span>
+      </p>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>今开：<span>7.48</span></td>
+            <td>昨收：<span>7.49</span></td>
+            <td>最高：<span id="quote-high">7.53</span></td>
+            <td>最低：<span id="quote-low">7.33</span></td>
+          </tr>
+          <tr>
+            <td title="当日成交量，单位：股">成交量：<span id="quote-volume">579.98万</span></td>
+            <td title="过去30个交易日平均成交量，单位：股">30日均量：<span>1975.02万</span></td>
+            <td>成交额：<span>4299.80万</span></td>
+            <td>52周最高：<span>9.18</span></td>
+          </tr>
+          <tr>
+            <td>52周最低：<span>3.83</span></td>
+            <td title="市盈率LYR：当前价/最近年度摊簿每股收益，市盈率TTM：当前价/最近四个季度摊簿每股收益之和。">市盈率LYR/TTM：<span>148.89/248.27</span></td>
+            <td title="上一年度基本每股收益，单位：人民币">每股收益：<span>0.03</span></td>
+            <td title="最近报告期每股净资产，单位：人民币">每股净资产：<span>2.59</span></td>
+          </tr>
+          <tr>
+            <td>总股本：<span>6.74亿</span></td>
+            <td>流通股本：<span>6.74亿</span></td>
+            <td>总市值：<span id="quote-marketCapital">49.73亿</span></td>
+            <td>市净率：<span>2.85</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>图标</h3>
+
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                加入聊天室
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div style="height:300px;overflow-y: overlay;">
+                <p class="col-md-offset-3">查看更早内容</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p><span>adasdad</span>:asdasdsadsad</p>
+              </div>
+              <textarea style="width:100%;height:55px;margin-bottom:10px;margin-top:10px;"></textarea>
+              <button type="button" class="btn btn-primary navbar-right">发布</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>发布评论</h3>
+      <textarea style="width:100%;height:80px;margin-bottom:10px;">#上海贝岭(SH600171)#</textarea>
+      <button type="button" class="btn btn-primary navbar-right">发布</button>
+      <div class="clearfix"></div>
+      <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#home" data-toggle="tab">全部</a></li>
+        <li><a href="#profile" data-toggle="tab">新闻</a></li>
+        <li><a href="#messages" data-toggle="tab">相关</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="home">
+          <ul class="list-group">
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+          </ul>
+        </div>
+        <div class="tab-pane" id="profile">
+          <ul class="list-group">
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+          </ul>
+        </div>
+        <div class="tab-pane" id="messages">
+          <ul class="list-group">
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+            <li>asdasd</li>
+            <li>adsad</li>
+            <li>adas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <h3>简介</h3>
+      <h3>关注的人</h3>
+      <h3>相关</h3>
+    </div>
+	</div>
+</div>
+<script>
+$(".collapse").collapse()
+</script>
+
+
+<%- include footer %>

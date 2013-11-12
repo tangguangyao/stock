@@ -1,0 +1,168 @@
+<%- include top %>
+<body>
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="../" class="navbar-brand">Money</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="../getting-started">首页</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">广场<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/baike">行情</a></li>
+              <li><a href="/baike">行情</a></li>
+              <li><a href="/baike">行情</a></li>
+              <li><a href="/baike">行情</a></li>
+            </ul>
+        </li>
+        <li>
+          <a href="../components">设置</a>
+        </li>
+        <li>
+          <a href="../components">设置</a>
+        </li>
+        <li>
+          <a href="../components">设置</a>
+        </li>
+        <li>
+          <a href="../components">设置</a>
+        </li>
+      </ul>
+
+<!--       <div class="navbar-form navbar-right">
+        <div class="form-group ">
+          <input type="text" placeholder="Email" class="form-control">
+        </div>
+        <div class="form-group">
+          <input type="password" placeholder="Password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-success">Sign in</button>
+        </ul>
+      </div> -->
+
+      <!-- <ul class="nav navbar-nav navbar-right">
+      	<li>
+	          <a href="../components">tangguangyao</a>
+	        </li>
+	        <li>
+	          <a href="../components">设置</a>
+	        </li>
+      </ul> -->
+
+
+    </nav>
+
+  </div>
+</header>
+
+
+<div class="jumbotron" style="padding-top:70px;">
+  <div class="container">
+    <div class="col-md-9">
+      
+      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
+          <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="item active">
+            <img src="images/3.jpg">
+          </div>
+          <div class="item">
+            <img src="images/3.jpg">
+          </div>
+          <div class="item">
+            <img src="images/3.jpg">
+          </div>
+        </div>
+        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+      </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <form role="form" id="login">
+          <h3>用户登录</h3>
+          <div class="form-group">
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          </div>
+          <div class="row">
+            <div class="col-md-5 small">
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="验证码">
+            </div>
+            <div class="col-md-4 small">验证码</div>
+            <div class="col-md-3 small">刷新</div>
+          </div>
+          <div><input type="checkbox" value="true"><small>自动登录</small></div>
+          <button type="submit" class="btn btn-default">提交</button>
+          <p class="text-primary small point" id="changeSign">没有账户，点击注册</p>
+        </form>
+
+        <form role="form" id="sign" style="display:none">
+          <h3>用户注册</h3>
+          <div class="form-group">
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          </div>
+          <div class="row">
+            <div class="col-md-5 small">
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="验证码">
+            </div>
+            <div class="col-md-4 small">验证码</div>
+            <div class="col-md-3 small">刷新</div>
+          </div>
+          <button type="submit" class="btn btn-default">注册</button>
+          <p class="text-primary small point" id="changeLogin">已有账户，点击登录</p>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="col-md-4">
+    <h4>明星用户</h4>
+  </div>
+  <div class="col-md-4">
+    <h4>热门</h4>
+  </div>
+  <div class="col-md-4">
+    <h4>新闻</h4>
+  </div>
+</div>
+
+<script>
+$("#changeSign").on("click",function(){
+  $("#login").hide();
+  $("#sign").show();
+});
+$("#changeLogin").on("click",function(){
+  $("#sign").hide();
+  $("#login").show();
+});
+
+$('.carousel').carousel({
+  interval: 8000
+})
+</script>
+
+<%- include footer %>

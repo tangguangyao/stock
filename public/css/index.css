@@ -1,0 +1,16 @@
+/*首页*/
+.point{
+	cursor: pointer;
+}
+.carousel-inner img{
+	width: 100%;
+}
+li{
+	list-style: none;
+}
+.green{
+	color: green;
+}
+.red{
+	color: red;
+}
