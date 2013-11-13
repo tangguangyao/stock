@@ -39,4 +39,8 @@ module.exports = function(app){
    //在post请求后的反应
    login.login(req,res);
   });
+  app.post('/loginAjax',function(req,res){
+    login.loginAjax(req,res);
+  });
+
 };

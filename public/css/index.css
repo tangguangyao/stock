@@ -17,3 +17,6 @@ li{
 #loginOut{
 	cursor: pointer;
 }
+#isloginOut{
+	display: none;
+}

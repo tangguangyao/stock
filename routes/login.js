@@ -48,15 +48,22 @@ login.sign = function(req,res){
 	});
 };
 
-login.login=function(req,res){
+login.log=function(req,res,callback){
 	var md5 = crypto.createHash('md5'), 
-        password = md5.update(req.body.password).digest('hex'); 
+      password = md5.update(req.body.password).digest('hex'); 
 	var newUser = new User({ 
 		name: req.body.name, 
 		password: password 
 	}); 
 	//查找用户
 	User.get(newUser.name, function(err, user){ 
+		callback(user,password);
+	}); 
+}
+
+login.login=function(req,res){
+	login.log(req,res,changeUrl);
+	function changeUrl(user,password){
 		if(user){ 
 		  //如果存在，就返回用户的所有信息，取出password来和post过来的password比较
 		  if(user.password != password){ 
@@ -70,7 +77,24 @@ login.login=function(req,res){
 		  req.flash('error','用户不存在'); 
 		  res.redirect('/login'); 
 		} 
-	}); 
+	}
+}
+
+login.loginAjax=function(req,res){
+	login.log(req,res,changeAjax);
+	function changeAjax(user,password){
+		if(user){ 
+		  //如果存在，就返回用户的所有信息，取出password来和post过来的password比较
+		  if(user.password != password){ 
+					res.send({ok:false,message:"用户名或密码错误"}); 
+		  }else{ 
+		      req.session.user = user; 
+					res.send({ok:true});
+		  } 
+		}else{ 
+		  res.send({ok:false,message:"用户名或密码错误"});
+		} 
+	}
 }
 
 login.islogin=function(req,res){
@@ -85,4 +109,7 @@ login.islogin=function(req,res){
 
 login.loginOut=function(req,res){
 	req.session.user = null;
+	var data={};
+	data.ok=true;
+	res.send(data);
 }
