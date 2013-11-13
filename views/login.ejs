@@ -92,13 +92,16 @@
 
 
     <div class="col-md-3">
-        <form role="form" id="login">
+          <% if (locals.error) { %>
+            <div class="small red"><%= locals.error %> </div>
+          <% } %>
+        <form role="form" id="login" action="/login" method="post">
           <h3>用户登录</h3>
           <div class="form-group">
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            <input type="text" name="name" class="form-control" placeholder="用户名">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <input type="password" name="password" class="form-control" placeholder="密码">
           </div>
           <div class="row">
             <div class="col-md-5 small">
@@ -112,16 +115,17 @@
           <p class="text-primary small point" id="changeSign">没有账户，点击注册</p>
         </form>
 
-        <form role="form" id="sign" style="display:none">
+        <form role="form" id="sign" style="display:none"  action="/sign" method="post">
           <h3>用户注册</h3>
+
           <div class="form-group">
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            <input type="text" name="name"  class="form-control" placeholder="用户名">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <input type="password" name="password" class="form-control" placeholder="密码">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <input type="password" name="repassword" class="form-control" placeholder="确认密码">
           </div>
           <div class="row">
             <div class="col-md-5 small">
