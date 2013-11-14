@@ -6,7 +6,9 @@ var stock={};
 module.exports = stock;
 
 stock.show = function(req,res){
-	res.render('stock', { 
+	var id=/[0-9]{6}/.exec(req.params.uid)
+	res.render('stock', {
+		id:id,
 		user:req.session.user 
 	});
 }
