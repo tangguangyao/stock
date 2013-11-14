@@ -84,15 +84,17 @@ login.loginAjax=function(req,res){
 	login.log(req,res,changeAjax);
 	function changeAjax(user,password){
 		if(user){ 
-		  //如果存在，就返回用户的所有信息，取出password来和post过来的password比较
-		  if(user.password != password){ 
-					res.send({ok:false,message:"用户名或密码错误"}); 
-		  }else{ 
-		      req.session.user = user; 
-					res.send({ok:true});
+		    //如果存在，就返回用户的所有信息，取出password来和post过来的password比较
+		    if(user.password != password){ 
+				res.send({ok:false,message:"用户名或密码错误"}); 
+		    }else{ 
+		    	req.session.user = user; 
+				res.send({ok:true,info:{
+					name:user.name
+				}});
 		  } 
 		}else{ 
-		  res.send({ok:false,message:"用户名或密码错误"});
+		    res.send({ok:false,message:"用户名或密码错误"});
 		} 
 	}
 }

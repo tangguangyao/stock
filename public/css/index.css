@@ -17,6 +17,9 @@ li{
 #loginOut{
 	cursor: pointer;
 }
-#isloginOut{
-	display: none;
+#stockTableShow{
+	color: #666;
+}
+#stockTableShow span{
+	color: #333;
 }

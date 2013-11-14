@@ -26,6 +26,7 @@ stock.header=(function(){
 					if(data.ok){
 						$("#islogin").show();
 						$("#isloginOut").hide();
+						$("#headShowName").text(data.info.name);
 					}else{
 						alert(data.message);
 					}

@@ -3,11 +3,14 @@
  */
 var crypto = require('crypto'), //密码加密模块
     User = require('../models/user.js'), //引入用户登录函数
-    login= require('./login');
+    login = require('./login'),
+    stock = require('./stock');
 
 module.exports = function(app){
   app.get('/',function(req,res){
-    res.render('index', { title: 'Express' });
+    res.render('index', { 
+      user:req.session.user
+    });
   });
 
   app.get('/login',function(req,res){
@@ -26,8 +29,8 @@ module.exports = function(app){
     res.render('setting', { title: 'Express' });
   });
 
-  app.get('/stock',function(req,res){
-    res.render('stock', { title: 'Express' });
+  app.get('/stock/:uid',function(req,res){
+   stock.show(req,res);
   });
 
 
