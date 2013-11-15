@@ -7,7 +7,7 @@ function User(user){
   this.watch=user.watch; 
   this.beWatch=user.beWatch; 
   this.top=user.top; 
-  this.admin=user.admin; 
+  this.admin=user.admin;
 }; 
 
 module.exports = User; 

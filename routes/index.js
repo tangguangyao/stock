@@ -30,20 +30,23 @@ module.exports = function(app){
   });
 
   app.get('/stock/:uid',function(req,res){
-   stock.show(req,res);
+    stock.show(req,res);
   });
 
 
   app.post('/sign',function(req,res){
-   //在post请求后的反应
-   login.sign(req,res);
+    //在post请求后的反应
+    login.sign(req,res);
   });
   app.post('/login',function(req,res){
-   //在post请求后的反应
-   login.login(req,res);
+    //在post请求后的反应
+    login.login(req,res);
   });
   app.post('/loginAjax',function(req,res){
     login.loginAjax(req,res);
   });
-
+  
+  app.get('/wacth/:uid',function(req,res){
+    stock.show(req,res);
+  });
 };

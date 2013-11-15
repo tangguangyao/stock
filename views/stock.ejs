@@ -24,7 +24,7 @@
       </div>
 	  </div>
 	  <div class="col-md-7" ng-controller="FetchCtrl">
-      <h2>{{stock.name}}<button type="button" class="btn btn-info col-md-offset-4">关注</button></h2>
+      <h2>{{stock.name}}<button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()">关注</button></h2>
       <p class="{{stock.zdClass}} lead">
         <strong data-current="{{stock.current}}">￥{{stock.current}}</strong>
         <span class="stockDown">
