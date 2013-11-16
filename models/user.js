@@ -3,7 +3,7 @@ function User(user){
   this.name = user.name; 
   this.password = user.password; 
   this.info = user.info; 
-  this.gupiao = user.gupiao; 
+  this.stock = user.stock; 
   this.watch=user.watch; 
   this.beWatch=user.beWatch; 
   this.top=user.top; 
@@ -79,3 +79,23 @@ User.get = function(name, callback){
     }); 
   }); 
 };
+
+//点击股票关注，更新表
+User.stockUp=function(db,watchName,uid,add,callback){
+  db.collection('user',function(err,collection){
+    if(err){ 
+      mongodb.close(); 
+      return callback(err); 
+    }
+    if(add){
+      collection.update({name:watchName},{$push:{stock:uid}},function(err,items){
+        callback(err,items);
+      });
+    }else{
+      collection.update({name:watchName},{$pull:{stock:uid}},function(err,items){
+        callback(err,items);
+      });
+    }
+    
+  });
+}

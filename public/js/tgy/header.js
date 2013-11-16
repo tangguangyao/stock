@@ -27,6 +27,11 @@ stock.header=(function(){
 						$("#islogin").show();
 						$("#isloginOut").hide();
 						$("#headShowName").text(data.info.name);
+						//自定义事件
+						if($("#iswatch").length>0){
+							$("#iswatch").trigger('loginWatch', [data.info.stock]);
+						}
+						
 					}else{
 						alert(data.message);
 					}

@@ -46,7 +46,7 @@ module.exports = function(app){
     login.loginAjax(req,res);
   });
   
-  app.get('/wacth/:uid',function(req,res){
-    stock.show(req,res);
+  app.get('/watchStock',function(req,res){
+    stock.watch(req,res);
   });
 };

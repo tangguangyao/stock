@@ -1,14 +1,13 @@
 //用户数据结构
 {
   "name": "guang",
-  "id":002,
   "password": "123456",
   "info": {
     "techang": "code",
     "xingqu": "look",
     "pic":"images.jpg"
   },
-  "gupiao": ["sh001","sh002"],
+  "stock": ["sh001","sh002"],
   "watch": ["001","002"],
   "beWatch":["001","002"],
   "top":2,
@@ -70,7 +69,7 @@
 //gupiao数据结构，每次都新建
 {
   "name": "shangh贝岭",
-  "id": "sh001",
+  "uid": "sh001",
   "beWatch":["001","002"],
   "top":2,
   "talk":[

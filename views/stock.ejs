@@ -24,7 +24,11 @@
       </div>
 	  </div>
 	  <div class="col-md-7" ng-controller="FetchCtrl">
-      <h2>{{stock.name}}<button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()">关注</button></h2>
+      <h2>{{stock.name}}
+        <span style="display:none" id="iswatch"><%= locals.isWatch%></span>
+        <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()"  ng-hide="isWatch">关注</button>
+        <button type="button" class="btn btn-info col-md-offset-4" ng-click="unWatchStock()" ng-show="isWatch">取消</button>
+      </h2>
       <p class="{{stock.zdClass}} lead">
         <strong data-current="{{stock.current}}">￥{{stock.current}}</strong>
         <span class="stockDown">

@@ -89,9 +89,10 @@ login.loginAjax=function(req,res){
 				res.send({ok:false,message:"用户名或密码错误"}); 
 		    }else{ 
 		    	req.session.user = user; 
-				res.send({ok:true,info:{
-					name:user.name
-				}});
+					res.send({ok:true,info:{
+						name:user.name,
+						stock:user.stock
+					}});
 		  } 
 		}else{ 
 		    res.send({ok:false,message:"用户名或密码错误"});

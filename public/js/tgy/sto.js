@@ -1,14 +1,21 @@
 angular.module('App', []);
 
 function FetchCtrl($scope, $http, $templateCache) {
+  //显示是否关注
+  $scope.isWatch=$("#iswatch").text();
+
   //通过url获取代码
-  var pathUrl = /sh[0-9]{6}|sz[0-9]{6}/.exec(location.pathname)
+  var pathUrl = /sh[0-9]{6}|sz[0-9]{6}/.exec(location.pathname);
+  var watchUrl,userName;
   //绑定事件
   $scope.watchStock = function(name) {
-      $http({method: "GET", url: "watch/sh600171", cache: $templateCache}).
+      watchUrl="watchStock?uid="+pathUrl+"&name="+userName+"&beWatch="+$("#headShowName").text()+"&add=1";
+      $http({method: "GET", url: watchUrl, cache: $templateCache}).
         success(function(data, status) {
           $scope.status = status;
-          $scope.stock = data;
+          if(data.ok){
+            $scope.isWatch="true";//显示取消
+          }
         }).
         error(function(data, status) {
           $scope.data = data || "Request failed";
@@ -16,7 +23,27 @@ function FetchCtrl($scope, $http, $templateCache) {
       });
   }
 
-  
+  $scope.unWatchStock=function(name){
+    watchUrl="watchStock?uid="+pathUrl+"&name="+userName+"&beWatch="+$("#headShowName").text()+"&add=0";
+    $http({method: "GET", url: watchUrl, cache: $templateCache}).
+        success(function(data, status) {
+          $scope.status = status;
+          if(data.ok){
+            $scope.isWatch="false";//显示关注
+          }
+        })
+  }
+
+  //监听自定义事件
+  $('#iswatch').on('loginWatch', function(event, info) {
+    $scope.isWatch="false";
+    for(var i=0,l=info.length;i<l;i++){
+      if(pathUrl==info[i]){
+        $scope.isWatch="true";
+      }
+    }
+  });
+
   $scope.method = 'JSONP';
   $scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
   $scope.code = null;
@@ -27,6 +54,7 @@ function FetchCtrl($scope, $http, $templateCache) {
       success(function(data, status) {
         $scope.status = status;
         //数据处理
+        userName=data.quotes[0].name;
         var time=new Date(data.quotes[0].time);
         data.quotes[0].time=time.getTime();
 
@@ -63,20 +91,20 @@ function FetchCtrl($scope, $http, $templateCache) {
 }
 
 
-var stock=stock||{};
+// var stock=stock||{};
 
-stock.sto=(function(){
+// stock.sto=(function(){
 
-  // return{
-  //   init:function(){
-  //     this.watchStock()
-  //   },
-  //   //关注stock
-  //   watchStock:function(){
-  //     $("#watchStock").on("click",function(){
+//   // return{
+//   //   init:function(){
+//   //     this.watchStock()
+//   //   },
+//   //   //关注stock
+//   //   watchStock:function(){
+//   //     $("#watchStock").on("click",function(){
 
-  //     });
-  //   }
-  // }
+//   //     });
+//   //   }
+//   // }
 
-})();
+// })();
