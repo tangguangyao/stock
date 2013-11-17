@@ -13,6 +13,9 @@ stock.header=(function(){
 					if(data.ok){
 						$("#islogin").hide();
 						$("#isloginOut").show();
+						$("#headShowName").attr("login","out");
+						$("#butIswatch").show();
+						$("#butNowatch").hide();
 					}
 				});
 			});
@@ -26,12 +29,11 @@ stock.header=(function(){
 					if(data.ok){
 						$("#islogin").show();
 						$("#isloginOut").hide();
-						$("#headShowName").text(data.info.name);
+						$("#headShowName").text(data.info.name).attr("top",data.info.top).attr("login","in");
 						//自定义事件
 						if($("#iswatch").length>0){
 							$("#iswatch").trigger('loginWatch', [data.info.stock]);
 						}
-						
 					}else{
 						alert(data.message);
 					}

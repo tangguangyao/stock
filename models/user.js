@@ -88,11 +88,11 @@ User.stockUp=function(db,watchName,uid,add,callback){
       return callback(err); 
     }
     if(add){
-      collection.update({name:watchName},{$push:{stock:uid}},function(err,items){
+      collection.update({name:watchName.name},{$push:{stock:uid}},function(err,items){
         callback(err,items);
       });
     }else{
-      collection.update({name:watchName},{$pull:{stock:uid}},function(err,items){
+      collection.update({name:watchName.name},{$pull:{stock:uid}},function(err,items){
         callback(err,items);
       });
     }

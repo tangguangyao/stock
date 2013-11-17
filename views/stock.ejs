@@ -1,6 +1,6 @@
 <%- include header %>
 
-<div class="container " style="padding-top:70px;" ng-app="App">
+<div class="container " style="padding-top:70px;" ng-controller="FetchCtrl">
 	<div class="row">
 	  <div class="col-md-2">
 	  	<div class="list-group">
@@ -23,11 +23,11 @@
         <a href="http://q.stock.sohu.com/cn/<%= locals.id%>/lshq.shtml" class="list-group-item">历史行情</a>
       </div>
 	  </div>
-	  <div class="col-md-7" ng-controller="FetchCtrl">
+	  <div class="col-md-7">
       <h2>{{stock.name}}
         <span style="display:none" id="iswatch"><%= locals.isWatch%></span>
-        <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()"  ng-hide="isWatch">关注</button>
-        <button type="button" class="btn btn-info col-md-offset-4" ng-click="unWatchStock()" ng-show="isWatch">取消</button>
+        <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()" id="butIswatch">关注</button>
+        <button type="button" class="btn btn-info col-md-offset-4" ng-click="unWatchStock()" id="butNowatch">取消</button>
       </h2>
       <p class="{{stock.zdClass}} lead">
         <strong data-current="{{stock.current}}">￥{{stock.current}}</strong>
@@ -159,6 +159,17 @@
     <div class="col-md-3">
       <h3>简介</h3>
       <h3>关注的人</h3>
+      <ul class="list-group">
+        <li>asdasd</li>
+        <li>adsad</li>
+        <li>adas</li>
+        <li>asdasd</li>
+        <li>adsad</li>
+        <li>adas</li>
+        <li>asdasd</li>
+        <li>adsad</li>
+        <li>adas</li>
+      </ul>
       <h3>相关</h3>
     </div>
 	</div>

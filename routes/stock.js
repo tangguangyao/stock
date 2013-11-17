@@ -30,7 +30,10 @@ stock.watch=function(req,res){
 		name: req.query.name, 
 		uid: req.query.uid,
 		top: req.query.add,
-		beWatch: req.query.beWatch 
+		beWatch: {
+			name:req.query.beWatchName,
+			top:req.query.beWatchTop
+		} 
 	});
 	//插入stock数据
 	stoc.watch(function(data){
@@ -49,4 +52,12 @@ stock.watch=function(req,res){
 			res.send({ok:true});
 		}
 	})
+}
+
+stock.aboutName=function(req,res){
+	var uid=req.query.uid;
+	Stoc.aboutName(uid,function(){
+		
+	});
+
 }

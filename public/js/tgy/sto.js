@@ -2,48 +2,81 @@ angular.module('App', []);
 
 function FetchCtrl($scope, $http, $templateCache) {
   //显示是否关注
-  $scope.isWatch=$("#iswatch").text();
+  //$scope.isWatch=$("#iswatch").text();
+
+  if($("#iswatch").text()=="false"){
+    $("#butIswatch").show();
+    $("#butNowatch").hide();
+  }else{
+    $("#butIswatch").hide();
+    $("#butNowatch").show();
+  }
 
   //通过url获取代码
   var pathUrl = /sh[0-9]{6}|sz[0-9]{6}/.exec(location.pathname);
   var watchUrl,userName;
   //绑定事件
   $scope.watchStock = function(name) {
-      watchUrl="watchStock?uid="+pathUrl+"&name="+userName+"&beWatch="+$("#headShowName").text()+"&add=1";
+    if($("#headShowName").attr("login")=="in"){
+      watchUrl="watchStock?uid="+pathUrl+"&name="+userName+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=1";
       $http({method: "GET", url: watchUrl, cache: $templateCache}).
         success(function(data, status) {
           $scope.status = status;
           if(data.ok){
-            $scope.isWatch="true";//显示取消
+            //$scope.isWatch=true;//显示取消
+            $("#butIswatch").hide();
+            $("#butNowatch").show();
           }
-        }).
-        error(function(data, status) {
-          $scope.data = data || "Request failed";
-          $scope.status = status;
-      });
+        });
+    }else{
+      alert("请先登录")
+    }
   }
 
   $scope.unWatchStock=function(name){
-    watchUrl="watchStock?uid="+pathUrl+"&name="+userName+"&beWatch="+$("#headShowName").text()+"&add=0";
-    $http({method: "GET", url: watchUrl, cache: $templateCache}).
+    if($("#headShowName").attr("login")=="in"){
+      watchUrl="watchStock?uid="+pathUrl+"&name="+userName+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=0";
+      $http({method: "GET", url: watchUrl, cache: $templateCache}).
         success(function(data, status) {
           $scope.status = status;
           if(data.ok){
-            $scope.isWatch="false";//显示关注
+            //$scope.isWatch=false;//显示关注
+            $("#butIswatch").show();
+            $("#butNowatch").hide();
           }
-        })
+        });
+    }else{
+      alert("请先登录")
+    }
   }
+
+  // var test=document.getElementsById(test);
+  // test.onclick=function(){
+  //   $scope.isWatch="false";
+  // }
+  
 
   //监听自定义事件
   $('#iswatch').on('loginWatch', function(event, info) {
-    $scope.isWatch="false";
+    $("#butIswatch").show();
+    $("#butNowatch").hide();
     for(var i=0,l=info.length;i<l;i++){
       if(pathUrl==info[i]){
-        $scope.isWatch="true";
+        //$scope.isWatch="true";
+        $("#butIswatch").hide();
+        $("#butNowatch").show();
       }
     }
   });
 
+  //获取相关的用户
+  $http({method: "GET", url: "stockAboutName?uid="+pathUrl, cache: $templateCache}).
+    success(function(data, status) {
+      var l;
+    });
+
+
+  //定时获取实时数据
   $scope.method = 'JSONP';
   $scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
   $scope.code = null;
@@ -70,11 +103,7 @@ function FetchCtrl($scope, $http, $templateCache) {
         }
 
         $scope.stock = data.quotes[0];
-      }).
-      error(function(data, status) {
-        $scope.data = data || "Request failed";
-        $scope.status = status;
-    });
+      });
   }
   ajaxData();
   var hours;
@@ -95,16 +124,26 @@ function FetchCtrl($scope, $http, $templateCache) {
 
 // stock.sto=(function(){
 
-//   // return{
-//   //   init:function(){
-//   //     this.watchStock()
-//   //   },
-//   //   //关注stock
-//   //   watchStock:function(){
-//   //     $("#watchStock").on("click",function(){
-
-//   //     });
-//   //   }
-//   // }
+//   return{
+//     init:function(){
+//       this.loginWatch()
+//     },
+//     //关注stock
+//     loginWatch:function(){
+//       var _this=this;
+//       $('#iswatch').on('loginWatch', function(event, info) {
+//         _this.info=info;
+//         $("#iswatch").click();
+//         // $scope.isWatch="false";
+//         // for(var i=0,l=info.length;i<l;i++){
+//         //   if(pathUrl==info[i]){
+//         //     $scope.isWatch="true";
+//         //   }
+//         // }
+//       });
+//     }
+//   }
 
 // })();
+
+// stock.sto.init();

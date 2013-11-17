@@ -67,10 +67,40 @@
 }
 
 //gupiao数据结构，每次都新建
+
+//需要修改下结构，增加用户信息
 {
   "name": "shangh贝岭",
   "uid": "sh001",
   "beWatch":["001","002"],
+  "top":2,
+  "talk":[
+    {
+      "user":"qw122",
+      "text":"ceshi"
+    },
+    {
+      "user":"qw122",
+      "text":"ceshi"
+    },
+    {
+      "user":"qw122",
+      "text":"ceshi"
+    }
+  ]
+}
+//随机五位用户，然后是5位五位的推荐展示
+{
+  "name": "shangh贝岭",
+  "uid": "sh001",
+  "beWatch":[{
+    "name":"sasdsa",
+    "top":"3"
+    },
+    {
+    "name":"sasdsa",
+    "top":"3"
+    }],
   "top":2,
   "talk":[
     {

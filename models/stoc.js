@@ -99,3 +99,20 @@ Stoc.prototype.watch=function(callback){
     }
   }) 
 }
+
+Stoc.aboutName=function(uid,callback){
+	// mongodb.open(function(err,db){
+	// 	if(err){ 
+ //      return callback(err); 
+ //    }
+ //    db.collection('sto',function(err,collection){
+ //    	if(err){ 
+ //        mongodb.close(); 
+ //        return callback(err); 
+ //      }
+ //      collection.find({uid:stoc.uid},{$inc:{top:-1},$pull:{beWatch:stoc.beWatch}},function(err,items){
+
+ //      });
+ //    });
+	// });
+}

@@ -49,4 +49,8 @@ module.exports = function(app){
   app.get('/watchStock',function(req,res){
     stock.watch(req,res);
   });
+
+  app.get('/stockAboutName',function(req,res){
+    stock.aboutName(req,res);
+  });
 };

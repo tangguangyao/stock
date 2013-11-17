@@ -91,7 +91,8 @@ login.loginAjax=function(req,res){
 		    	req.session.user = user; 
 					res.send({ok:true,info:{
 						name:user.name,
-						stock:user.stock
+						stock:user.stock,
+						top:user.top
 					}});
 		  } 
 		}else{ 
