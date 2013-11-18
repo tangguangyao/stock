@@ -46,7 +46,7 @@ function FetchCtrl($scope, $http, $templateCache) {
           }
         });
     }else{
-      alert("请先登录")
+      alert("请先登录");
     }
   }
 
@@ -70,15 +70,60 @@ function FetchCtrl($scope, $http, $templateCache) {
   });
 
   //获取相关的用户
+  var aboutName;
+  var aboutNamePage=0;
+  var aboutNamePageSize=5;//每页人数
+  var adoutLength;
+  var adoutArrage=[];//用户分组
   $http({method: "GET", url: "stockAboutName?uid="+pathUrl, cache: $templateCache}).
     success(function(data, status) {
-      var l;
+      if(data.ok){
+        $scope.haveAboutName=true;
+        aboutName = data.info.beWatch;
+        
+        if(aboutName.length>aboutNamePageSize){
+          $scope.change=true;
+          aboutNamePage++;
+          adoutLength=aboutNamePageSize;
+        }else{
+          adoutLength=aboutName.length;
+          $scope.change=false;
+        }
+        var mAbout=[];
+        for(var i=0;i<adoutLength;i++){
+          mAbout.push(data.info.beWatch[i]);
+        }
+        $scope.adoutNames=mAbout;
+        adoutArrage.push(mAbout);
+      }else{
+        $scope.haveAboutName=false;
+      }
     });
 
+  //换一批用户
+  var newMabout,inum,newLength;
+  $scope.changeAboutName=function(){
+    newMabout=[];
+    inum=aboutNamePage*aboutNamePageSize;
+    // newLength=(aboutNamePage+1)*aboutNamePageSize<aboutName.length?(aboutNamePage+1)*aboutNamePageSize:aboutName.length;
+    if((aboutNamePage+1)*aboutNamePageSize >= aboutName.length){
+      newLength=aboutName.length;
+      $scope.change=false;
+    }else{
+      newLength=(aboutNamePage+1)*aboutNamePageSize;
+    }
+    for(;inum<newLength;inum++){
+      newMabout.push(aboutName[inum]);
+      aboutNamePage++;
+    }
+    $scope.adoutNames=newMabout;
+    adoutArrage.push(newMabout);
+  }
 
   //定时获取实时数据
   $scope.method = 'JSONP';
-  $scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
+  //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
+  $scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&access_token=aZy51015GfDGsvsNtit2XY&_=1384756173203&callback=JSON_CALLBACK'
   $scope.code = null;
   $scope.response = null;
 

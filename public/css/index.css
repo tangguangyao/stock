@@ -23,3 +23,8 @@ li{
 #stockTableShow span{
 	color: #333;
 }
+#stockAdoutName li{
+	height: 30px;
+	line-height: 30px;
+	text-indent: 2em;
+}

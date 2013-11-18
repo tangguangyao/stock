@@ -56,8 +56,11 @@ stock.watch=function(req,res){
 
 stock.aboutName=function(req,res){
 	var uid=req.query.uid;
-	Stoc.aboutName(uid,function(){
-		
+	Stoc.aboutName(uid,function(obj){
+		if(obj){
+			res.send({ok:true,info:obj});
+		}else{
+			res.send({ok:false});
+		}
 	});
-
 }
