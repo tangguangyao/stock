@@ -38,25 +38,16 @@
             <th>操作</th>
           </tr>
         </thead>
-        <tbody>
-          <tr class="success" ng-repeat="stock in stocks">
+        <tbody my-stock="<%= user.stock%>" id="stockList">
+          <tr class="success {{stock.zdClass}}" ng-repeat="stock in stocks">
             <td>{{stock.name}}({{stock.symbol}})</td>
             <td>{{stock.current}}</td>
-            <td>{{stock.change}}</td>
+            <td>{{stock.change | number:2}}</td>
             <td>{{stock.percentage}}</td>
-            <td>{{stock.volume}}</td>
-            <td>{{stock.marketCapital}}</td>
-            <td>操作</td>
+            <td>{{stock.volume}}万</td>
+            <td>{{stock.marketCapital}}亿</td>
+            <td><button type="button" class="btn btn-danger btn-xs" stockName="{{stock.name}}"  ng-click="delStock(stock)">删除</button></td>
           </tr>
-<!--           <tr class="danger">
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr> -->
         </tbody>
       </table>
       <h3>发布评论</h3>
