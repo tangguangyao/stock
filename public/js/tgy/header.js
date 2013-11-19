@@ -11,11 +11,16 @@ stock.header=(function(){
 			$("#loginOut").on("click",function(){
 				$.getJSON('/loginOut', function(data){
 					if(data.ok){
+						if($("#loginOut").attr("loginOut")){
+							window.location.href='/login';
+							return;
+						}
 						$("#islogin").hide();
 						$("#isloginOut").show();
 						$("#headShowName").attr("login","out");
 						$("#butIswatch").show();
 						$("#butNowatch").hide();
+
 					}
 				});
 			});

@@ -8,9 +8,14 @@ var crypto = require('crypto'), //密码加密模块
 
 module.exports = function(app){
   app.get('/',function(req,res){
-    res.render('index', { 
-      user:req.session.user
-    });
+    if(req.session.user){
+      res.render('index', { 
+        user:req.session.user,
+        isStock:true
+      });
+    }else{
+      res.redirect('/login');
+    }
   });
 
   app.get('/login',function(req,res){

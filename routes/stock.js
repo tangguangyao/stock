@@ -20,7 +20,7 @@ stock.show = function(req,res){
 	res.render('stock', {
 		id:id,
 		isWatch:isWatch,
-		user:req.session.user 
+		user:req.session.user
 	});
 }
 
@@ -42,7 +42,7 @@ stock.watch=function(req,res){
 				req.session.user.stock.push(data.uid);
 			}else{
 				var newSe=[];
-				for(var i,l=req.session.user.stock.length;i<l;i++){
+				for(var i=0,l=req.session.user.stock.length;i<l;i++){
 					if(req.session.user.stock[i]!=data.uid){
 						newSe.push(req.session.user.stock[i]);
 					}

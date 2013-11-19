@@ -136,17 +136,21 @@ function FetchCtrl($scope, $http, $templateCache) {
         var time=new Date(data.quotes[0].time);
         data.quotes[0].time=time.getTime();
 
-        if(data.quotes[0].current>data.quotes[0].last_close){
+        var change=Number(data.quotes[0].change);
+
+        if(change>0){
           data.quotes[0].zdClass="red";
           data.quotes[0].zdf="+";
-        }else if(data.quotes[0].current=data.quotes[0].last_close){
+        }else if(change==0){
           data.quotes[0].zdClass="";
           data.quotes[0].zdf="";
         }else{
           data.quotes[0].zdClass="green";
-          data.quotes[0].zdf="-";
+          data.quotes[0].zdf="";
         }
-
+        data.quotes[0].volume=(data.quotes[0].volume/10000).toFixed(2);
+        data.quotes[0].volumeAverage=(data.quotes[0].volumeAverage/10000).toFixed(2);
+        data.quotes[0].amount=(data.quotes[0].amount/10000).toFixed(2);
         $scope.stock = data.quotes[0];
       });
   }

@@ -32,8 +32,8 @@
       <p class="{{stock.zdClass}} lead">
         <strong data-current="{{stock.current}}">￥{{stock.current}}</strong>
         <span class="stockDown">
-          <span>{{stock.change}}</span>
-          <span class="quote-percentage">&nbsp;&nbsp;({{ stock.zdf }}{{stock.percentage}}%)</span>
+          <span>{{ stock.zdf }}{{stock.change| number:2}}</span>
+          <span class="quote-percentage">&nbsp;&nbsp;({{ stock.zdf }}{{stock.percentage| number:2}}%)</span>
         </span>
       </p>
       <p>
@@ -49,14 +49,14 @@
             <td>最低：<span id="quote-low">{{stock.low}}</span></td>
           </tr>
           <tr>
-            <td title="当日成交量，单位：股">成交量：<span id="quote-volume">{{stock.volume | number }}</span></td>
-            <td title="过去30个交易日平均成交量，单位：股">30日均量：<span>{{stock.volumeAverage | number }}</span></td>
-            <td>成交额：<span>{{stock.amount | number }}</span></td>
+            <td title="当日成交量，单位：股">成交量：<span id="quote-volume">{{stock.volume}}万</span></td>
+            <td title="过去30个交易日平均成交量，单位：股">30日均量：<span>{{stock.volumeAverage}}万</span></td>
+            <td>52周最低：<span>{{stock.low52week}}</span></td>
             <td>52周最高：<span>{{stock.high52week}}</span></td>
           </tr>
           <tr>
-            <td>52周最低：<span>{{stock.low52week}}</span></td>
-            <td title="市盈率LYR：当前价/最近年度摊簿每股收益，市盈率TTM：当前价/最近四个季度摊簿每股收益之和。">市盈率LYR/TTM：<span>{{stock.pe_lyr}}/{{stock.pe_ttm}}</span></td>
+            <td>成交额：<span>{{stock.amount}}万</span></td>
+            <td title="市盈率LYR：当前价/最近年度摊簿每股收益，市盈率TTM：当前价/最近四个季度摊簿每股收益之和。">市盈率LYR/TTM：<span>{{stock.pe_lyr|number:2}}/{{stock.pe_ttm|number:2}}</span></td>
             <td title="上一年度基本每股收益，单位：人民币">每股收益：<span>{{stock.eps}}</span></td>
             <td title="最近报告期每股净资产，单位：人民币">每股净资产：<span>{{stock.net_assets}}</span></td>
           </tr>

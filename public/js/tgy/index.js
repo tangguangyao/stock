@@ -50,26 +50,19 @@ function IndexCtrl($scope, $http, $templateCache) {
     var stockUid=stock.symbol.toLocaleLowerCase();
     var watchUrl="watchStock?uid="+stockUid+"&name="+stock.name+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=0";
     $http({method: "GET", url: watchUrl, cache: $templateCache}).
-        success(function(data, status) {
-          $scope.status = status;
-          if(data.ok){
-
+      success(function(data, status) {
+        var newlist=[];
+        if(data.ok){
+          for(var i=0,l=$scope.stocks.length;i<l;i++){
+            if($scope.stocks[i].name!=stock.name){
+              newlist.push($scope.stocks[i]);
+            }
           }
-        });
-    // if($("#headShowName").attr("login")=="in"){
-    //   watchUrl="watchStock?uid="+pathUrl+"&name="+userName+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=1";
-    //   $http({method: "GET", url: watchUrl, cache: $templateCache}).
-    //     success(function(data, status) {
-    //       $scope.status = status;
-    //       if(data.ok){
-    //         //$scope.isWatch=true;//显示取消
-    //         $("#butIswatch").hide();
-    //         $("#butNowatch").show();
-    //       }
-    //     });
-    // }else{
-    //   alert("请先登录")
-    // }
+          $scope.stocks=newlist;
+        }else{
+          alert("出错了");
+        }
+      });
   }
 
 
