@@ -67,6 +67,6 @@ stock.aboutName=function(req,res){
 
 stock.hotStock=function(req,res){
 	Stoc.hotStock(function(obj){
-		var l;
+		res.send({ok:true,list:obj});
 	})
 }

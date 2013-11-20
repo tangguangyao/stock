@@ -164,7 +164,7 @@
         <button type="button" class="btn btn-info pull-right" ng-show="change" ng-click="changeAboutName()">换一批</button>
         <div class="clearfix"></div>
         <ul class="list-group" id="stockAdoutName">
-          <li ng-repeat="adoutName in adoutNames">
+          <li class="list-group-item" ng-repeat="adoutName in adoutNames">
             <a href="people/{{adoutName.name}}">{{adoutName.name}}</a>
           </li>
         </ul>

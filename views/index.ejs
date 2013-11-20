@@ -46,7 +46,7 @@
             <td>{{stock.percentage}}</td>
             <td>{{stock.volume}}万</td>
             <td>{{stock.marketCapital}}亿</td>
-            <td><button type="button" class="btn btn-danger btn-xs" stockName="{{stock.name}}"  ng-click="delStock(stock)">删除</button></td>
+            <td><button type="button" class="btn btn-danger btn-xs" ng-click="delStock(stock)">删除</button></td>
           </tr>
         </tbody>
       </table>
@@ -107,11 +107,11 @@
 
 	  	<h3>热门</h3>
 	  	<ul class="list-group">
-        <li class="list-group-item">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
+        <li class="list-group-item" ng-repeat="list in topList">
+          <a href="stock/{{ list.uid }}">{{ list.name }}({{ list.top }})</a>
+          <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="" ng-show="{{list.haveWatch}}">关注</button>
+          <span class="pull-right" ng-hide="{{list.haveWatch}}">已关注</span>
+        </li>
       </ul>
 
       

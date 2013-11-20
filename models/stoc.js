@@ -135,11 +135,11 @@ Stoc.hotStock=function(callback){
 		}
 	    db.collection('sto',function(err,collection){
 			if(err){ 
-			    mongodb.close(); 
-			    return callback(err); 
-		  	}
-	      	collection.findOne({uid:uid},function(err,items){
-				if(err){
+		    mongodb.close(); 
+		    return callback(err); 
+	  	}
+	  	collection.find().sort({top:-1}).limit(10).toArray(function(err,items){
+	  		if(err){
 					mongodb.close(); 
 					return callback(err); 
 				}
@@ -149,7 +149,7 @@ Stoc.hotStock=function(callback){
 					callback(null);
 				}
 				mongodb.close();
-	      	});
-	    });
+	  	});
+    });
 	});
 }

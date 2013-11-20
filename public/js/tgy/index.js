@@ -5,6 +5,7 @@ function IndexCtrl($scope, $http, $templateCache) {
   
   $scope.method = 'JSONP';
   var stockCode=$("#stockList").attr("my-stock");
+
   //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
   $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&key=47bce5c74f&access_token=aZy51015GfDGsvsNtit2XY&_=1384782884165&callback=JSON_CALLBACK'
   $scope.code = null;
@@ -47,7 +48,22 @@ function IndexCtrl($scope, $http, $templateCache) {
   //请求热门股票
   $http({method: "GET", url: "/hotStock", cache: $templateCache}).
     success(function(data,status){
-      var l;
+      if(data.ok){
+        
+        for(var k=0,l3=data.list.length;k<l3;k++){
+          data.list[k].haveWatch=true;
+        }
+        var userWatchList=$("#stockList").attr("my-stock").split(",");
+        for(var i=0,l=userWatchList.length;i<l;i++){
+          for(var j=0,l2=data.list.length;j<l2;j++){
+            
+            if(userWatchList[i]==data.list[j].uid){
+              data.list[j].haveWatch=false;
+            }
+          }
+        }
+        $scope.topList=data.list;
+      }
     });
 
   //绑定事件
