@@ -58,4 +58,8 @@ module.exports = function(app){
   app.get('/stockAboutName',function(req,res){
     stock.aboutName(req,res);
   });
+
+  app.get('/hotStock',function(req,res){
+    stock.hotStock(req,res);
+  });
 };

@@ -44,6 +44,11 @@ function IndexCtrl($scope, $http, $templateCache) {
   }
   start();
 
+  //请求热门股票
+  $http({method: "GET", url: "/hotStock", cache: $templateCache}).
+    success(function(data,status){
+      var l;
+    });
 
   //绑定事件
   $scope.delStock = function(stock) {
@@ -64,6 +69,4 @@ function IndexCtrl($scope, $http, $templateCache) {
         }
       });
   }
-
-
 }

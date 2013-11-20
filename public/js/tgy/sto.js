@@ -13,7 +13,9 @@ function FetchCtrl($scope, $http, $templateCache) {
   }
 
   //通过url获取代码
-  var pathUrl = /sh[0-9]{6}|sz[0-9]{6}/.exec(location.pathname);
+  var pathUrl = /sh[0-9]{6}|sz[0-9]{6}/i.exec(location.pathname);
+  //统一为小写模式
+  pathUrl=pathUrl[0].toLowerCase();
   var watchUrl,userName;
   //绑定事件
   $scope.watchStock = function(name) {
@@ -167,32 +169,3 @@ function FetchCtrl($scope, $http, $templateCache) {
   }
   start();
 }
-
-
-// var stock=stock||{};
-
-// stock.sto=(function(){
-
-//   return{
-//     init:function(){
-//       this.loginWatch()
-//     },
-//     //关注stock
-//     loginWatch:function(){
-//       var _this=this;
-//       $('#iswatch').on('loginWatch', function(event, info) {
-//         _this.info=info;
-//         $("#iswatch").click();
-//         // $scope.isWatch="false";
-//         // for(var i=0,l=info.length;i<l;i++){
-//         //   if(pathUrl==info[i]){
-//         //     $scope.isWatch="true";
-//         //   }
-//         // }
-//       });
-//     }
-//   }
-
-// })();
-
-// stock.sto.init();

@@ -126,3 +126,30 @@ Stoc.aboutName=function(uid,callback){
 	    });
 	});
 }
+
+Stoc.hotStock=function(callback){
+	mongodb.open(function(err,db){
+		if(err){ 
+			mongodb.close(); 
+		  	return callback(err); 
+		}
+	    db.collection('sto',function(err,collection){
+			if(err){ 
+			    mongodb.close(); 
+			    return callback(err); 
+		  	}
+	      	collection.findOne({uid:uid},function(err,items){
+				if(err){
+					mongodb.close(); 
+					return callback(err); 
+				}
+				if(!!items){//存在
+					callback(items);
+				}else{
+					callback(null);
+				}
+				mongodb.close();
+	      	});
+	    });
+	});
+}

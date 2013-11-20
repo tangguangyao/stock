@@ -40,7 +40,7 @@
         </thead>
         <tbody my-stock="<%= user.stock%>" id="stockList">
           <tr class="success {{stock.zdClass}}" ng-repeat="stock in stocks">
-            <td>{{stock.name}}({{stock.symbol}})</td>
+            <td><a href="stock/{{stock.symbol}}">{{stock.name}}({{stock.symbol}})</a></td>
             <td>{{stock.current}}</td>
             <td>{{stock.change | number:2}}</td>
             <td>{{stock.percentage}}</td>
@@ -104,73 +104,18 @@
         <li class="list-group-item">Porta ac consectetur ac</li>
         <li class="list-group-item">Vestibulum at eros</li>
       </ul>
-	  	<h3>zhangfu</h3>
-	  	<ul class="nav nav-tabs" id="zf">
-        <li class="active"><a href="#shz" data-toggle="tab">上海</a></li>
-        <li><a href="#zzz" data-toggle="tab">深圳</a></li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane active" id="shz">
-          <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-          </ul>
-        </div>
-        <div class="tab-pane" id="zzz">
-          <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-          </ul>
-        </div>
-      </div>
 
-      <h3>diefu</h3>
-      <ul class="nav nav-tabs" id="df">
-        <li class="active"><a href="#shd" data-toggle="tab">上海</a></li>
-        <li><a href="#zzd" data-toggle="tab">深圳</a></li>
+	  	<h3>热门</h3>
+	  	<ul class="list-group">
+        <li class="list-group-item">Cras justo odio</li>
+        <li class="list-group-item">Dapibus ac facilisis in</li>
+        <li class="list-group-item">Morbi leo risus</li>
+        <li class="list-group-item">Porta ac consectetur ac</li>
+        <li class="list-group-item">Vestibulum at eros</li>
       </ul>
-      <div class="tab-content">
-        <div class="tab-pane active" id="shd">
-          <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-          </ul>
-        </div>
-        <div class="tab-pane" id="zzd">
-          <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-          </ul>
-        </div>
-      </div>
+
+      
+
 	  	<h3>推荐</h3>
 	  	<ul class="list-group">
         <li>asdasd</li>
