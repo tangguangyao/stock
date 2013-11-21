@@ -38,7 +38,6 @@ module.exports = function(app){
     stock.show(req,res);
   });
 
-
   app.post('/sign',function(req,res){
     //在post请求后的反应
     login.sign(req,res);

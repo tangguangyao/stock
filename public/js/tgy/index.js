@@ -19,6 +19,8 @@ function IndexCtrl($scope, $http, $templateCache) {
   //关注一个热门uid和url
   var topStockUid;
   var topWatchUrl
+  //为了解决删除自选股，增加热门关注效果的ng-show问题
+  var newArrtop=[];
 
   //定时获取关注数据
   function ajaxStock(){
@@ -102,14 +104,28 @@ function IndexCtrl($scope, $http, $templateCache) {
               newlist.push($scope.stocks[i]);
             }
           }
-          $scope.stocks=newlist;
-          for(var h=0,l5=topList.length;h<l5;h<l5){
+          $scope.stocks=watchList=newlist;
+
+          for(var h=0,l5=topList.length;h<l5;h++){
             if(delStockUid==topList[h].uid){
               topList[h].haveWatch=true;
-              topList[h].top++;
-              $scope.topList=topList;
+              // topList[h].top--;
+              newArrtop=[];
+              for(var h=0,l6=topList.length;h<l6;h++){
+                newArrtop.push({
+                  uid:topList[h].uid,
+                  name:topList[h].name,
+                  top:topList[h].top,
+                  haveWatch:topList[h].haveWatch,
+                  num:topList[h].num
+                })
+              }
+              $scope.topList=newArrtop;
+              return;
             }
           }
+
+          
         }else{
           alert("出错了");
         }
@@ -149,13 +165,16 @@ function IndexCtrl($scope, $http, $templateCache) {
               data.quotes[0].marketCapital=(data.quotes[0].marketCapital/100000000).toFixed(2)
               if(Number(data.quotes[0].change)>0){
                 data.quotes[0].zdClass="red";
+                data.quotes[0].zdBack="danger";
                 data.quotes[0].change="+"+data.quotes[0].change;
                 data.quotes[0].percentage="+"+data.quotes[0].percentage+"%";
               }else if(Number(data.quotes[0].change)==0){
                 data.quotes[0].zdClass="";
+                data.quotes[0].zdBack="";
                 data.quotes[0].percentage=data.quotes[0].percentage+"%";
               }else{
                 data.quotes[0].zdClass="green";
+                data.quotes[0].zdBack="success";
                 data.quotes[0].percentage=data.quotes[0].percentage+"%";
               }
               watchList.push(data.quotes[0]);
