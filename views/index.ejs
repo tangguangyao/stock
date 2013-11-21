@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody my-stock="<%= user.stock%>" id="stockList">
-          <tr class="success {{stock.zdClass}}" ng-repeat="stock in stocks">
+          <tr class="{{stock.zdBack}} {{stock.zdClass}}" ng-repeat="stock in stocks">
             <td><a href="stock/{{stock.symbol}}">{{stock.name}}({{stock.symbol}})</a></td>
             <td>{{stock.current}}</td>
             <td>{{stock.change | number:2}}</td>
@@ -109,7 +109,7 @@
 	  	<ul class="list-group">
         <li class="list-group-item" ng-repeat="list in topList">
           <a href="stock/{{ list.uid }}">{{ list.name }}({{ list.top }})</a>
-          <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="" ng-show="{{list.haveWatch}}">关注</button>
+          <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="topWatch(list)" ng-show="{{list.haveWatch}}">关注</button>
           <span class="pull-right" ng-hide="{{list.haveWatch}}">已关注</span>
         </li>
       </ul>

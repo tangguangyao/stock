@@ -1,35 +1,58 @@
 angular.module('App', []);
 
 function IndexCtrl($scope, $http, $templateCache) {
+  //关注列表
+  var watchList=[];
+  //热门列表
+  var topList=[];
+  //清洗热门列表
+  var newTopList=[];
+  //新关注数据
+  var newMyStock;
+  //删除我的关注列表
+  var newlist=[];
+  //定时请求的列表
+  var stockCode;
+  //删除的股票uid和url
+  var delStockUid;
+  var delWatchUrl;
+  //关注一个热门uid和url
+  var topStockUid;
+  var topWatchUrl
+
   //定时获取关注数据
-  
-  $scope.method = 'JSONP';
-  var stockCode=$("#stockList").attr("my-stock");
-
-  //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
-  $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&key=47bce5c74f&access_token=aZy51015GfDGsvsNtit2XY&_=1384782884165&callback=JSON_CALLBACK'
-  $scope.code = null;
-  $scope.response = null;
-
   function ajaxStock(){
+    $scope.method = 'JSONP';
+    stockCode=$("#stockList").attr("my-stock");
+    //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
+    if(stockCode==""){
+      //如果没有信息，就不请求
+      return;
+    }
+    $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&key=47bce5c74f&access_token=aZy51015GfDGsvsNtit2XY&_=1384782884165&callback=JSON_CALLBACK'
+    $scope.code = null;
+    $scope.response = null;
     $http({method: $scope.method, url: $scope.url, cache: $templateCache}).
       success(function(data, status) {
-      	$scope.stocks=data.quotes;
         for(var i=0,l=data.quotes.length;i<l;i++){
           data.quotes[i].volume=(data.quotes[i].volume/10000).toFixed(2);
           data.quotes[i].marketCapital=(data.quotes[i].marketCapital/100000000).toFixed(2)
           if(Number(data.quotes[i].change)>0){
             data.quotes[i].zdClass="red";
+            data.quotes[i].zdBack="danger";
             data.quotes[i].change="+"+data.quotes[i].change;
             data.quotes[i].percentage="+"+data.quotes[i].percentage+"%";
           }else if(Number(data.quotes[i].change)==0){
             data.quotes[i].zdClass="";
+            data.quotes[i].zdBack="";
             data.quotes[i].percentage=data.quotes[i].percentage+"%";
           }else{
             data.quotes[i].zdClass="green";
+            data.quotes[i].zdBack="success";
             data.quotes[i].percentage=data.quotes[i].percentage+"%";
           }
         }
+        $scope.stocks=watchList=data.quotes;
       });
   }
   ajaxStock();
@@ -45,13 +68,13 @@ function IndexCtrl($scope, $http, $templateCache) {
   }
   start();
 
-  //请求热门股票
+  //请求热门股
   $http({method: "GET", url: "/hotStock", cache: $templateCache}).
     success(function(data,status){
       if(data.ok){
-        
         for(var k=0,l3=data.list.length;k<l3;k++){
           data.list[k].haveWatch=true;
+          data.list[k].num=k;
         }
         var userWatchList=$("#stockList").attr("my-stock").split(",");
         for(var i=0,l=userWatchList.length;i<l;i++){
@@ -62,17 +85,17 @@ function IndexCtrl($scope, $http, $templateCache) {
             }
           }
         }
-        $scope.topList=data.list;
+        $scope.topList=topList=data.list;
       }
     });
 
-  //绑定事件
+  //删除关注的股票
   $scope.delStock = function(stock) {
-    var stockUid=stock.symbol.toLocaleLowerCase();
-    var watchUrl="watchStock?uid="+stockUid+"&name="+stock.name+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=0";
-    $http({method: "GET", url: watchUrl, cache: $templateCache}).
+    delStockUid=stock.symbol.toLowerCase();
+    delWatchUrl="watchStock?uid="+delStockUid+"&name="+stock.name+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=0";
+    $http({method: "GET", url: delWatchUrl, cache: $templateCache}).
       success(function(data, status) {
-        var newlist=[];
+        newlist=[];
         if(data.ok){
           for(var i=0,l=$scope.stocks.length;i<l;i++){
             if($scope.stocks[i].name!=stock.name){
@@ -80,6 +103,67 @@ function IndexCtrl($scope, $http, $templateCache) {
             }
           }
           $scope.stocks=newlist;
+          for(var h=0,l5=topList.length;h<l5;h<l5){
+            if(delStockUid==topList[h].uid){
+              topList[h].haveWatch=true;
+              topList[h].top++;
+              $scope.topList=topList;
+            }
+          }
+        }else{
+          alert("出错了");
+        }
+      });
+  }
+
+  //关注一个热门
+  $scope.topWatch=function(list){
+    topStockUid=list.uid.toLowerCase();
+    topWatchUrl="watchStock?uid="+topStockUid+"&name="+list.name+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=1";
+    $http({method: "GET", url: topWatchUrl, cache: $templateCache}).
+      success(function(data, status) {
+        if(data.ok){
+          //刷新热门列表
+          //清洗对象,angularjs不让$scope.topList直接改变重新赋值
+          for(var m=0,l3=topList.length;m<l3;m++){
+            newTopList[m]={
+              haveWatch:topList[m].haveWatch,
+              name:topList[m].name,
+              top:topList[m].top,
+              uid:topList[m].uid,
+              num:topList[m].num
+            }
+          }
+          newTopList[list.num].haveWatch=topList[list.num].haveWatch=false;
+          //关注数增加1
+          newTopList[list.num].top++;
+          topList[list.num].top++;
+          $scope.topList=newTopList;
+          //刷新我的收藏
+          $scope.addMethod = 'JSONP';
+          $scope.addUrl = 'http://xueqiu.com/stock/quote.json?code='+topStockUid+'&access_token=aZy51015GfDGsvsNtit2XY&_=1384756173203&callback=JSON_CALLBACK';
+          $http({method: $scope.addMethod, url: $scope.addUrl, cache: $templateCache}).
+            success(function(data, status) {
+              //请求关注的数据
+              data.quotes[0].volume=(data.quotes[0].volume/10000).toFixed(2);
+              data.quotes[0].marketCapital=(data.quotes[0].marketCapital/100000000).toFixed(2)
+              if(Number(data.quotes[0].change)>0){
+                data.quotes[0].zdClass="red";
+                data.quotes[0].change="+"+data.quotes[0].change;
+                data.quotes[0].percentage="+"+data.quotes[0].percentage+"%";
+              }else if(Number(data.quotes[0].change)==0){
+                data.quotes[0].zdClass="";
+                data.quotes[0].percentage=data.quotes[0].percentage+"%";
+              }else{
+                data.quotes[0].zdClass="green";
+                data.quotes[0].percentage=data.quotes[0].percentage+"%";
+              }
+              watchList.push(data.quotes[0]);
+              $scope.stocks=watchList;
+              //在$("#stockList").attr("my-stock") 中增加更新,增加定时关注数据
+              newMyStock=$("#stockList").attr("my-stock")+","+topStockUid;
+              $("#stockList").attr("my-stock",newMyStock);
+            });
         }else{
           alert("出错了");
         }

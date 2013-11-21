@@ -7,7 +7,8 @@ var stock={};
 module.exports = stock;
 
 stock.show = function(req,res){
-	var id=/[0-9]{6}/.exec(req.params.uid);
+	req.params.uid=req.params.uid.toLowerCase();//统一小写后处理
+	var id=/[0-9]{6}/.exec(req.params.uid);//左边导航需要
 	var isWatch=false;
 	if(req.session.user){
 		for(var i=0,l=req.session.user.stock.length;i<l;i++){
