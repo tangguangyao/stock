@@ -4,7 +4,8 @@
 var crypto = require('crypto'), //密码加密模块
     User = require('../models/user.js'), //引入用户登录函数
     login = require('./login'),
-    stock = require('./stock');
+    stock = require('./stock'),
+    people = require('./people');
 
 module.exports = function(app){
   app.get('/',function(req,res){
@@ -26,8 +27,8 @@ module.exports = function(app){
     login.loginOut(req,res);
   });
 
-  app.get('/people',function(req,res){
-    res.render('people', { title: 'Express' });
+  app.get('/people/:name',function(req,res){
+    people.show(req,res);
   });
 
   app.get('/setting',function(req,res){

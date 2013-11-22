@@ -18,10 +18,10 @@ User.prototype.save=function(callback){
       password: this.password, 
       //下面内容在注册时不用填，在个人首页可以修改，所以先设置默认值和默认头像
       info:this.info||{
-                        Spec: "code",
-                        interest: "look",
+                        Spec: "还未填写",
+                        interest: "还未填写",
                         pic:"images.jpg",
-                        email:""
+                        email:"还未填写"
                       },
       stock:[],
       watch:[],

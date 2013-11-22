@@ -3,14 +3,14 @@
 <div class="container " style="padding-top:70px;">
 	<div class="row">
 	  <div class="col-md-10 col-md-offset-1">
-      <h3>我的资金</h3>
+      <h3><%= people.name %>的信息</h3>
       <div class="col-md-2">
-        <img src="images/4.jpg" style="width:100%"/>
+        <img src="/images/<%= people.info.pic %>" style="width:100%"/>
       </div>
       <div class="col-md-8">
-        <h3>guang<button type="button" class="btn btn-info col-md-offset-4">关注</button><button type="button" class="btn btn-info col-md-offset-1">发私信</button></h3>
-        <p>介绍</p>
-        <p>信息</p>
+        <h3><button type="button" class="btn btn-info col-md-offset-4">关注</button><button type="button" class="btn btn-info col-md-offset-1">发私信</button></h3>
+        <p>特长:<span><%= people.info.Spec %></span></p>
+        <p>兴趣:<span><%= people.info.interest %></span></p>
       </div>
 
       <div class="clearfix"></div>
@@ -18,66 +18,24 @@
       <table class="table table-bordered table-hover table-condensed">
         <thead>
           <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
+            <th>股票</th>
+            <th>当前价</th>
+            <th>涨跌额</th>
+            <th>涨跌幅</th>
+            <th>成交量</th>
+            <th>市值</th>
+            <th>操作</th>
           </tr>
         </thead>
-        <tbody>
-          <tr class="success">
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr class="danger">
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr class="danger">
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr class="danger">
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+        <tbody my-stock="<%= user.stock%>" id="stockList">
+          <tr class="{{stock.zdBack}} {{stock.zdClass}}" ng-repeat="stock in stocks">
+            <td><a href="stock/{{stock.symbol}}">{{stock.name}}({{stock.symbol}})</a></td>
+            <td>{{stock.current}}</td>
+            <td>{{stock.change | number:2}}</td>
+            <td>{{stock.percentage}}</td>
+            <td>{{stock.volume}}万</td>
+            <td>{{stock.marketCapital}}亿</td>
+            <td><button type="button" class="btn btn-danger btn-xs" ng-click="delStock(stock)">删除</button></td>
           </tr>
         </tbody>
       </table>
@@ -85,61 +43,33 @@
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
         <li><a href="#profile" data-toggle="tab">Profile</a></li>
-        <li><a href="#messages" data-toggle="tab">Messages</a></li>
-        <li><a href="#settings" data-toggle="tab">Settings</a></li>
+        <li><a href="#messages" data-toggle="tab">关注</a></li>
+        <li><a href="#settings" data-toggle="tab">粉丝</a></li>
       </ul>
 
       <div class="tab-content">
         <div class="tab-pane active" id="home">
           <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
+            <li>Home</li>
           </ul>
         </div>
         <div class="tab-pane" id="profile">
           <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
+            <li>Profile</li>
           </ul>
         </div>
         <div class="tab-pane" id="messages">
           <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
+            <% for(var i=0,l=people.watch.length;i<l;i++){ %>
+            <li><%= people.watch[i] %></li>
+            <% } %>
           </ul>
         </div>
         <div class="tab-pane" id="settings">
           <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
+            <% for(var j=0,l2=people.beWatch.length;j<l2;j++){ %>
+            <li><%= people.beWatch[i] %></li>
+            <% } %>
           </ul>
         </div>
       </div>
@@ -147,5 +77,6 @@
     </div>
 	</div>
 </div>
+<script src="js/tgy/people.js"></script>
 
 <%- include footer %>
