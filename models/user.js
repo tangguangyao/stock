@@ -96,6 +96,84 @@ User.stockUp=function(db,watchName,uid,add,callback){
         callback(err,items);
       });
     }
-    
+  });
+}
+
+//关注用户
+User.watch=function(wat,req,name,callback){
+  //打开数据库
+  var fromName=req.session.user.name;
+  var toName=name;
+  mongodb.open(function(err, db){ 
+    if(err){ 
+      return callback(err); 
+    } 
+    //读取 users 集合 
+    db.collection('user', function(err, collection){ 
+      if(err){ 
+        mongodb.close(); 
+        return callback(err); 
+      }
+      //查找用户名 name 值为 name文档
+      if(wat){
+        collection.update({name:toName},{$push:{beWatch:fromName}},function(err,items){
+          if(err){ 
+            mongodb.close(); 
+            return callback(err); 
+          } 
+          collection.update({name:fromName},{$push:{watch:toName}},function(err,items){
+            if(err){ 
+              mongodb.close(); 
+              return callback(err); 
+            } 
+            mongodb.close();
+            callback(err,items);
+          });
+        });
+      }else{
+        collection.update({name:toName},{$pull:{beWatch:fromName}},function(err,items){
+          if(err){ 
+            mongodb.close(); 
+            return callback(err); 
+          }
+          collection.update({name:fromName},{$pull:{watch:toName}},function(err,items){
+            if(err){ 
+              mongodb.close(); 
+              return callback(err); 
+            } 
+            mongodb.close();
+            callback(err,items);
+          });
+        });
+      }
+    }); 
+  }); 
+}
+
+User.isWatch=function(myName,name,callback){
+  mongodb.open(function(err, db){ 
+    if(err){ 
+      return callback(err); 
+    } 
+    //读取 users 集合 
+    db.collection('user', function(err, collection){ 
+      if(err){ 
+        mongodb.close(); 
+        return callback(err); 
+      }
+      //查找用户名 name 值为 name文档
+      // collection.find({beWatch:{$in:myName}},function(err,items){
+      //   if(err){ 
+      //     mongodb.close(); 
+      //     return callback(); 
+      //   }
+        
+      //   items.toArray(function(err,arr){
+      //     mongodb.close();
+      //     callback();
+      //   });
+        
+      // });
+    }); 
   });
 }

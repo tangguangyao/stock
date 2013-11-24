@@ -1,14 +1,18 @@
 <%- include header %>
 
-<div class="container " style="padding-top:70px;">
+<div class="container " style="padding-top:70px;" ng-controller="peopleCtrl">
 	<div class="row">
 	  <div class="col-md-10 col-md-offset-1">
-      <h3><%= people.name %>的信息</h3>
+      <h3 id="pageName" pName="<%= people.name %>"><%= people.name %>的信息</h3>
       <div class="col-md-2">
         <img src="/images/<%= people.info.pic %>" style="width:100%"/>
       </div>
       <div class="col-md-8">
-        <h3><button type="button" class="btn btn-info col-md-offset-4">关注</button><button type="button" class="btn btn-info col-md-offset-1">发私信</button></h3>
+        <p>
+          <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchPeo()">关注</button>
+          <button type="button" class="btn btn-info col-md-offset-4" ng-click="unwatchPeo()">取消关注</button>
+          <button type="button" class="btn btn-info col-md-offset-1">发私信</button>
+        </p>
         <p>特长:<span><%= people.info.Spec %></span></p>
         <p>兴趣:<span><%= people.info.interest %></span></p>
       </div>
@@ -24,10 +28,11 @@
             <th>涨跌幅</th>
             <th>成交量</th>
             <th>市值</th>
-            <th>操作</th>
+            <th>52周最低</th>
+            <th>52周最高</th>
           </tr>
         </thead>
-        <tbody my-stock="<%= user.stock%>" id="stockList">
+        <tbody my-stock="<%= people.stock%>" id="stockList">
           <tr class="{{stock.zdBack}} {{stock.zdClass}}" ng-repeat="stock in stocks">
             <td><a href="stock/{{stock.symbol}}">{{stock.name}}({{stock.symbol}})</a></td>
             <td>{{stock.current}}</td>
@@ -35,7 +40,8 @@
             <td>{{stock.percentage}}</td>
             <td>{{stock.volume}}万</td>
             <td>{{stock.marketCapital}}亿</td>
-            <td><button type="button" class="btn btn-danger btn-xs" ng-click="delStock(stock)">删除</button></td>
+            <td>{{stock.low52week}}</td>
+            <td>{{stock.high52week}}</td>
           </tr>
         </tbody>
       </table>
@@ -77,6 +83,6 @@
     </div>
 	</div>
 </div>
-<script src="js/tgy/people.js"></script>
+<script src="js/tgy/peo.js"></script>
 
 <%- include footer %>

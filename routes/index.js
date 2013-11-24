@@ -62,4 +62,12 @@ module.exports = function(app){
   app.get('/hotStock',function(req,res){
     stock.hotStock(req,res);
   });
+
+  app.get('/watchPeople',function(req,res){
+    people.watchPeople(req,res);
+  });
+
+  app.get('/unwatchPeople',function(req,res){
+    people.unwatchPeople(req,res);
+  });
 };

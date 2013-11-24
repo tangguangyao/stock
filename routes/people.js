@@ -8,10 +8,29 @@ module.exports = people;
 
 people.show=function(req,res){
 	var name=req.params.name;
+	var myName=req.session.user.name;
 	User.get(name,function(err,data){
-		res.render('people', {
-			user:req.session.user,
-			people:data
+		User.isWatch(myName,name,function(){
+			res.render('people', {
+				user:req.session.user,
+				people:data
+			});
 		});
 	});	
+}
+
+people.watchPeople=function(req,res){
+	var name=req.query.name;
+	User.watch(true,req,name,function(err,data){
+		var l;
+		res.send({ok:true});
+	});
+}
+
+people.unwatchPeople=function(req,res){
+	var name=req.query.name;
+	User.watch(false,req,name,function(err,data){
+		var l;
+		res.send({ok:true});
+	});
 }
