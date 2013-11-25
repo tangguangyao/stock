@@ -82,11 +82,19 @@ function peopleCtrl($scope, $http, $templateCache){
 
   //展示关注的用户
   $scope.watchTab=function(){
+    var pageNum=0;
+    var pageSize=10;
+    var name=$("#pageName").attr("pname");
     $http({method: "GET", url: "/peopleWatchTab?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize, cache: $templateCache}).
       success(function(data,status){
         if(data.ok){
-          var l;
+          $scope.looks=data.list;
         }
       });
+  }
+
+  //展示粉丝
+  $scope.fensTab=function(){
+    
   }
 };

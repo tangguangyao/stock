@@ -50,7 +50,7 @@
         <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
         <li><a href="#profile" data-toggle="tab">Profile</a></li>
         <li><a href="#messages" data-toggle="tab" ng-click="watchTab()">关注(<%= people.watch.length %>)</a></li>
-        <li><a href="#settings" data-toggle="tab">粉丝(<%= people.beWatch.length %>)</a></li>
+        <li><a href="#settings" data-toggle="tab" ng-click="fensTab()">粉丝(<%= people.beWatch.length %>)</a></li>
       </ul>
 
       <div class="tab-content">
@@ -66,9 +66,9 @@
         </div>
         <div class="tab-pane" id="messages">
           <ul class="list-group">
-            <li class="list-group-item col-md-3 col-md-offset-1">
+            <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="look in looks">
               <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                <%= people.watch[i] %>
+                {{look.name}}
                 <button type="button" class="btn btn-danger btn-xs pull-right">关注</button>
               </div>
               <div id="collapseOne" class="panel-collapse collapse" style="height: auto;">
@@ -79,21 +79,18 @@
         </div>
         <div class="tab-pane" id="settings">
           <ul class="list-group">
-            <% for(var j=0,l2=people.beWatch.length;j<l2;j++){ %>
             <li class="list-group-item col-md-3 col-md-offset-1">
-              <div data-toggle="collapse" data-parent="#accordion<%= i %>" href="#collapseOne<%= i %>">
-                <%= people.beWatch[j] %>
+              <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                ddd
                 <button type="button" class="btn btn-danger btn-xs pull-right">关注</button>
               </div>
-              <div id="collapseOne<%= i %>" class="panel-collapse collapse" style="height: auto;">
+              <div id="collapseOne" class="panel-collapse collapse" style="height: auto;">
                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusm
               </div>
             </li>
-            <% } %>
           </ul>
         </div>
       </div>
-
     </div>
 	</div>
 </div>
