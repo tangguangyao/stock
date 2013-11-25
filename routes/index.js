@@ -70,4 +70,8 @@ module.exports = function(app){
   app.get('/unwatchPeople',function(req,res){
     people.unwatchPeople(req,res);
   });
+
+  app.get('/peopleWatchTab',function(req,res){
+    people.watchTab(req,res);
+  });
 };

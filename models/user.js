@@ -161,19 +161,47 @@ User.isWatch=function(myName,name,callback){
         mongodb.close(); 
         return callback(err); 
       }
-      //查找用户名 name 值为 name文档
-      // collection.find({beWatch:{$in:myName}},function(err,items){
-      //   if(err){ 
-      //     mongodb.close(); 
-      //     return callback(); 
-      //   }
-        
-      //   items.toArray(function(err,arr){
-      //     mongodb.close();
-      //     callback();
-      //   });
-        
-      // });
+      //查找用户名myName是否已经关注过name
+      collection.find({name:name,beWatch:myName},function(err,items){
+        if(err){
+          mongodb.close();
+          return callback();
+        }
+        items.toArray(function(err,arr){
+          mongodb.close();
+          if(arr.length>0){
+            callback(true);
+          }else{
+            callback(false);
+          }
+        });
+      });
+    }); 
+  });
+}
+
+User.watchPage=function(name,callback){
+  mongodb.open(function(err, db){ 
+    if(err){ 
+      return callback(err); 
+    } 
+    //读取 users 集合 
+    db.collection('user', function(err, collection){ 
+      if(err){ 
+        mongodb.close(); 
+        return callback(err); 
+      }
+      //查找name关注的人
+      collection.findOne({name: name},function(err, doc){ 
+        mongodb.close(); 
+        if(doc){ 
+          var user = new User(doc); 
+          callback(err, user);//成功！返回查询的用户信息 
+        } else {
+          callback(err, null);//失败！返回null 
+        } 
+      }); 
+
     }); 
   });
 }

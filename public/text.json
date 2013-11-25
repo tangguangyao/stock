@@ -11,7 +11,19 @@
   "watch": ["001","002"],
   "beWatch":["001","002"],
   "top":2,
-  "admin":1
+  "admin":1,
+  "talk":[
+    {
+    "text":"asdadasdadasda",
+    "at":"yao",
+    "time":"2013-11-25"
+    },
+    {
+    "text":"asdadasdadasda",
+    "at":"yao",
+    "time":"2013-11-25"
+    }
+  ]
 }
 
 //评论数据结构

@@ -8,9 +8,9 @@
         <img src="/images/<%= people.info.pic %>" style="width:100%"/>
       </div>
       <div class="col-md-8">
-        <p>
-          <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchPeo()">关注</button>
-          <button type="button" class="btn btn-info col-md-offset-4" ng-click="unwatchPeo()">取消关注</button>
+        <p isWatch="<%= locals.isWatch %>" id="watchP">
+          <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchPeo()" id="watchOk">关注</button>
+          <button type="button" class="btn btn-info col-md-offset-4" ng-click="unwatchPeo()" id="watchNo">取消关注</button>
           <button type="button" class="btn btn-info col-md-offset-1">发私信</button>
         </p>
         <p>特长:<span><%= people.info.Spec %></span></p>
@@ -49,8 +49,8 @@
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
         <li><a href="#profile" data-toggle="tab">Profile</a></li>
-        <li><a href="#messages" data-toggle="tab">关注</a></li>
-        <li><a href="#settings" data-toggle="tab">粉丝</a></li>
+        <li><a href="#messages" data-toggle="tab" ng-click="watchTab()">关注(<%= people.watch.length %>)</a></li>
+        <li><a href="#settings" data-toggle="tab">粉丝(<%= people.beWatch.length %>)</a></li>
       </ul>
 
       <div class="tab-content">
@@ -66,15 +66,29 @@
         </div>
         <div class="tab-pane" id="messages">
           <ul class="list-group">
-            <% for(var i=0,l=people.watch.length;i<l;i++){ %>
-            <li><%= people.watch[i] %></li>
-            <% } %>
+            <li class="list-group-item col-md-3 col-md-offset-1">
+              <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                <%= people.watch[i] %>
+                <button type="button" class="btn btn-danger btn-xs pull-right">关注</button>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse" style="height: auto;">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusm
+              </div>
+            </li>
           </ul>
         </div>
         <div class="tab-pane" id="settings">
           <ul class="list-group">
             <% for(var j=0,l2=people.beWatch.length;j<l2;j++){ %>
-            <li><%= people.beWatch[i] %></li>
+            <li class="list-group-item col-md-3 col-md-offset-1">
+              <div data-toggle="collapse" data-parent="#accordion<%= i %>" href="#collapseOne<%= i %>">
+                <%= people.beWatch[j] %>
+                <button type="button" class="btn btn-danger btn-xs pull-right">关注</button>
+              </div>
+              <div id="collapseOne<%= i %>" class="panel-collapse collapse" style="height: auto;">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusm
+              </div>
+            </li>
             <% } %>
           </ul>
         </div>
@@ -83,6 +97,6 @@
     </div>
 	</div>
 </div>
-<script src="js/tgy/peo.js"></script>
 
+<script src="js/tgy/peo.js"></script>
 <%- include footer %>

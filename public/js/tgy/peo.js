@@ -1,19 +1,35 @@
 angular.module('App', []);
 
 function peopleCtrl($scope, $http, $templateCache){
+  //加载时判断是否已经关注了该用户，这里用jquery处理，angular处理有点坑
+  var ifWatch=$("#watchP").attr("isWatch");
+  if(ifWatch=="true"){
+    $("#watchOk").hide();
+    $("#watchNo").show();
+  }else{
+    $("#watchOk").show();
+    $("#watchNo").hide();
+  }
+
 	//关注用户
 	var myName=$("#pageName").attr("pName");
   $scope.watchPeo=function(){
     $http({method: "GET", url: "/watchPeople?name="+myName, cache: $templateCache}).
       success(function(data,status){
-        var l;
+        if(data.ok){
+          $("#watchOk").hide();
+          $("#watchNo").show();
+        }
       });
   }
 
   $scope.unwatchPeo=function(){
     $http({method: "GET", url: "/unwatchPeople?name="+myName, cache: $templateCache}).
       success(function(data,status){
-        var l;
+        if(data.ok){
+          $("#watchOk").show();
+          $("#watchNo").hide();
+        }
       });
   }
 
@@ -62,5 +78,15 @@ function peopleCtrl($scope, $http, $templateCache){
         ajaxStock();
         setTimeout(start,10000);
      }
+  }
+
+  //展示关注的用户
+  $scope.watchTab=function(){
+    $http({method: "GET", url: "/peopleWatchTab?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize, cache: $templateCache}).
+      success(function(data,status){
+        if(data.ok){
+          var l;
+        }
+      });
   }
 };
