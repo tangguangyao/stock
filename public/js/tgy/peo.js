@@ -95,6 +95,14 @@ function peopleCtrl($scope, $http, $templateCache){
 
   //展示粉丝
   $scope.fensTab=function(){
-    
+    var pageNum2=0;
+    var pageSize2=10;
+    var name=$("#pageName").attr("pname");
+    $http({method: "GET", url: "/peopleFensTab?name="+name+"&pageNum="+pageNum2+"&pageSize="+pageSize2, cache: $templateCache}).
+      success(function(data,status){
+        if(data.ok){
+          $scope.fens=data.list;
+        }
+      });
   }
 };

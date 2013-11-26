@@ -74,4 +74,8 @@ module.exports = function(app){
   app.get('/peopleWatchTab',function(req,res){
     people.watchTab(req,res);
   });
+
+  app.get('/peopleFensTab',function(req,res){
+    people.fensTab(req,res);
+  });
 };

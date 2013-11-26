@@ -67,26 +67,18 @@
         <div class="tab-pane" id="messages">
           <ul class="list-group">
             <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="look in looks">
-              <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                 {{look.name}}
-                <button type="button" class="btn btn-danger btn-xs pull-right">关注</button>
-              </div>
-              <div id="collapseOne" class="panel-collapse collapse" style="height: auto;">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusm
-              </div>
+                <button type="button" class="btn btn-danger btn-xs pull-right" ng-hide="{{look.haveWatch}}">关注</button>
+                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{look.haveWatch}}">取消</button>
             </li>
           </ul>
         </div>
         <div class="tab-pane" id="settings">
           <ul class="list-group">
-            <li class="list-group-item col-md-3 col-md-offset-1">
-              <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                ddd
-                <button type="button" class="btn btn-danger btn-xs pull-right">关注</button>
-              </div>
-              <div id="collapseOne" class="panel-collapse collapse" style="height: auto;">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusm
-              </div>
+            <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="fen in fens">
+                {{fen.name}}
+                <button type="button" class="btn btn-danger btn-xs pull-right" ng-hide="{{fen.haveWatch}}">关注</button>
+                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{fen.haveWatch}}">取消</button>
             </li>
           </ul>
         </div>
