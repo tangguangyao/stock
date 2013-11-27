@@ -109,7 +109,7 @@ User.watch=function(wat,req,name,callback){
   mongodb.open(function(err, db){
     if(err){ 
       return callback(err); 
-    } 
+    }
     //读取 users 集合 
     db.collection('user', function(err, collection){ 
       if(err){ 
@@ -233,12 +233,12 @@ User.hotPeople=function(callback){
           mongodb.close(); 
           return callback(err); 
         }
+        mongodb.close();
         if(!!items){//存在
           callback(items);
         }else{
           callback(null);
         }
-        mongodb.close();
         });
       });
   });

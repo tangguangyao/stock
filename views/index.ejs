@@ -117,11 +117,13 @@
         <li>后台推荐1</li>
         <li>后台推荐1</li>
       </ul>
+
       <h3>推荐用户</h3>
       <ul class="list-group">
         <li class="list-group-item"  ng-repeat="people in peoples">
-          <a href="stock/{{ list.uid }}">{{ people.name }}({{ people.top }})</a>
-          <button type="button" class="btn btn-danger btn-xs pull-right">关注</button>
+          <a href="people/{{ people.name }}">{{ people.name }}({{ people.top }})</a>
+          <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="topPeople(people)" ng-hide="{{people.isWatch}}">关注</button>
+          <span class="pull-right" ng-show="{{people.isWatch}}">已关注</span>
         </li>
       </ul>
 	  </div>

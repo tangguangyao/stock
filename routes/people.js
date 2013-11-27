@@ -50,7 +50,6 @@ people.watchPeople=function(req,res){
 			}else{
 				res.send({ok:false,message:data.message});
 			}
-			
 		}
 	});
 }
@@ -195,7 +194,18 @@ people.fensTab=function(req,res){
 
 //首页热门用户
 people.hotPeople=function(req,res){
+	var myName=req.session.user.name;
+	var myWatch=req.session.user.watch;
 	User.hotPeople(function(obj){
+		for(var i=0,l=obj.length;i<l;i++){
+			obj[i].isWatch=false;
+			obj[i].password=null;
+			for(var j=0,l2=myWatch.length;j<l2;j++){
+				if(obj[i].name==myWatch[j]){
+					obj[i].isWatch=true;
+				}
+			}
+		}
 		res.send({ok:true,list:obj});
 	})
 }

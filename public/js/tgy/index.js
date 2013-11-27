@@ -92,12 +92,43 @@ function IndexCtrl($scope, $http, $templateCache) {
     });
 
   //请求热门用户
+  var topPeopleList;
   $http({method: "GET", url: "/hotPeople", cache: $templateCache}).
     success(function(data,status){
       if(data.ok){
-        $scope.peoples=data.list;
+        for(var i=0,l=data.list.length;i<l;i++){
+          data.list[i].num=i;
+        }
+        $scope.peoples=topPeopleList=data.list;
       }
     });
+
+  //关注热门人物
+  $scope.topPeople=function(people){
+    var name=people.name;
+    var num=people.num;
+    if($("#headShowName").text()==name){
+      alert("不能关注自己");
+      return;
+    }
+    $http({method: "GET", url: "/watchPeople?name="+name, cache: $templateCache}).
+      success(function(data,status){
+        if(data.ok){
+          var newArrayTop=[];
+          for(var i=0,l=topPeopleList.length;i<l;i++){
+            newArrayTop.push({
+              num:topPeopleList[i].num,
+              name:topPeopleList[i].name,
+              top:topPeopleList[i].top,
+              isWatch:topPeopleList[i].isWatch
+            })
+          }
+          newArrayTop[num].isWatch=true;
+          newArrayTop[num].top++;
+          $scope.peoples=topPeopleList=newArrayTop;
+        }
+      });
+  }
 
 
   //删除关注的股票
