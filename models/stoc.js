@@ -149,7 +149,7 @@ Stoc.hotStock=function(callback){
 					callback(null);
 				}
 				mongodb.close();
-	  	});
-    });
+		  	});
+	    });
 	});
 }

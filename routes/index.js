@@ -5,7 +5,8 @@ var crypto = require('crypto'), //密码加密模块
     User = require('../models/user.js'), //引入用户登录函数
     login = require('./login'),
     stock = require('./stock'),
-    people = require('./people');
+    people = require('./people'),
+    setting = require('./setting');
 
 module.exports = function(app){
   app.get('/',function(req,res){
@@ -32,7 +33,7 @@ module.exports = function(app){
   });
 
   app.get('/setting',function(req,res){
-    res.render('setting', { title: 'Express' });
+    setting.show(req,res);
   });
 
   app.get('/stock/:uid',function(req,res){
@@ -77,5 +78,9 @@ module.exports = function(app){
 
   app.get('/peopleFensTab',function(req,res){
     people.fensTab(req,res);
+  });
+
+  app.get('/hotPeople',function(req,res){
+    people.hotPeople(req,res);
   });
 };

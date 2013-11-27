@@ -91,6 +91,15 @@ function IndexCtrl($scope, $http, $templateCache) {
       }
     });
 
+  //请求热门用户
+  $http({method: "GET", url: "/hotPeople", cache: $templateCache}).
+    success(function(data,status){
+      if(data.ok){
+        $scope.peoples=data.list;
+      }
+    });
+
+
   //删除关注的股票
   $scope.delStock = function(stock) {
     delStockUid=stock.symbol.toLowerCase();

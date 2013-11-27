@@ -6,9 +6,12 @@ function peopleCtrl($scope, $http, $templateCache){
   if(ifWatch=="true"){
     $("#watchOk").hide();
     $("#watchNo").show();
-  }else{
+  }else if(ifWatch=="false"){
     $("#watchOk").show();
     $("#watchNo").hide();
+  }else{
+    //如果是本人页面
+    $("#watchP").hide();
   }
 
 	//关注用户
@@ -19,6 +22,10 @@ function peopleCtrl($scope, $http, $templateCache){
         if(data.ok){
           $("#watchOk").hide();
           $("#watchNo").show();
+        }else{
+          $("#watchOk").hide();
+          $("#watchNo").show();
+          alert(data.message);
         }
       });
   }
@@ -81,6 +88,7 @@ function peopleCtrl($scope, $http, $templateCache){
   }
 
   //展示关注的用户
+  //没做分页效果
   $scope.watchTab=function(){
     var pageNum=0;
     var pageSize=10;
@@ -88,6 +96,7 @@ function peopleCtrl($scope, $http, $templateCache){
     $http({method: "GET", url: "/peopleWatchTab?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize, cache: $templateCache}).
       success(function(data,status){
         if(data.ok){
+          watchAndFens(data.list);
           $scope.looks=data.list;
         }
       });
@@ -101,8 +110,31 @@ function peopleCtrl($scope, $http, $templateCache){
     $http({method: "GET", url: "/peopleFensTab?name="+name+"&pageNum="+pageNum2+"&pageSize="+pageSize2, cache: $templateCache}).
       success(function(data,status){
         if(data.ok){
+          watchAndFens(data.list);
           $scope.fens=data.list;
         }
       });
+  }
+
+
+  /*
+  公用函数
+  */
+  //处理关注和粉丝的数据
+  var watchAndFens=function(data){
+    for(var i=0,l=data.length;i<l;i++){
+      if(data[i].myself){
+        data[i].watch=false;
+        data[i].unwatch=false;
+      }else{
+        if(data[i].haveWatch){//false表示没有关注
+          data[i].watch=false;
+          data[i].unwatch=true;
+        }else{
+          data[i].watch=true;
+          data[i].unwatch=false;
+        }
+      }
+    }
   }
 };

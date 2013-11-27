@@ -110,31 +110,19 @@
         </li>
       </ul>
 
-      
 
 	  	<h3>推荐</h3>
 	  	<ul class="list-group">
-        <li>asdasd</li>
-        <li>adsad</li>
-        <li>adas</li>
-        <li>asdasd</li>
-        <li>adsad</li>
-        <li>adas</li>
-        <li>asdasd</li>
-        <li>adsad</li>
-        <li>adas</li>
+        <li>后台推荐1</li>
+        <li>后台推荐1</li>
+        <li>后台推荐1</li>
       </ul>
       <h3>推荐用户</h3>
       <ul class="list-group">
-        <li>asdasd</li>
-        <li>adsad</li>
-        <li>adas</li>
-        <li>asdasd</li>
-        <li>adsad</li>
-        <li>adas</li>
-        <li>asdasd</li>
-        <li>adsad</li>
-        <li>adas</li>
+        <li class="list-group-item"  ng-repeat="people in peoples">
+          <a href="stock/{{ list.uid }}">{{ people.name }}({{ people.top }})</a>
+          <button type="button" class="btn btn-danger btn-xs pull-right">关注</button>
+        </li>
       </ul>
 	  </div>
 	</div>

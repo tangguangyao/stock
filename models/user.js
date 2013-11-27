@@ -103,8 +103,10 @@ User.stockUp=function(db,watchName,uid,add,callback){
 User.watch=function(wat,req,name,callback){
   //打开数据库
   var fromName=req.session.user.name;
+  var watch=req.session.user.watch;
+
   var toName=name;
-  mongodb.open(function(err, db){ 
+  mongodb.open(function(err, db){
     if(err){ 
       return callback(err); 
     } 
@@ -114,9 +116,18 @@ User.watch=function(wat,req,name,callback){
         mongodb.close(); 
         return callback(err); 
       }
-      //查找用户名 name 值为 name文档
-      if(wat){
-        collection.update({name:toName},{$push:{beWatch:fromName}},function(err,items){
+      if(wat){//wat为true表示加关注
+        //判断下是否已经关注过
+        for(var i=0,l=watch.length;i<l;i++){
+          if(watch[i]==toName){
+            mongodb.close();
+            var message="您已经关注该用户";
+            callback(err,{ok:false,message:message});
+            return;
+          }
+        }
+
+        collection.update({name:toName},{$inc:{top:1},$push:{beWatch:fromName}},function(err,items){
           if(err){ 
             mongodb.close(); 
             return callback(err); 
@@ -127,11 +138,11 @@ User.watch=function(wat,req,name,callback){
               return callback(err); 
             } 
             mongodb.close();
-            callback(err,items);
+            callback(err,{ok:true});
           });
         });
       }else{
-        collection.update({name:toName},{$pull:{beWatch:fromName}},function(err,items){
+        collection.update({name:toName},{$inc:{top:-1},$pull:{beWatch:fromName}},function(err,items){
           if(err){ 
             mongodb.close(); 
             return callback(err); 
@@ -203,5 +214,32 @@ User.watchPage=function(name,callback){
       }); 
 
     }); 
+  });
+}
+
+User.hotPeople=function(callback){
+  mongodb.open(function(err,db){
+    if(err){ 
+      mongodb.close(); 
+        return callback(err); 
+    }
+      db.collection('user',function(err,collection){
+      if(err){ 
+        mongodb.close(); 
+        return callback(err); 
+      }
+      collection.find().sort({top:-1}).limit(10).toArray(function(err,items){
+        if(err){
+          mongodb.close(); 
+          return callback(err); 
+        }
+        if(!!items){//存在
+          callback(items);
+        }else{
+          callback(null);
+        }
+        mongodb.close();
+        });
+      });
   });
 }

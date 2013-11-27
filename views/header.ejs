@@ -18,9 +18,11 @@
               <li><a href="/baike">行情</a></li>
             </ul>
         </li>
+        <% if(user){ %>
         <li>
-          <a href="../components">设置</a>
+          <a href="people/<%= user.name %>">个人主页</a>
         </li>
+        <% } %>
         <li>
           <a href="../components">设置</a>
         </li>
@@ -47,7 +49,7 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="headShowName" top="<%= user.top %>" login="in"><%= user.name%></span><b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="/baike">设置</a></li>
+              <li><a href="setting">设置</a></li>
               <% if(locals.isStock){ %>
               <li><a id="loginOut" loginOut="target">注销</a></li>
               <% }else{ %>

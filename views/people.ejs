@@ -68,8 +68,8 @@
           <ul class="list-group">
             <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="look in looks">
                 {{look.name}}
-                <button type="button" class="btn btn-danger btn-xs pull-right" ng-hide="{{look.haveWatch}}">关注</button>
-                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{look.haveWatch}}">取消</button>
+                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{look.watch}}">关注</button>
+                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{look.unwatch}}">取消</button>
             </li>
           </ul>
         </div>
@@ -77,8 +77,8 @@
           <ul class="list-group">
             <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="fen in fens">
                 {{fen.name}}
-                <button type="button" class="btn btn-danger btn-xs pull-right" ng-hide="{{fen.haveWatch}}">关注</button>
-                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{fen.haveWatch}}">取消</button>
+                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{fen.watch}}">关注</button>
+                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{fen.unwatch}}">取消</button>
             </li>
           </ul>
         </div>
