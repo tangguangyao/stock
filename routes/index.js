@@ -83,4 +83,8 @@ module.exports = function(app){
   app.get('/hotPeople',function(req,res){
     people.hotPeople(req,res);
   });
+
+  app.post('/setting',function(req,res){
+    setting.post(req,res);
+  });
 };

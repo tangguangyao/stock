@@ -8,34 +8,37 @@
 
   <div class="tab-content">
     <div class="tab-pane active" id="info">
-        <div class="col-md-6">
-          <form class="form-horizontal" role="form" style="margin-top:20px;">
+      <div class="col-md-1">
+        <p style="margin-top: 30px;"><img src="/images/<%= user.info.pic %>" style="width:100%"/></p>
+      </div>
+      <div class="col-md-6">
+          <form action="setting" class="form-horizontal" role="form" method="post" enctype="multipart/form-data" style="margin-top:20px;">
             <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">特长</label>
+              <label for="Spec" class="col-sm-2 control-label">特长</label>
               <div class="col-sm-10">
-                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                <input type="text" class="form-control" name="Spec" value="<%= user.info.Spec %>" >
               </div>
             </div>
             <div class="form-group">
               <label for="inputPassword3" class="col-sm-2 control-label">兴趣</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                <input type="text" class="form-control" name="interest" value="<%= user.info.interest %>">
               </div>
             </div>
             
             <div class="form-group">
-              <label for="exampleInputFile" class="col-sm-2 control-label">上传头像</label>
+              <label for="pic" class="col-sm-2 control-label">上传头像</label>
               <div class="col-sm-10">
-                <input type="file" id="exampleInputFile" class="form-control">
+                <input type="file" id="pic" name="thumbnail" class="form-control">
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Sign in</button>
+                <button type="submit" class="btn btn-default">提交</button>
               </div>
             </div>
           </form>
-        </div>
+      </div>
     </div>
     <div class="tab-pane" id="password">
       <div class="col-md-6">
