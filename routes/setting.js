@@ -2,6 +2,8 @@ var mongodb = require('../models/db');
 var User = require('../models/user');
 // 移动文件需要使用fs模块
 var fs = require('fs');
+//复制文件
+var util = require("util");
 
 //国外插件
 var gm = require('gm');
@@ -31,24 +33,21 @@ setting.post=function(req,res){
 		var picType=req.files.thumbnail.name.split(".");
 		picType=picType[1];
 		target_path_big = './public/images/user/big/pic_' + req.session.user.name+"."+picType;
-		target_path_small = './public/images/user/small/pic_' + req.session.user.name+"."+picType;
+		target_path_small = './public/images/user/small/pic_' + req.session.user.name+"."+picType;		
 		// 移动文件
 		fs.rename(tmp_path, target_path_big, function(err) {
 			if (err) throw err;
+			//复制一份
+			copyFile(target_path_big, target_path_small);
 			//程序执行到这里，user文件下面就会有一个你上传的图片
 			imageMagick(target_path_big)
 			.resize(150, 150, '!') //加('!')强行把图片缩放成对应尺寸150*150！
-			// .autoOrient()
-			// .write(target_path_big, function(err){
-			//   if (err) {
-			//     console.log(err);
-			//   }
-			// });
-		});
-
-		fs.rename(tmp_path, target_path_small, function(err) {
-			if (err) throw err;
-			//程序执行到这里，user文件下面就会有一个你上传的图片
+			.autoOrient()
+			.write(target_path_big, function(err){
+			  if (err) {
+			    console.log(err);
+			  }
+			});
 			imageMagick(target_path_small)
 			.resize(80, 80, '!') //加('!')强行把图片缩放成对应尺寸150*150！
 			.autoOrient()
@@ -59,4 +58,16 @@ setting.post=function(req,res){
 			});
 		});
 	}
+}
+
+/*
+公共函数
+*/
+//复制文件
+function copyFile(src, dst){
+    var is = fs.createReadStream(src);
+    var os = fs.createWriteStream(dst);
+   	//readable.pipe(destination, [options])
+   	//http://nodeapi.ucdok.com/#/api/stream.html
+    is.pipe(os);
 }
