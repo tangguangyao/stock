@@ -87,4 +87,8 @@ module.exports = function(app){
   app.post('/setting',function(req,res){
     setting.post(req,res);
   });
+
+  app.post('/setPassword',function(req,res){
+    setting.setPassword(req,res);
+  });
 };

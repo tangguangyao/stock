@@ -20,7 +20,10 @@ User.prototype.save=function(callback){
       info:this.info||{
                         Spec: "还未填写",
                         interest: "还未填写",
-                        pic:"images.jpg",
+                        pic:{
+                          big:"/user/big/images.jpg",
+                          small:"user/small/images.jpg"
+                        },
                         email:"还未填写"
                       },
       stock:[],
@@ -242,4 +245,60 @@ User.hotPeople=function(callback){
         });
       });
   });
+}
+
+User.setInfo=function(name,info,callback){
+  mongodb.open(function(err, db){ 
+    if(err){ 
+      return callback(err); 
+    } 
+    //读取 users 集合 
+    db.collection('user', function(err, collection){ 
+      if(err){ 
+        mongodb.close(); 
+        return callback(err); 
+      } 
+      //查找用户名 name 值为 name文档 
+      collection.update({name:name},{$set:{info:info}},function(err,items){
+        mongodb.close();
+        callback(err,items);
+      })
+    }); 
+  }); 
+}
+
+User.password=function(name,old,newP,callback){
+  mongodb.open(function(err, db){ 
+    if(err){ 
+      return callback(err); 
+    } 
+    //读取 users 集合 
+    db.collection('user', function(err, collection){ 
+      if(err){ 
+        mongodb.close(); 
+        return callback(err); 
+      } 
+      //查找用户名 name 值为 name文档 
+      collection.findOne({name: name},function(err, doc){ 
+        //mongodb.close(); 
+        if(doc){ 
+          if(doc.password==old){
+            collection.update({name:name},{$set:{password:newP}},function(err,items){
+              mongodb.close();
+              if(err){
+                callback(err);//失败！返回null
+              }
+              callback("修改成功");
+            });
+          }else{
+            mongodb.close();
+            callback("原始密码不正确");
+          }
+        } else {
+          mongodb.close();
+          callback(err);//失败！返回null 
+        } 
+      }); 
+    }); 
+  }); 
 }
