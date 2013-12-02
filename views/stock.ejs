@@ -68,15 +68,13 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                加入聊天室
-              </a>
+              <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="addTalk()">加入聊天室</a>
             </h4>
           </div>
           <div id="collapseOne" class="panel-collapse collapse in">
             <div class="panel-body">
               <div style="height:300px;overflow-y: overlay;">
-                <p class="col-md-offset-3">查看更早内容</p>
+                <p class="col-md-offset-4">查看更早内容</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
@@ -92,21 +90,21 @@
                 <p><span>adasdad</span>:asdasdsadsad</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
+                <p class="myTalk">asdasdsadsad</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
               </div>
-              <textarea style="width:100%;height:55px;margin-bottom:10px;margin-top:10px;"></textarea>
-              <button type="button" class="btn btn-primary navbar-right">发布</button>
+              <textarea style="width:100%;height:55px;margin-bottom:10px;margin-top:10px;" id="talkText"></textarea>
+              <button type="button" class="btn btn-primary navbar-right" ng-click="talkSubmit()">发布</button>
             </div>
           </div>
         </div>
       </div>
 
       <h3>发布评论</h3>
-      <textarea style="width:100%;height:80px;margin-bottom:10px;">#上海贝岭(SH600171)#</textarea>
+      <textarea style="width:100%;height:80px;margin-bottom:10px;">#{{stock.name}}({{stock.symbol}})#</textarea>
       <button type="button" class="btn btn-primary navbar-right">发布</button>
       <div class="clearfix"></div>
       <ul class="nav nav-tabs" id="myTab">
@@ -117,41 +115,17 @@
       <div class="tab-content">
         <div class="tab-pane active" id="home">
           <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
+            <li>全部</li>
           </ul>
         </div>
         <div class="tab-pane" id="profile">
           <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
+            <li>新闻</li>
           </ul>
         </div>
         <div class="tab-pane" id="messages">
           <ul class="list-group">
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
-            <li>asdasd</li>
-            <li>adsad</li>
-            <li>adas</li>
+            <li>相关</li>
           </ul>
         </div>
       </div>

@@ -168,4 +168,32 @@ function FetchCtrl($scope, $http, $templateCache) {
      }
   }
   start();
+
+  //聊天室socket
+  var chat = io.connect('/chat');
+  var talkOpen=true;
+  $scope.addTalk=function(){
+    chat.emit('add',{name:$("#headShowName").text(),text:talkText},function(info){
+      var l;
+    });
+  }
+  $scope.talkSubmit=function(){
+    if(talkOpen){
+      //talkOpen=false;
+      var talkText=$("#talkText").val();
+      if(talkText==""){
+        alert("请输入内容");
+      }
+      chat.emit('talk',{name:$("#headShowName").text(),text:talkText},function(info){
+        if(info.isok){
+          $("#talkText").val("");
+        }
+      });
+    }
+    chat.on('showTalk',function(data){
+      var l;
+    });
+    
+  }
+  
 }

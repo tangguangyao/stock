@@ -8,7 +8,8 @@ var express = require('express')
   , path = require('path')
   , MongoStore = require('connect-mongo')(express)
   , settings = require('./settings')
-  , flash = require('connect-flash');
+  , flash = require('connect-flash')
+  , sock= require('./models/socket');
 
 var app = express();
 
@@ -20,7 +21,7 @@ app.use(flash());
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser({uploadDir:'./uploads'})); 
-app.use(express.bodyParser());
+//app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({
@@ -31,16 +32,21 @@ app.use(express.session({
     db: settings.db
   })
 }));
-app.use(app.router);
+//声明静态引用在前，路由规则在后
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+//socket 通信
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+sock(io);//执行socket.js里面的内容
 
-http.createServer(app).listen(app.get('port'), function(){
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 

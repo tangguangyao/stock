@@ -23,3 +23,8 @@ li{
 #stockTableShow span{
 	color: #333;
 }
+.myTalk{
+text-align: right;
+padding-right: 40px;
+color: red;
+}

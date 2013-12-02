@@ -5,13 +5,12 @@
 	  <div class="col-md-10 col-md-offset-1">
       <h3 id="pageName" pName="<%= people.name %>"><%= people.name %>的信息</h3>
       <div class="col-md-2">
-        <img src="/images/<%= people.info.pic %>" style="width:100%"/>
+        <img src="/images/<%= people.info.pic.big %>" style="width:100%"/>
       </div>
       <div class="col-md-8">
         <p isWatch="<%= locals.isWatch %>" id="watchP">
           <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchPeo()" id="watchOk">关注</button>
           <button type="button" class="btn btn-info col-md-offset-4" ng-click="unwatchPeo()" id="watchNo">取消关注</button>
-          <button type="button" class="btn btn-info col-md-offset-1">发私信</button>
         </p>
         <p>特长:<span><%= people.info.Spec %></span></p>
         <p>兴趣:<span><%= people.info.interest %></span></p>
@@ -67,18 +66,18 @@
         <div class="tab-pane" id="messages">
           <ul class="list-group">
             <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="look in looks">
-                {{look.name}}
-                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{look.watch}}">关注</button>
-                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{look.unwatch}}">取消</button>
+              {{look.name}}
+              <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{look.watch}}">关注</button>
+              <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{look.unwatch}}">取消</button>
             </li>
           </ul>
         </div>
         <div class="tab-pane" id="settings">
           <ul class="list-group">
             <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="fen in fens">
-                {{fen.name}}
-                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{fen.watch}}">关注</button>
-                <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{fen.unwatch}}">取消</button>
+              {{fen.name}}
+              <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{fen.watch}}">关注</button>
+              <button type="button" class="btn btn-danger btn-xs pull-right" ng-show="{{fen.unwatch}}">取消</button>
             </li>
           </ul>
         </div>

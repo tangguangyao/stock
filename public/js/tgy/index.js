@@ -130,7 +130,6 @@ function IndexCtrl($scope, $http, $templateCache) {
       });
   }
 
-
   //删除关注的股票
   $scope.delStock = function(stock) {
     delStockUid=stock.symbol.toLowerCase();
@@ -227,5 +226,15 @@ function IndexCtrl($scope, $http, $templateCache) {
           alert("出错了");
         }
       });
+  }
+
+  //搜索股票
+  $scope.search=function(){
+    var searchUid=$("#stockUid").val();
+    if(/^sh[0-9]{6}$|^sz[0-9]{6}$/i.test(searchUid)){
+      location.href="stock/"+searchUid;
+    }else{
+      alert("请填写正确的代码");
+    }
   }
 }
