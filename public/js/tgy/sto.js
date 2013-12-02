@@ -173,9 +173,7 @@ function FetchCtrl($scope, $http, $templateCache) {
   var chat = io.connect('/chat');
   var talkOpen=true;
   $scope.addTalk=function(){
-    chat.emit('add',{name:$("#headShowName").text(),text:talkText},function(info){
-      var l;
-    });
+    chat.emit('add',{name:$("#headShowName").text(),stock:pathUrl});
   }
   $scope.talkSubmit=function(){
     if(talkOpen){
@@ -193,7 +191,5 @@ function FetchCtrl($scope, $http, $templateCache) {
     chat.on('showTalk',function(data){
       var l;
     });
-    
   }
-  
 }

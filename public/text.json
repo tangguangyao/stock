@@ -130,3 +130,34 @@
   ]
 }
 
+
+//聊天室
+stockTalk=[{
+  "change":"600171",
+  "user":["tang","guang","yao"],
+  "text":[{
+    "name":"tang",
+    "text":"sadadada",
+    "time":"2012-1-1"
+    },{
+    "name":"tang",
+    "text":"sadadada",
+    "time":"2012-1-1"
+    }]
+  },{
+  "change":"600171",
+  "user":["tang","guang","yao"],
+  "text":[{
+    "name":"tang",
+    "text":"sadadada",
+    "time":"2012-1-1"
+    },{
+    "name":"tang",
+    "text":"sadadada",
+    "time":"2012-1-1"
+    }]
+  },{
+
+  },{
+
+  }]
