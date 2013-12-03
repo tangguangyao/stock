@@ -190,6 +190,7 @@ function FetchCtrl($scope, $http, $templateCache) {
     }
     chat.on('showTalk',function(data){
       var l;
+      $("#talkText").val("成功了");
     });
   }
 }

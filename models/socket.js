@@ -12,7 +12,7 @@ module.exports = function(io){
       
       //给指定用户发送消息
       chat.clients().forEach(function(client){
-	      if(client.room.name == data.to){
+	      if(client.room.stock == data.room){
 	        //触发该用户客户端的 say 事件
 	        client.emit('showTalk',{ok:"1212"});
 			  }
@@ -23,10 +23,15 @@ module.exports = function(io){
     	for(var i=0,l=stockRoom.length;i<l;i++){
         //如果存在频道就将用户加入频道
     		if(stockRoom[i].stock==data.stock){
-    			stockTalk[i].user.push(data.name);
+    			stockRoom[i].user.push(data.name);
           //socket.room=stockRoom;
           //放入socket属性中
-          socket.room.user.push(data.name);
+          //socket.room.user.push(data.name);
+          socket.room={
+            stock:data.stock
+            // user:[data.name],
+            // text:[]
+          };
     			return;
     		}
     	}
@@ -38,9 +43,9 @@ module.exports = function(io){
       });
       //添加一个聊天室信息到socket属性中
       socket.room={
-        stock:data.stock,
-        user:[data.name],
-        text:[]
+        stock:data.stock
+        // user:[data.name],
+        // text:[]
       };
     });
   });
