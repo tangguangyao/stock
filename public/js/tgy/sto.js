@@ -182,7 +182,7 @@ function FetchCtrl($scope, $http, $templateCache) {
       if(talkText==""){
         alert("请输入内容");
       }
-      chat.emit('talk',{name:$("#headShowName").text(),text:talkText},function(info){
+      chat.emit('talk',{name:$("#headShowName").text(),room:pathUrl,text:talkText},function(info){
         if(info.isok){
           $("#talkText").val("");
         }
