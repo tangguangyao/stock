@@ -172,25 +172,50 @@ function FetchCtrl($scope, $http, $templateCache) {
   //聊天室socket
   var chat = io.connect('/chat');
   var talkOpen=true;
+  //为打开聊天室
+  $scope.addRoom=false;
+  //监听聊天室通话
+  chat.on('showTalk',function(data){
+    $("#talkText").val(data.name+":"+data.text);
+  });
+  //加入聊天室
+  //只有登录用户才能加入聊天室
   $scope.addTalk=function(){
-    chat.emit('add',{name:$("#headShowName").text(),stock:pathUrl});
+    if($("#headShowName").text()==""){
+      alert("登录后才能加入聊天室");
+    }else{
+      if(!$scope.addRoom){
+        $scope.addRoom=true;
+        chat.emit('add',{
+          name:$("#headShowName").text(),
+          stock:pathUrl
+        },function(info){
+          //先返回一批数据
+          if(info.cache){
+            var l;
+          }
+        });
+      }
+    }
   }
   $scope.talkSubmit=function(){
     if(talkOpen){
-      //talkOpen=false;
+      talkOpen=false;
       var talkText=$("#talkText").val();
       if(talkText==""){
         alert("请输入内容");
       }
-      chat.emit('talk',{name:$("#headShowName").text(),room:pathUrl,text:talkText},function(info){
+      chat.emit('talk',{
+        name:$("#headShowName").text(),
+        room:pathUrl,
+        text:talkText
+      },function(info){
         if(info.isok){
+          //发送消息提交成功后清除输入框内容
           $("#talkText").val("");
+          talkOpen=true;
         }
       });
     }
-    chat.on('showTalk',function(data){
-      var l;
-      $("#talkText").val("成功了");
-    });
   }
 }

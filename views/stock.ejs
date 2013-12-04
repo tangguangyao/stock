@@ -68,33 +68,15 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="addTalk()">加入聊天室</a>
+              <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="addTalk()" addTalk="{{addRoom}}">加入聊天室</a>
             </h4>
           </div>
           <div id="collapseOne" class="panel-collapse collapse in">
             <div class="panel-body">
-              <div style="height:300px;overflow-y: overlay;">
+              <div style="height:300px;overflow-y: overlay;" id="showTalkCom">
                 <p class="col-md-offset-4">查看更早内容</p>
                 <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
                 <p class="myTalk">asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
-                <p><span>adasdad</span>:asdasdsadsad</p>
               </div>
               <textarea style="width:100%;height:55px;margin-bottom:10px;margin-top:10px;" id="talkText"></textarea>
               <button type="button" class="btn btn-primary navbar-right" ng-click="talkSubmit()">发布</button>
