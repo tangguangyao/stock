@@ -43,7 +43,7 @@ if ('development' == app.get('env')) {
 
 //socket 通信
 var server = http.createServer(app);
-var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(server,{ log: false });//{ log: false }关掉终端debug
 sock(io);//执行socket.js里面的内容
 
 server.listen(app.get('port'), function(){

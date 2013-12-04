@@ -176,11 +176,16 @@ function FetchCtrl($scope, $http, $templateCache) {
   $scope.addRoom=false;
   //监听聊天室通话
   chat.on('showTalk',function(data){
-    $("#talkText").val(data.name+":"+data.text);
+    if(data.name==$("#headShowName").text()){
+      $("#showTalkCom").append("<p class='myTalk'>"+data.text+"("+data.time+")</p>");
+    }else{
+      $("#showTalkCom").append("<p><span>"+data.name+"("+data.time+")</span>:"+data.text+"</p>");
+    }
   });
   //加入聊天室
   //只有登录用户才能加入聊天室
   $scope.addTalk=function(){
+    var myName=$("#headShowName").text();
     if($("#headShowName").text()==""){
       alert("登录后才能加入聊天室");
     }else{
@@ -192,7 +197,16 @@ function FetchCtrl($scope, $http, $templateCache) {
         },function(info){
           //先返回一批数据
           if(info.cache){
-            var l;
+            //显示缓存数据
+            var html="";
+            for(var i=0,l=info.text.length;i<l;i++){
+              if(info.text[i].name==myName){
+                html+="<p class='myTalk'>"+info.text[i].text+"("+info.text[i].time+")</p>";
+              }else{
+                html+="<p><span>"+info.text[i].name+"("+info.text[i].time+")</span>:"+info.text[i].text+"</p>";
+              }
+            }
+            $("#showTalkCom").append(html);
           }
         });
       }
