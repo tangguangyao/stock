@@ -91,4 +91,8 @@ module.exports = function(app){
   app.post('/setPassword',function(req,res){
     setting.setPassword(req,res);
   });
+
+  app.get('/talkHistory',function(req,res){
+    stock.talkHistory(req,res);
+  });
 };

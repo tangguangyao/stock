@@ -22,8 +22,9 @@ module.exports = function(io){
           });
           //如果room.text长度很长，就清空并且存入数据库
           if(stockRoom[i].text.length==cacheNum){
-            stoc.stockRoom(stockRoom[i].stock,stockRoom[i].text);
-            stockRoom[i].text.length=0;
+            stoc.stockRoom(stockRoom[i],function(){
+              stockRoom[i].text.length=0;
+            });
           }
           break;
         }
@@ -61,7 +62,7 @@ module.exports = function(io){
           //返回缓存信息
           callback({cache:true,text:stockRoom[i].text});
           stockRoomHave=false;
-          return;
+          break;
         }
       }
 
@@ -69,12 +70,14 @@ module.exports = function(io){
       stockRoom.push({
         stock:data.stock,
         user:[data.name],
-        text:[]
+        text:[],
+        stockName:data.stockName
       });
       callback({cache:false});
     });
 
     //监听页面关闭,当一个聊天室用户为0时，数据存入服务器，并且从stockRoom中删除
+    //关闭股票页面都会触发下面事件，无论是否进入聊天室
     socket.on('disconnect',function(){
       //若 users 数组中保存了该用户名
       if(socket.room){
@@ -89,9 +92,10 @@ module.exports = function(io){
               stockRoom[i].user.splice(index,1);
               if(stockRoom[i].user==0){
                 //如果用户为0，数据存入数据库
-                stoc.stockRoom(stockRoom[i].stock,stockRoom[i].text);
+                stoc.stockRoom(stockRoom[i],function(){
+                  stockRoom.splice(i,1);
+                });
                 //并且移除stockRoom[i]
-                stockRoom.splice(i,1);
                 return;
               }
             }

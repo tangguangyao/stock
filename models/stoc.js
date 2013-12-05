@@ -12,14 +12,14 @@ function Stoc(sto){
 module.exports = Stoc;
 
 Stoc.prototype.watch=function(callback){ 
- //callback 是执行玩保存后的回调函数
-  	var stoc = { 
-	    name : this.name,
+  //callback 是执行玩保存后的回调函数
+	var stoc = { 
+		name : this.name,
 		uid : this.uid,
 		beWatch : this.beWatch,
 		top : this.top,
 		talk : this.talk
-  	};
+	};
   var watchName=stoc.beWatch;
   //top需要加减，beWatch需要加减处理
   //打开数据库
@@ -152,38 +152,63 @@ Stoc.hotStock=function(callback){
 	});
 }
 
-Stoc.stockRoom=function(uid,text){
+Stoc.stockRoom=function(stock,callback){
+	//关闭页面是也会触发，所以当聊天记录为0时，不用存入数据库
+	if(stock.text.length > 0){
+		mongodb.open(function(err,db){
+			if(err){ 
+				mongodb.close(); 
+			  return callback(err); 
+			}
+		  db.collection('sto',function(err,collection){
+				if(err){ 
+				    mongodb.close(); 
+				    return callback(err); 
+		  		}
+		  		//这里不用第三个属性{upsert:true}，{upsert:true}表示没有时新建插入
+		  		collection.update({uid:stock.stock},{$pushAll:{talk:stock.text}},function(err,items){
+		      	if(err) throw err;
+		      	if(items>0){
+		      		mongodb.close();
+		      		callback();
+		      	}else{
+		      		//不存在，就新建一个插入
+							var stoc = { 
+							  name : stock.stockName,
+								uid : stock.stock,
+								beWatch : [],
+								top : 0,
+								talk : stock.text
+							};
+							collection.insert(stoc,{safe: true},function(err,stocItem){
+								if(err) throw err;
+								mongodb.close();
+								callback();
+							});
+		      	}
+			    });
+
+		    });
+		});
+	}
+}
+
+Stoc.talkHistory=function(uid,size,count,callback){
 	mongodb.open(function(err,db){
 		if(err){ 
 			mongodb.close(); 
-		  	return callback(err); 
+		  return callback(err); 
 		}
-	    db.collection('sto',function(err,collection){
+	  db.collection('sto',function(err,collection){
 			if(err){ 
-			    mongodb.close(); 
-			    return callback(err); 
-	  		}
-	  		//这里不用第三个属性{upsert:true}，{upsert:true}表示没有时新建插入
-	  		collection.update({uid:uid},{$push:{talk:text}},function(err,items){
-		      	if(err) throw err;
-		      	mongodb.close();
-		      	if(items>0){
-		      		return;
-		      	}else{
-		      		//不存在，就新建一个插入
-		    //   		var stoc = { 
-					 //    name : this.name,
-						// uid : uid,
-						// beWatch : [],
-						// top : 0,
-						// talk : text
-				  // 	};
-		    //   		collection.insert(stoc,{safe: true},function(err,stocItem){
-
-		    //   		});
-		      	}
-		      	//callback({isok:true})
-		    });
-	    });
+		    mongodb.close(); 
+		    return callback(err); 
+  		}
+  		//collection.find({uid:uid}).skip(count).limit(size)
+  		//无需分页查询，这里聊天数据太大会导致性能问题
+  		collection.findOne({uid:uid},function(err, data){
+  			callback(data);
+  		});
+   	});
 	});
 }

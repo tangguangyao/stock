@@ -234,5 +234,14 @@ function FetchCtrl($scope, $http, $templateCache) {
       });
     }
   }
+  //查看聊天室早期内容
+  $scope.lookTalkMessage=function(){
+    var talkPageSize=10;
+    var talkPageNum=0;
+    $http({method: "GET", url: "TalkHistory?stock="+pathUrl+"&pageSize="+talkPageSize+"&pageNum="+talkPageNum, cache: $templateCache}).
+      success(function(data, status) {
+
+      });
+  }
 
 }

@@ -28,3 +28,8 @@ text-align: right;
 padding-right: 40px;
 color: red;
 }
+.lookTalkMessage{
+text-align: center;
+cursor: pointer;
+color: blue;
+}

@@ -71,3 +71,16 @@ stock.hotStock=function(req,res){
 		res.send({ok:true,list:obj});
 	})
 }
+
+stock.talkHistory=function(req,res){
+	var uid=req.params.stock;
+	var size=req.params.pageSize;
+	var num=req.params.pageNum;
+	var count=num*size;
+	Stoc.talkHistory(uid,size,count,function(info){
+		for(var i=0,l=info.text.length;i<l;i++){
+			var l;
+		}
+	});
+
+}
