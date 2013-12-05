@@ -13,13 +13,13 @@ module.exports = Stoc;
 
 Stoc.prototype.watch=function(callback){ 
  //callback 是执行玩保存后的回调函数
-  var stoc = { 
-    name : this.name,
-	  uid : this.uid,
-	  beWatch : this.beWatch,
-	  top : this.top,
-	  talk : this.talk
-  };
+  	var stoc = { 
+	    name : this.name,
+		uid : this.uid,
+		beWatch : this.beWatch,
+		top : this.top,
+		talk : this.talk
+  	};
   var watchName=stoc.beWatch;
   //top需要加减，beWatch需要加减处理
   //打开数据库
@@ -64,38 +64,36 @@ Stoc.prototype.watch=function(callback){
 	        	}
 	        	//更新股票的表
 	        	collection.update({uid:stoc.uid},{$inc:{top:1},$push:{beWatch:stoc.beWatch}},function(err,items){
-				      	if(err) throw err;
+			      	if(err) throw err;
 
-				      	//更新用户的表
-				      	user.stockUp(db,watchName,stoc.uid,true,function(err,items){
-	        				if(err) throw err;
-					        mongodb.close();
-					        return callback({status:200,uid:stoc.uid});
-	        			})
-				      });
+			      	//更新用户的表
+			      	user.stockUp(db,watchName,stoc.uid,true,function(err,items){
+	    				if(err) throw err;
+				        mongodb.close();
+				        return callback({status:200,uid:stoc.uid});
+	    			})
+			    });
 	        }
 	      });
 	    });
     }else{//减少热度
-			db.collection('sto',function(err,collection){
-				if(err){ 
-	        mongodb.close(); 
-	        return callback(err); 
-	      }
+		db.collection('sto',function(err,collection){
+			if(err){ 
+		        mongodb.close(); 
+		        return callback(err); 
+	      	}
 
-	      //更新股票的表
-      	collection.update({uid:stoc.uid},{$inc:{top:-1},$pull:{beWatch:stoc.beWatch}},function(err,items){
+	        //更新股票的表
+      		collection.update({uid:stoc.uid},{$inc:{top:-1},$pull:{beWatch:stoc.beWatch}},function(err,items){
 		      	if(err) throw err;
-
 		      	//更新用户的表
 		      	user.stockUp(db,watchName,stoc.uid,false,function(err,items){
-        				if(err) throw err;
-				        mongodb.close();
-				        return callback({status:200,uid:stoc.uid});
-        			})
-
-		      });
-			});
+    				if(err) throw err;
+			        mongodb.close();
+			        return callback({status:200,uid:stoc.uid});
+    			})
+		    });
+		});
     }
   }) 
 }
@@ -150,6 +148,42 @@ Stoc.hotStock=function(callback){
 				}
 				mongodb.close();
 		  	});
+	    });
+	});
+}
+
+Stoc.stockRoom=function(uid,text){
+	mongodb.open(function(err,db){
+		if(err){ 
+			mongodb.close(); 
+		  	return callback(err); 
+		}
+	    db.collection('sto',function(err,collection){
+			if(err){ 
+			    mongodb.close(); 
+			    return callback(err); 
+	  		}
+	  		//这里不用第三个属性{upsert:true}，{upsert:true}表示没有时新建插入
+	  		collection.update({uid:uid},{$push:{talk:text}},function(err,items){
+		      	if(err) throw err;
+		      	mongodb.close();
+		      	if(items>0){
+		      		return;
+		      	}else{
+		      		//不存在，就新建一个插入
+		    //   		var stoc = { 
+					 //    name : this.name,
+						// uid : uid,
+						// beWatch : [],
+						// top : 0,
+						// talk : text
+				  // 	};
+		    //   		collection.insert(stoc,{safe: true},function(err,stocItem){
+
+		    //   		});
+		      	}
+		      	//callback({isok:true})
+		    });
 	    });
 	});
 }

@@ -1,9 +1,10 @@
-var mongodb = require('./db');
+var stoc = require('./stoc');
 
 module.exports = function(io){
   //存储在线用户列表
   var users = [];
   var stockRoom=[];//缓存聊天信息
+  var cacheNum=5;
   var chat = io.of('/chat').on('connection',function(socket){
     //接受用户聊天，并且分聊天室发出
     socket.on('talk',function(data,fn){
@@ -11,16 +12,25 @@ module.exports = function(io){
       fn({isok:true});
       var date=new Date();
       var time=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-      stockRoom.forEach(function(room){
-        if(room.stock==data.room){
-          room.text.push({
+      //将信息存入临时数组中
+      for(var i=0,l=stockRoom.length;i<l;i++){
+        if(stockRoom[i].stock==data.room){
+          stockRoom[i].text.push({
             name:data.name,
             text:data.text,
             time:time
           });
+          //如果room.text长度很长，就清空并且存入数据库
+          if(stockRoom[i].text.length==cacheNum){
+            stoc.stockRoom(stockRoom[i].stock,stockRoom[i].text);
+            stockRoom[i].text.length=0;
+          }
+          break;
         }
-      })
+      }
+
       //给指定用户发送消息
+      //forEach不能return,break中断操作，这边需要检查每一个用户，所以适用
       chat.clients().forEach(function(client){
         if(client.room){
           if(client.room.stock == data.room){
@@ -31,9 +41,11 @@ module.exports = function(io){
               time:time
             });
           }
-        }  
+        }
 			});
+
     });
+
     //接受用户加入聊天室消息，并且分组
     socket.on('add',function(data,callback){
       //添加一个聊天室信息到socket属性中
@@ -43,14 +55,15 @@ module.exports = function(io){
       };
 
       //缓存临时数据
-      stockRoom.forEach(function(room){
-        if(room.stock==data.stock){
-          room.user.push(data.name);
+      for(var i=0,l=stockRoom.length;i<l;i++){
+        if(stockRoom[i].stock==data.stock){
+          stockRoom[i].user.push(data.name);
           //返回缓存信息
-          callback({cache:true,text:room.text});
+          callback({cache:true,text:stockRoom[i].text});
+          stockRoomHave=false;
           return;
         }
-      });
+      }
 
       //不存在频道就新建一个频道
       stockRoom.push({
@@ -67,23 +80,24 @@ module.exports = function(io){
       if(socket.room){
         var uid=socket.room.stock;
         var user=socket.room.user;
-      }
-      //检测如果存在，就从stockRoom中删除
-      //跑这么多，感觉高并发会有性能问题
-      stockRoom.forEach(function(room,i){
-        if(room.stock==uid){
-          var index=room.user.indexOf(user);
-          if(index>-1){
-            room.user.splice(index,1);
-            if(room.user==0){
-              //如果用户为0，数据存入数据库
-
-              //并且移除stockRoom[i]
-              stockRoom.splice(i,1);
+        //检测如果存在，就从stockRoom中删除
+        //跑这么多，感觉高并发会有性能问题
+        for(var i=0,l=stockRoom.length;i<l;i++){
+          if(stockRoom[i].stock==uid){
+            var index=stockRoom[i].user.indexOf(user);
+            if(index>-1){
+              stockRoom[i].user.splice(index,1);
+              if(stockRoom[i].user==0){
+                //如果用户为0，数据存入数据库
+                stoc.stockRoom(stockRoom[i].stock,stockRoom[i].text);
+                //并且移除stockRoom[i]
+                stockRoom.splice(i,1);
+                return;
+              }
             }
           }
         }
-      });
+      }
     });
   });
 };

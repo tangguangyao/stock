@@ -193,7 +193,8 @@ function FetchCtrl($scope, $http, $templateCache) {
         $scope.addRoom=true;
         chat.emit('add',{
           name:$("#headShowName").text(),
-          stock:pathUrl
+          stock:pathUrl,
+          stockName:$("#stockName").attr("name")
         },function(info){
           //先返回一批数据
           if(info.cache){
@@ -223,6 +224,7 @@ function FetchCtrl($scope, $http, $templateCache) {
         name:$("#headShowName").text(),
         room:pathUrl,
         text:talkText
+        // stockName:$("#stockName").attr("name")
       },function(info){
         if(info.isok){
           //发送消息提交成功后清除输入框内容
@@ -232,4 +234,5 @@ function FetchCtrl($scope, $http, $templateCache) {
       });
     }
   }
+
 }

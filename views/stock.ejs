@@ -24,7 +24,7 @@
       </div>
 	  </div>
 	  <div class="col-md-7">
-      <h2>{{stock.name}}
+      <h2 name="{{stock.name}}" id="stockName">{{stock.name}}
         <span style="display:none" id="iswatch"><%= locals.isWatch%></span>
         <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()" id="butIswatch">关注</button>
         <button type="button" class="btn btn-info col-md-offset-4" ng-click="unWatchStock()" id="butNowatch">取消</button>
