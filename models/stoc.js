@@ -12,7 +12,7 @@ function Stoc(sto){
 module.exports = Stoc;
 
 Stoc.prototype.watch=function(callback){ 
-  //callback 是执行玩保存后的回调函数
+	//callback 是执行玩保存后的回调函数
 	var stoc = { 
 		name : this.name,
 		uid : this.uid,
@@ -20,13 +20,13 @@ Stoc.prototype.watch=function(callback){
 		top : this.top,
 		talk : this.talk
 	};
-  var watchName=stoc.beWatch;
-  //top需要加减，beWatch需要加减处理
-  //打开数据库
-  mongodb.open(function(err,db){ 
-    if(err){ 
-      return callback(err); 
-    } 
+	var watchName=stoc.beWatch;
+	//top需要加减，beWatch需要加减处理
+	//打开数据库
+	mongodb.open(function(err,db){ 
+	    if(err){ 
+	      return callback(err); 
+	    } 
     //连接数据库中的名为user的表，没有就创建
     if(stoc.top==1){//增加热度
     	//更新,新增股票的表
@@ -54,7 +54,7 @@ Stoc.prototype.watch=function(callback){
 				        return callback({status:200,uid:stoc.uid});
         			})
 
-			      }); 
+			    }); 
 	        }else{
 	        	//防止前端bug重复添加同一用户
 	        	for(var i=0,l=items[0].beWatch.length;i<l;i++){
@@ -133,11 +133,11 @@ Stoc.hotStock=function(callback){
 		}
 	    db.collection('sto',function(err,collection){
 			if(err){ 
-		    mongodb.close(); 
-		    return callback(err); 
-	  	}
-	  	collection.find().sort({top:-1}).limit(10).toArray(function(err,items){
-	  		if(err){
+			    mongodb.close(); 
+			    return callback(err); 
+		  	}
+		  	collection.find().sort({top:-1}).limit(10).toArray(function(err,items){
+		  		if(err){
 					mongodb.close(); 
 					return callback(err); 
 				}
@@ -160,34 +160,33 @@ Stoc.stockRoom=function(stock,callback){
 				mongodb.close(); 
 			  return callback(err); 
 			}
-		  db.collection('sto',function(err,collection){
+		  	db.collection('sto',function(err,collection){
 				if(err){ 
 				    mongodb.close(); 
 				    return callback(err); 
 		  		}
 		  		//这里不用第三个属性{upsert:true}，{upsert:true}表示没有时新建插入
 		  		collection.update({uid:stock.stock},{$pushAll:{talk:stock.text}},function(err,items){
-		      	if(err) throw err;
-		      	if(items>0){
-		      		mongodb.close();
-		      		callback();
-		      	}else{
-		      		//不存在，就新建一个插入
-							var stoc = { 
-							  name : stock.stockName,
-								uid : stock.stock,
-								beWatch : [],
-								top : 0,
-								talk : stock.text
-							};
-							collection.insert(stoc,{safe: true},function(err,stocItem){
-								if(err) throw err;
-								mongodb.close();
-								callback();
-							});
-		      	}
+			      	if(err) throw err;
+			      	if(items>0){
+			      		mongodb.close();
+			      		callback();
+			      	}else{
+			      		//不存在，就新建一个插入
+						var stoc = { 
+						  name : stock.stockName,
+							uid : stock.stock,
+							beWatch : [],
+							top : 0,
+							talk : stock.text
+						};
+						collection.insert(stoc,{safe: true},function(err,stocItem){
+							if(err) throw err;
+							mongodb.close();
+							callback();
+						});
+			      	}
 			    });
-
 		    });
 		});
 	}
@@ -199,16 +198,16 @@ Stoc.talkHistory=function(uid,size,count,callback){
 			mongodb.close(); 
 		  return callback(err); 
 		}
-	  db.collection('sto',function(err,collection){
+	  	db.collection('sto',function(err,collection){
 			if(err){ 
-		    mongodb.close(); 
-		    return callback(err); 
-  		}
-  		//collection.find({uid:uid}).skip(count).limit(size)
-  		//无需分页查询，这里聊天数据太大会导致性能问题
-  		collection.findOne({uid:uid},function(err, data){
-  			callback(data);
-  		});
-   	});
+			    mongodb.close(); 
+			    return callback(err); 
+	  		}
+	  		//collection.find({uid:uid}).skip(count).limit(size)
+	  		//无需分页查询，这里聊天数据太大会导致性能问题
+	  		collection.findOne({uid:uid},function(err, data){
+	  			callback(data);
+	  		});
+	   	});
 	});
 }
