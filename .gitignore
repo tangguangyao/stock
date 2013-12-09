@@ -215,4 +215,5 @@ pip-log.txt
 .mr.developer.cfg
 
 
-// .gitignore node_modules/*
+
+/node_modules/
