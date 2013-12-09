@@ -93,16 +93,16 @@ function IndexCtrl($scope, $http, $templateCache) {
 
   //请求热门用户
   //由于后端同时请求了热门股票，会导致mongodb同时开启导致bug，暂时注释
-  // var topPeopleList;
-  // $http({method: "GET", url: "/hotPeople", cache: $templateCache}).
-  //   success(function(data,status){
-  //     if(data.ok){
-  //       for(var i=0,l=data.list.length;i<l;i++){
-  //         data.list[i].num=i;
-  //       }
-  //       $scope.peoples=topPeopleList=data.list;
-  //     }
-  //   });
+  var topPeopleList;
+  $http({method: "GET", url: "/hotPeople", cache: $templateCache}).
+    success(function(data,status){
+      if(data.ok){
+        for(var i=0,l=data.list.length;i<l;i++){
+          data.list[i].num=i;
+        }
+        $scope.peoples=topPeopleList=data.list;
+      }
+    });
 
   //关注热门人物
   $scope.topPeople=function(people){

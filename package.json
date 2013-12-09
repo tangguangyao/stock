@@ -12,7 +12,6 @@
     "connect-mongo": "*",
     "connect-flash": "*", 
     "socket.io": "*",
-    "gm": "*",
-    "mongoose":"*"
+    "gm": "*"
   }
 }
