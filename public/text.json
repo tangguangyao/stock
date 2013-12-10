@@ -1,8 +1,39 @@
+//评论数据结构
+{
+  "topic" : "@夏日 炎炎，大家热情依旧，@我们 又一起聚在一起",
+  "aboutPeople":["001","sh001"],
+  "aboutStock":["sh6001212"],
+  "name" : "tang",
+  "hide" : false,
+  "time" : "2013-08-28 07:55:50",
+  "comment" : [
+    {
+      "answer" : "大家@热情 依旧，我们又一起聚在一起，享受一次有爱的会议",
+      "aboutPeople":["001","sh001"],
+      "aboutStock":["sh6001212"],
+      "user" : "guang",
+      "hide":false,
+      "isCall":false,
+      "call":"",
+      "time" : "2013-08-28T07:55:50.176Z"
+    },
+    {
+      "answer" : "大家热情依旧，我们又一@起聚 在一起，享受一次有爱的会议",
+      "aboutPeople":["001","sh001"],
+      "aboutStock":["sh6001212"],
+      "user" : "yao",
+      "hide":false,
+      "isCall":true,
+      "call":"guang",
+      "time" : "2013-08-28T07:55:50.176Z"
+    }]
+}
+
+
 //聊天室
-stockRoom=[{
-  "stock":"600171",
-  "user":["tang","guang","yao"],
-  "text":[{
+room=[{
+  "uid":"600171",
+  "history":[{
     "name":"tang",
     "text":"sadadada",
     "time":"2012-1-1"
@@ -12,9 +43,8 @@ stockRoom=[{
     "time":"2012-1-1"
     }]
   },{
-  "stock":"600171",
-  "user":["tang","guang","yao"],
-  "text":[{
+  "uid":"600171",
+  "history":[{
     "name":"tang",
     "text":"sadadada",
     "time":"2012-1-1"
@@ -24,21 +54,8 @@ stockRoom=[{
     "time":"2012-1-1"
     }]
   },{
-  "stock":"600171",
-  "user":["tang","guang","yao"],
-  "text":[{
-    "name":"tang",
-    "text":"sadadada",
-    "time":"2012-1-1"
-    },{
-    "name":"tang",
-    "text":"sadadada",
-    "time":"2012-1-1"
-    }]
-  },{
-  "change":"600171",
-  "user":["tang","guang","yao"],
-  "text":[{
+  "uid":"600171",
+  "history":[{
     "name":"tang",
     "text":"sadadada",
     "time":"2012-1-1"
@@ -79,57 +96,7 @@ stockRoom=[{
   ]
 }
 
-//评论数据结构
-{
-  "_id" : 01,
-  "topic" : "@夏日 炎炎，大家热情依旧，@我们 又一起聚在一起",
-  "about":["001","sh001"],
-  "name" : "sh001",
-  "userId":002,
-  "hide" : false,
-  "time" : {
-    "date" : "2013-08-28T07:55:50.176Z",
-    "year" : 2013,
-    "month" : "2013-8",
-    "day" : "2013-8-28",
-    "minute" : "2013-8-28 15:55"
-  },
-  "comment" : [
-    {
-      "answer" : "大家热情依旧，我们又一起聚在一起，享受一次有爱的会议",
-      "user" : {
-        "name" : "tgy",
-        "id":001
-      },
-      "hide":false,
-      "isCall":true,
-      "call":"guang",
-      "time" : {
-        "date" : "2013-08-28T07:55:50.176Z",
-        "year" : 2013,
-        "month" : "2013-8",
-        "day" : "2013-8-28",
-        "minute" : "2013-8-28 15:55"
-      }
-    },
-    {
-      "answer" : "大家热情依旧，我们又一起聚在一起，享受一次有爱的会议",
-      "user" : {
-        "name" : "tgy",
-        "id":001
-      },
-      "hide":false,
-      "isCall":false,
-      "time" : {
-        "date" : "2013-08-28T07:55:50.176Z",
-        "year" : 2013,
-        "month" : "2013-8",
-        "day" : "2013-8-28",
-        "minute" : "2013-8-28 15:55"
-      }
-    }
-    ]
-}
+
 
 //gupiao数据结构，每次都新建
 

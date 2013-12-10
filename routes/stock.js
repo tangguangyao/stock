@@ -26,7 +26,6 @@ stock.show = function(req,res){
 }
 
 stock.watch=function(req,res){
-	var uid=req.params.uid;
 	var stoc = new Stoc({
 		name: req.query.name, 
 		uid: req.query.uid,
@@ -73,14 +72,15 @@ stock.hotStock=function(req,res){
 }
 
 stock.talkHistory=function(req,res){
-	var uid=req.params.stock;
-	var size=req.params.pageSize;
-	var num=req.params.pageNum;
-	var count=num*size;
-	Stoc.talkHistory(uid,size,count,function(info){
-		for(var i=0,l=info.text.length;i<l;i++){
-			var l;
+	var uid=req.query.stock;
+	var num=req.query.num;
+	var count=Number(num);
+	Stoc.talkHistory(uid,count,function(info){
+		if(info.length>0){
+			res.send({ok:true,history:info[0].history});
+		}else{
+			res.send({ok:false});
 		}
+		
 	});
-
 }

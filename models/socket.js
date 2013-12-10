@@ -1,10 +1,12 @@
 var stoc = require('./stoc');
 
+var config=require('../config');
+
 module.exports = function(io){
   //存储在线用户列表
   var users = [];
   var stockRoom=[];//缓存聊天信息
-  var cacheNum=5;
+  var cacheNum=config.config.talkHistoryCache;
   var chat = io.of('/chat').on('connection',function(socket){
     //接受用户聊天，并且分聊天室发出
     socket.on('talk',function(data,fn){

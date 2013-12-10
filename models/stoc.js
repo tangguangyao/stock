@@ -60,10 +60,10 @@ Stoc.prototype.watch=function(callback){
 		      	if(err) throw err;
 		      	//更新用户的表
 		      	user.stockUp(db,watchName,stoc.uid,true,function(err,items){
-	    				if(err) throw err;
-				      return callback({status:200,uid:stoc.uid});
-	    			})
-		    	});
+    				if(err) throw err;
+			     	return callback({status:200,uid:stoc.uid});
+    			});
+	    	});
         }
       });
     });
@@ -91,14 +91,14 @@ Stoc.aboutName=function(uid,callback){
 	    return callback(err); 
   	}
     collection.findOne({uid:uid},function(err,items){
-			if(err){
-				return callback(err); 
-			}
-			if(!!items){//存在
-				callback(items);
-			}else{
-				callback(null)
-			}
+		if(err){
+			return callback(err); 
+		}
+		if(!!items){//存在
+			callback(items);
+		}else{
+			callback(null)
+		}
   	});
   });
 }
@@ -110,13 +110,13 @@ Stoc.hotStock=function(callback){
   	}
   	collection.find().sort({top:-1}).limit(10).toArray(function(err,items){
   		if(err){
-				return callback(err); 
-			}
-			if(!!items){//存在
-				callback(items);
-			}else{
-				callback(null);
-			}
+			return callback(err); 
+		}
+		if(!!items){//存在
+			callback(items);
+		}else{
+			callback(null);
+		}
   	});
   });
 }
@@ -124,43 +124,25 @@ Stoc.hotStock=function(callback){
 Stoc.stockRoom=function(stock,callback){
 	//关闭页面是也会触发，所以当聊天记录为0时，不用存入数据库
 	if(stock.text.length > 0){
-  	global.db.collection('sto',function(err,collection){
-			if(err){
-		    return callback(err); 
-  		}
-  		//这里不用第三个属性{upsert:true}，{upsert:true}表示没有时新建插入
-  		collection.update({uid:stock.stock},{$pushAll:{talk:stock.text}},function(err,items){
-      	if(err) throw err;
-      	if(items>0){
-      		callback();
-      	}else{
-	      	//不存在，就新建一个插入
-					var stoc = { 
-					  name : stock.stockName,
-						uid : stock.stock,
-						beWatch : [],
-						top : 0,
-						talk : stock.text
-					};
-					collection.insert(stoc,{safe: true},function(err,stocItem){
-						if(err) throw err;
-						callback();
-					});
-	      }
+	  	global.db.collection('room',function(err,collection){
+		    //每次以传入新增一个记录
+		    var room = { 
+			    uid : stock.stock,
+				history : stock.text
+			};
+			collection.insert(room,{safe: true},function(err,stocItem){
+				if(err) throw err;
+				callback();
+			});
 	    });
-    });
 	}
 }
 
-Stoc.talkHistory=function(uid,size,count,callback){
-	global.db.collection('sto',function(err,collection){
-		if(err){  
-	    return callback(err); 
-		}
+Stoc.talkHistory=function(uid,count,callback){
+	global.db.collection('room',function(err,collection){
 		//collection.find({uid:uid}).skip(count).limit(size)
-		//无需分页查询，这里聊天数据太大会导致性能问题
-		collection.findOne({uid:uid},function(err, data){
-			callback(data);
+		collection.find({uid:uid}).sort({_id: -1}).skip(count).limit(1).toArray(function(err,items){
+			callback(items);
 		});
  	});
 }

@@ -33,3 +33,7 @@ text-align: center;
 cursor: pointer;
 color: blue;
 }
+#showTalkCom{
+height:300px;
+overflow-y: auto;
+}

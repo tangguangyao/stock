@@ -1,6 +1,11 @@
 angular.module('App', []);
 
 function FetchCtrl($scope, $http, $templateCache) {
+  //用户名
+  var myName=$("#headShowName").text();
+  //历史聊天记录
+  var historyNum=0;
+  var historyCache=20;
   //显示是否关注
   //$scope.isWatch=$("#iswatch").text();
 
@@ -124,8 +129,7 @@ function FetchCtrl($scope, $http, $templateCache) {
 
   //定时获取实时数据
   $scope.method = 'JSONP';
-  //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
-  $scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&access_token=aZy51015GfDGsvsNtit2XY&_=1384756173203&callback=JSON_CALLBACK'
+  $scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&access_token=gbQtYjUWioQ9DQWGpDIREK&_=1386664413850&callback=JSON_CALLBACK';
   $scope.code = null;
   $scope.response = null;
 
@@ -177,9 +181,9 @@ function FetchCtrl($scope, $http, $templateCache) {
   //监听聊天室通话
   chat.on('showTalk',function(data){
     if(data.name==$("#headShowName").text()){
-      $("#showTalkCom").append("<p class='myTalk'>"+data.text+"("+data.time+")</p>");
+      $("#showTalkCom").append("<p class='myTalk talkNum'>"+data.text+"("+data.time+")</p>");
     }else{
-      $("#showTalkCom").append("<p><span>"+data.name+"("+data.time+")</span>:"+data.text+"</p>");
+      $("#showTalkCom").append("<p class='talkNum'><span>"+data.name+"("+data.time+")</span>:"+data.text+"</p>");
     }
   });
   //加入聊天室
@@ -202,9 +206,9 @@ function FetchCtrl($scope, $http, $templateCache) {
             var html="";
             for(var i=0,l=info.text.length;i<l;i++){
               if(info.text[i].name==myName){
-                html+="<p class='myTalk'>"+info.text[i].text+"("+info.text[i].time+")</p>";
+                html+="<p class='myTalk talkNum'>"+info.text[i].text+"("+info.text[i].time+")</p>";
               }else{
-                html+="<p><span>"+info.text[i].name+"("+info.text[i].time+")</span>:"+info.text[i].text+"</p>";
+                html+="<p class='talkNum'><span>"+info.text[i].name+"("+info.text[i].time+")</span>:"+info.text[i].text+"</p>";
               }
             }
             $("#showTalkCom").append(html);
@@ -213,6 +217,7 @@ function FetchCtrl($scope, $http, $templateCache) {
       }
     }
   }
+
   $scope.talkSubmit=function(){
     if(talkOpen){
       talkOpen=false;
@@ -236,12 +241,24 @@ function FetchCtrl($scope, $http, $templateCache) {
   }
   //查看聊天室早期内容
   $scope.lookTalkMessage=function(){
-    var talkPageSize=10;
-    var talkPageNum=0;
-    $http({method: "GET", url: "TalkHistory?stock="+pathUrl+"&pageSize="+talkPageSize+"&pageNum="+talkPageNum, cache: $templateCache}).
-      success(function(data, status) {
-
+    historyNum=parseInt($(".talkNum").length/historyCache);
+    $http({method: "GET", url: "TalkHistory?stock="+pathUrl+"&num="+historyNum, cache: $templateCache}).
+      success(function(data, status){
+        historyNum++;
+        if(data.ok){
+          //有历史记录
+          var historyHtml="";
+          for(var i=0,l=data.history.length;i<l;i++){
+            if(data.history[i].name==myName){
+              historyHtml+="<p class='myTalk talkNum'>"+data.history[i].text+"("+data.history[i].time+")</p>";
+            }else{
+              historyHtml+="<p class='talkNum'><span>"+data.history[i].name+"("+data.history[i].time+")</span>:"+data.history[i].text+"</p>";
+            }
+          }
+          $(".lookTalkMessage").after(historyHtml);
+        }else{
+          $(".lookTalkMessage").hide();
+        }
       });
   }
-
 }

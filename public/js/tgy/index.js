@@ -1,6 +1,8 @@
 angular.module('App', []);
 
 function IndexCtrl($scope, $http, $templateCache) {
+  //定时刷新列表
+  var timeStock=[];
   //关注列表
   var watchList=[];
   //热门列表
@@ -31,7 +33,7 @@ function IndexCtrl($scope, $http, $templateCache) {
       //如果没有信息，就不请求
       return;
     }
-    $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&key=47bce5c74f&access_token=aZy51015GfDGsvsNtit2XY&_=1384782884165&callback=JSON_CALLBACK'
+    $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&key=47bce5c74f&access_token=gbQtYjUWioQ9DQWGpDIREK&_=1386664870607&callback=JSON_CALLBACK';
     $scope.code = null;
     $scope.response = null;
     $http({method: $scope.method, url: $scope.url, cache: $templateCache}).
@@ -81,7 +83,6 @@ function IndexCtrl($scope, $http, $templateCache) {
         var userWatchList=$("#stockList").attr("my-stock").split(",");
         for(var i=0,l=userWatchList.length;i<l;i++){
           for(var j=0,l2=data.list.length;j<l2;j++){
-            
             if(userWatchList[i]==data.list[j].uid){
               data.list[j].haveWatch=false;
             }
@@ -146,10 +147,22 @@ function IndexCtrl($scope, $http, $templateCache) {
           }
           $scope.stocks=watchList=newlist;
 
+          //在$("#stockList").attr("my-stock") 中减少删除数据,减少定时关注数据
+          timeStock=$("#stockList").attr("my-stock").split(",");
+          var newTimeStock=[];
+          for(var i=0,l=timeStock.length;i<l;i++){
+            if(timeStock[i]==delStockUid){
+            }else{
+              newTimeStock.push(timeStock[i]);
+            }
+          }
+          timeStock=newTimeStock.join(",");
+          $("#stockList").attr("my-stock",timeStock);
+
           for(var h=0,l5=topList.length;h<l5;h++){
             if(delStockUid==topList[h].uid){
               topList[h].haveWatch=true;
-              // topList[h].top--;
+              topList[h].top--;
               newArrtop=[];
               for(var h=0,l6=topList.length;h<l6;h++){
                 newArrtop.push({
@@ -237,5 +250,10 @@ function IndexCtrl($scope, $http, $templateCache) {
     }else{
       alert("请填写正确的代码");
     }
+  }
+
+  //提交评论
+  $scope.submitCom=function(){
+    alert("提交评论");
   }
 }

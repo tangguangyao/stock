@@ -50,27 +50,21 @@ User.prototype.save=function(callback){
 }
 //读取用户信息 
 User.get = function(name, callback){ 
-  //打开数据库 
-  mongodb.open(function(err, db){ 
-    if(err){ 
+  //读取 users 集合 
+  global.db.collection('user', function(err, collection){ 
+    if(err){  
       return callback(err); 
     } 
-    //读取 users 集合 
-    global.db.collection('user', function(err, collection){ 
-      if(err){  
-        return callback(err); 
+    //查找用户名 name 值为 name文档 
+    collection.findOne({name: name},function(err, doc){  
+      if(doc){ 
+        var user = new User(doc); 
+        callback(err, user);//成功！返回查询的用户信息 
+      } else { 
+        callback(err, null);//失败！返回null 
       } 
-      //查找用户名 name 值为 name文档 
-      collection.findOne({name: name},function(err, doc){  
-        if(doc){ 
-          var user = new User(doc); 
-          callback(err, user);//成功！返回查询的用户信息 
-        } else { 
-          callback(err, null);//失败！返回null 
-        } 
-      }); 
     }); 
-  }); 
+  });
 };
 
 //点击股票关注，更新表
