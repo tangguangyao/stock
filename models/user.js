@@ -1,3 +1,7 @@
+/*
+用户信息数据库
+*/
+
 var mongodb = require('./db');
 var connect=require('./connect');
 

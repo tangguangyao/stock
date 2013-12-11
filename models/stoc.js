@@ -1,3 +1,6 @@
+/*
+股票数据库存入，读取
+*/
 var mongodb = require('./db');
 var user = require('./user');
 var connect=require('./connect');
@@ -86,21 +89,21 @@ Stoc.prototype.watch=function(callback){
 }
 
 Stoc.aboutName=function(uid,callback){
-  global.db.collection('sto',function(err,collection){
+	global.db.collection('sto',function(err,collection){
 		if(err){
-	    return callback(err); 
-  	}
-    collection.findOne({uid:uid},function(err,items){
-		if(err){
-			return callback(err); 
+	    	return callback(err); 
 		}
-		if(!!items){//存在
-			callback(items);
-		}else{
-			callback(null)
-		}
-  	});
-  });
+		collection.findOne({uid:uid},function(err,items){
+			if(err){
+				return callback(err); 
+			}
+			if(!!items){//存在
+				callback(items);
+			}else{
+				callback(null)
+			}
+		});
+	});
 }
 
 Stoc.hotStock=function(callback){
@@ -121,28 +124,28 @@ Stoc.hotStock=function(callback){
   });
 }
 
-Stoc.stockRoom=function(stock,callback){
-	//关闭页面是也会触发，所以当聊天记录为0时，不用存入数据库
-	if(stock.text.length > 0){
-	  	global.db.collection('room',function(err,collection){
-		    //每次以传入新增一个记录
-		    var room = { 
-			    uid : stock.stock,
-				history : stock.text
-			};
-			collection.insert(room,{safe: true},function(err,stocItem){
-				if(err) throw err;
-				callback();
-			});
-	    });
-	}
-}
+// Stoc.stockRoom=function(stock,callback){
+// 	//关闭页面是也会触发，所以当聊天记录为0时，不用存入数据库
+// 	if(stock.text.length > 0){
+// 	  	global.db.collection('room',function(err,collection){
+// 		    //每次以传入新增一个记录
+// 		    var room = { 
+// 			    uid : stock.stock,
+// 				history : stock.text
+// 			};
+// 			collection.insert(room,{safe: true},function(err,stocItem){
+// 				if(err) throw err;
+// 				callback();
+// 			});
+// 	    });
+// 	}
+// }
 
-Stoc.talkHistory=function(uid,count,callback){
-	global.db.collection('room',function(err,collection){
-		//collection.find({uid:uid}).skip(count).limit(size)
-		collection.find({uid:uid}).sort({_id: -1}).skip(count).limit(1).toArray(function(err,items){
-			callback(items);
-		});
- 	});
-}
+// Stoc.talkHistory=function(uid,count,callback){
+// 	global.db.collection('room',function(err,collection){
+// 		//collection.find({uid:uid}).skip(count).limit(size)
+// 		collection.find({uid:uid}).sort({_id: -1}).skip(count).limit(1).toArray(function(err,items){
+// 			callback(items);
+// 		});
+//  	});
+// }

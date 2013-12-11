@@ -1,3 +1,7 @@
+/*
+用户行为功能
+*/
+
 var mongodb = require('../models/db');
 
 var User = require('../models/user');

@@ -1,3 +1,6 @@
+/*
+用户设置页面功能
+*/
 var mongodb = require('../models/db');
 var User = require('../models/user');
 var crypto = require('crypto');

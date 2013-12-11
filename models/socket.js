@@ -1,5 +1,8 @@
+/*
+socket.on 聊天技术实现
+*/
 var stoc = require('./stoc');
-
+var room = require('./room');
 var config=require('../config');
 
 module.exports = function(io){
@@ -24,7 +27,7 @@ module.exports = function(io){
           });
           //如果room.text长度很长，就清空并且存入数据库
           if(stockRoom[i].text.length==cacheNum){
-            stoc.stockRoom(stockRoom[i],function(){
+            room.stockRoom(stockRoom[i],function(){
               stockRoom[i].text.length=0;
             });
           }
@@ -94,7 +97,7 @@ module.exports = function(io){
               stockRoom[i].user.splice(index,1);
               if(stockRoom[i].user==0){
                 //如果用户为0，数据存入数据库
-                stoc.stockRoom(stockRoom[i],function(){
+                room.stockRoom(stockRoom[i],function(){
                   stockRoom.splice(i,1);
                 });
                 //并且移除stockRoom[i]

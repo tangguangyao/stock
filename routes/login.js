@@ -1,3 +1,7 @@
+/*
+登录,注册功能
+*/
+
 var mongodb = require('../models/db');
 var crypto = require('crypto');
 var User = require('../models/user');

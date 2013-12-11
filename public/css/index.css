@@ -37,3 +37,67 @@ color: blue;
 height:300px;
 overflow-y: auto;
 }
+#comment{
+width:100%;
+height:80px;
+margin-bottom:10px;
+}
+.myTopic{
+padding: 5px 20px;
+}
+.forwardTopic,.topicComment{
+margin: 0px 20px;
+border: 1px solid #f4f0e7;
+padding: 5px 10px;
+}
+.topicComment{
+display: none;
+}
+.forwardTopic span{
+font-weight: bold;
+color: red;
+}
+.tool{
+margin: 5px 20px;
+}
+.tool .tool-time,.tool .tool-do{
+display: inline-block;
+}
+.tool .tool-do{
+float: right;
+}
+.tool .tool-do span{
+margin-left: 10px;
+}
+.topicComment textarea{
+width: 100%;
+margin: 5px auto;
+}
+.myTopiclist{
+margin: 10px 0px;
+}
+.topicCommentlist{
+margin: 10px;
+padding: 0px;
+font-size: 13px;
+}
+.CommentlistPic{
+display: inline-block;
+width: 30px;
+height: 30px;
+}
+.CommentlistCom p{
+margin-left: 40px;
+margin-top: -30px;
+}
+.CommentlistCom span.clickRe{
+float: right;
+margin-top: -10px;
+}
+.commentRe{
+padding: 15px 20px 13px;
+font-size: 12px;
+margin: 10px 0 7px;
+border-radius: 3px;
+background: #f2f2f2;
+}

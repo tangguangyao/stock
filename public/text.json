@@ -1,32 +1,42 @@
 //评论数据结构
+//评论回复拆分
 {
+  "uid" :0,//自动增加，这个为识别评论回复的id
   "topic" : "@夏日 炎炎，大家热情依旧，@我们 又一起聚在一起",
   "aboutPeople":["001","sh001"],
-  "aboutStock":["sh6001212"],
-  "name" : "tang",
+  "aboutStockcode":["sh6001212"],
+  "aboutStockName":["平安银行"],
+  "name" : "tang",//通过用户名可以获得头像
   "hide" : false,
   "time" : "2013-08-28 07:55:50",
-  "comment" : [
-    {
-      "answer" : "大家@热情 依旧，我们又一起聚在一起，享受一次有爱的会议",
-      "aboutPeople":["001","sh001"],
-      "aboutStock":["sh6001212"],
-      "user" : "guang",
-      "hide":false,
-      "isCall":false,
-      "call":"",
-      "time" : "2013-08-28T07:55:50.176Z"
-    },
-    {
-      "answer" : "大家热情依旧，我们又一@起聚 在一起，享受一次有爱的会议",
-      "aboutPeople":["001","sh001"],
-      "aboutStock":["sh6001212"],
-      "user" : "yao",
-      "hide":false,
-      "isCall":true,
-      "call":"guang",
-      "time" : "2013-08-28T07:55:50.176Z"
-    }]
+  "forward":0,
+  "comment":0
+}
+
+//评论回复
+{
+  "pid":"0",//pid等于uid
+  "answer" : "大家@热情 依旧，我们又一起聚在一起，享受一次有爱的会议",
+  "aboutPeople":["001","sh001"],
+  "aboutStockcode":["sh6001212"],
+  "aboutStockName":["平安银行"],
+  "user" : "guang",//通过用户名可以获得头像
+  "hide":false,
+  "isCall":false,
+  "call":"",
+  "time" : "2013-08-28T07:55:50.176Z"
+}
+{
+  "pid":"0",//pid等于uid
+  "answer" : "大家@热情 依旧，我们又一起聚在一起，享受一次有爱的会议",
+  "aboutPeople":["001","sh001"],
+  "aboutStockcode":["sh6001212"],
+  "aboutStockName":["平安银行"],
+  "user" : "guang",//通过用户名可以获得头像
+  "hide":false,
+  "isCall":true,
+  "call":"asd",
+  "time" : "2013-08-28T07:55:50.176Z"
 }
 
 

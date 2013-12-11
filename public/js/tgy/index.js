@@ -1,6 +1,7 @@
 angular.module('App', []);
 
 function IndexCtrl($scope, $http, $templateCache) {
+  var myName=$("#headShowName").text();
   //定时刷新列表
   var timeStock=[];
   //关注列表
@@ -23,6 +24,8 @@ function IndexCtrl($scope, $http, $templateCache) {
   var topWatchUrl
   //为了解决删除自选股，增加热门关注效果的ng-show问题
   var newArrtop=[];
+  //判断第一次加载我的评论
+  var openMyTopic=true;
 
   //定时获取关注数据
   function ajaxStock(){
@@ -254,6 +257,70 @@ function IndexCtrl($scope, $http, $templateCache) {
 
   //提交评论
   $scope.submitCom=function(){
-    alert("提交评论");
+    var comment=$("#comment").val();
+    //正则获取@ 的用户,用户名3-15个英文或数字
+    var aboutPeople=comment.match(/@\w{3,15}\s|@\w{3,15}$/g);
+    if(!!aboutPeople){
+      for(var i1=0,l1=aboutPeople.length;i1<l1;i1++){
+        aboutPeople[i1]=aboutPeople[i1].replace(" ","").replace(/@/,"");
+      }
+    }else{
+      aboutPeople=[];
+    }
+    //正则获取$$ 的股票代码/sh[0-9]{6}|sz[0-9]{6}/i
+    var aboutStockcode=comment.match(/\$sh[0-9]{6}\$|\$sz[0-9]{6}\$/ig);
+    if(!!aboutStockcode){
+      for(var i2=0,l2=aboutStockcode.length;i2<l2;i2++){
+        aboutStockcode[i2]=aboutStockcode[i2].replace(/\$/g,"");
+      }
+    }else{
+      aboutStockcode=[];
+    }
+    //正则获取股票名称
+    var aboutStockName=comment.match(/\$[\u4e00-\u9fa5]{2,6}\$/ig);
+    if(!!aboutStockName){
+      for(var i3=0,l3=aboutStockName.length;i3<l3;i3++){
+        aboutStockName[i3]=aboutStockName[i3].replace(/\$/g,"");
+      }
+    }else{
+      aboutStockName=[];
+    }
+    //前端解析的对象
+    var commentObj={
+      topic:comment,
+      name:myName,
+      aboutPeople:aboutPeople,
+      aboutStockcode:aboutStockcode,
+      aboutStockName:aboutStockName
+    }
+
+    $http.post("/submitTopic", commentObj).
+      success(function(data,status){
+        if(data.isOk){
+          $("#comment").val("");
+        }else{
+          alert("提交失败!");
+        }
+      });
+  }
+
+  //获取我的评论
+  //初始化我的评论
+  $scope.myTopic=function(){
+    if(openMyTopic){
+      getMyTopic(myName,10,0);
+    }
+  }
+  //加载我的评论函数
+  function getMyTopic(name,pageSize,pageNum){
+    $http({method: "GET", url: "/myTopic?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize, cache: $templateCache}).
+      success(function(data,status){
+        if(data.isOk){
+          openMyTopic=false;
+          $scope.myTopicList=data.data;
+        }else{
+          alert("获取失败")
+        }
+      });
   }
 }

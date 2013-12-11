@@ -1,12 +1,14 @@
 /*
- * GET home page.
- */
+ * 路由处理
+*/
 var crypto = require('crypto'), //密码加密模块
     User = require('../models/user.js'), //引入用户登录函数
     login = require('./login'),
     stock = require('./stock'),
     people = require('./people'),
-    setting = require('./setting');
+    setting = require('./setting'),
+    talk = require('./talk'),
+    stockroom = require('./stockroom');
 
 module.exports = function(app){
   app.get('/',function(req,res){
@@ -93,6 +95,16 @@ module.exports = function(app){
   });
 
   app.get('/talkHistory',function(req,res){
-    stock.talkHistory(req,res);
+    stockroom.talkHistory(req,res);
+  });
+
+  //提交话题
+  app.post('/submitTopic',function(req,res){
+    talk.submitTopic(req,res);
+  });
+
+  //获取我的话题
+  app.get('/myTopic',function(req,res){
+    talk.myTopic(req,res);
   });
 };
