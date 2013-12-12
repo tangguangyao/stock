@@ -405,4 +405,8 @@ function IndexCtrl($scope, $http, $templateCache) {
     }
   });
 
+  $scope.test=function(e){
+    e.target//捕获节点了
+    //参考http://www.360doc.com/content/13/0729/13/13328522_303333441.shtml
+  }
 }
