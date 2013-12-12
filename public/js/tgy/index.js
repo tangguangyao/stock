@@ -26,6 +26,8 @@ function IndexCtrl($scope, $http, $templateCache) {
   var newArrtop=[];
   //判断第一次加载我的评论
   var openMyTopic=true;
+  //储存我的话题过度数组
+  var myTopicList;
 
   //定时获取关注数据
   function ajaxStock(){
@@ -255,9 +257,13 @@ function IndexCtrl($scope, $http, $templateCache) {
     }
   }
 
-  //提交评论
-  $scope.submitCom=function(){
-    var comment=$("#comment").val();
+
+
+  /*
+  话题模块
+  */
+  //公共函数，提取评论信息
+  var textExtract=function(comment){
     //正则获取@ 的用户,用户名3-15个英文或数字
     var aboutPeople=comment.match(/@\w{3,15}\s|@\w{3,15}$/g);
     if(!!aboutPeople){
@@ -293,34 +299,110 @@ function IndexCtrl($scope, $http, $templateCache) {
       aboutStockcode:aboutStockcode,
       aboutStockName:aboutStockName
     }
+    return commentObj;
+  }
 
+  //提交话题
+  $scope.submitCom=function(){
+    var comment=$("#comment").val();
+    var commentObj=textExtract(comment);
     $http.post("/submitTopic", commentObj).
       success(function(data,status){
         if(data.isOk){
           $("#comment").val("");
+          if(!!$scope.myTopicList){
+            //已经加载了我的评论页面
+            //插入到第一个
+            myTopicList.unshift(data.data[0]);
+            //刷新我的评论内容
+            $scope.myTopicList=myTopicList;
+          }
         }else{
           alert("提交失败!");
         }
       });
   }
 
-  //获取我的评论
-  //初始化我的评论
+  //获取我的话题
+  //初始化我的话题
   $scope.myTopic=function(){
     if(openMyTopic){
       getMyTopic(myName,10,0);
     }
   }
-  //加载我的评论函数
+
+  //加载我的话题函数
   function getMyTopic(name,pageSize,pageNum){
     $http({method: "GET", url: "/myTopic?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize, cache: $templateCache}).
       success(function(data,status){
         if(data.isOk){
           openMyTopic=false;
-          $scope.myTopicList=data.data;
+          $scope.myTopicList=myTopicList=data.data;
         }else{
           alert("获取失败")
         }
       });
   }
+
+  /*
+  评论模块
+  */
+
+  //点击评论,获取评论
+  $scope.commentTopic=function(myTopic,index){
+    var thisTopicComment=$("#profile .topicComment:eq("+index+")");
+    //如果评论数为0，就不用请求
+    var thisTopicComCount=$("#profile .toolComment:eq("+index+") em").text()=="0"?false:true;
+    if(thisTopicComment.attr("data-open")=="close"){
+      thisTopicComment.show().attr("data-open","open");
+      if(thisTopicComCount && thisTopicComment.attr("data-first")=="yes"){
+        //评论大于0 并且第一次打开
+        getComment(myTopic.uid,10,0,function(data){
+          thisTopicComment.attr("data-first","no");
+          //双层嵌套
+          myTopic.comlist=data.data;
+        });
+      }
+    }else{
+      thisTopicComment.hide().attr("data-open","close");
+    }
+  }
+
+  //加载话题的评论
+  function getComment(uid,pageSize,pageNum,callback){
+    $http({method: "GET", url: "/getComment?uid="+uid+"&pageNum="+pageNum+"&pageSize="+pageSize, cache: $templateCache}).
+      success(function(data,status){
+        if(data.isOk){
+          //$scope.myTopicList=data.data;
+          callback(data);
+        }else{
+          alert("获取失败")
+        }
+      });
+  }
+
+  //提交评论，改用jquery事件代理实现
+  $("#profile").on("click",function(e){
+    //定位提交评论按钮
+    if($(e.target).attr("data-click")=="submitCommentTopic"){
+      var textComment=$(e.target).parent().parent().find(".topicCommentText").val();
+      var commentObj=textExtract(textComment);
+      commentObj.pid=Number($(e.target).attr("pid"));
+
+      if(textComment==""){
+        alert("请填写评价");
+      }else{
+        $http.post("/submitCommentTopic", commentObj).
+          success(function(data,status){
+            if(data.isOk){
+              //成功后评论+1
+              $scope.myTopicList[0].comment++;
+            }else{
+              alert("提交失败!");
+            }
+          });
+      }
+    }
+  });
+
 }

@@ -1,4 +1,8 @@
 /*首页*/
+em{
+	font-style: normal;
+}
+
 .point{
 	cursor: pointer;
 }
@@ -68,6 +72,7 @@ float: right;
 }
 .tool .tool-do span{
 margin-left: 10px;
+cursor: pointer;
 }
 .topicComment textarea{
 width: 100%;
@@ -100,4 +105,10 @@ font-size: 12px;
 margin: 10px 0 7px;
 border-radius: 3px;
 background: #f2f2f2;
+}
+.commentRe{
+display: none;
+}
+.topicCommentlist li{
+margin: 5px 0px;
 }

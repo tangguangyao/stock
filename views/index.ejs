@@ -129,20 +129,21 @@
               <div class="tool">
                 <div class="tool-time">{{myTopic.time}}</div>
                 <div class="tool-do">
-                  <span>转发({{myTopic.forward}})</span><span>评论({{myTopic.comment}})</span>
+                  <span>转发({{myTopic.forward}})</span>
+                  <span ng-click="commentTopic(myTopic,$index)" class="toolComment">评论(<em>{{myTopic.comment}}</em>)</span>
                 </div>
               </div>
-              <div class="topicComment">
-                <textarea></textarea>
+              <div class="topicComment" data-open="close" data-first="yes">
+                <textarea class="topicCommentText"></textarea>
                 <div>
                   <span><input type="checkbox" />同时转发到我的微博</span>
-                  <button type="button" class="btn btn-primary navbar-right btn-xs">评论</button>
+                  <button type="button" class="btn btn-primary navbar-right btn-xs" data-click="submitCommentTopic" pid="{{myTopic.uid}}">评论</button>
                 </div>
-                <ul class="topicCommentlist">
-                  <li>
+                <ul class="topicCommentlist" data-show="0">
+                  <li ng-repeat="comment in myTopic.comlist">
                     <div class="CommentlistCom">
-                      <div class="CommentlistPic"><img width="30" heigth="30" src="/images//user/big/images.jpg" /></div>
-                      <p>随着年龄增长头脑的敏锐性必然会减弱随着年龄增长头脑的敏锐性必然会减弱随着年龄增长头脑的敏锐性必然会减弱</p>
+                      <div class="CommentlistPic"><img width="30" heigth="30" src="/images/user/small/pic_{{comment.name}}.jpg" /></div>
+                      <p>{{comment.topic}}</p>
                       <span class="clickRe">回复</span>
                       <div style="clear:both"></div>
                       <div class="commentRe">

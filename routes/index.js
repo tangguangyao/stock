@@ -107,4 +107,14 @@ module.exports = function(app){
   app.get('/myTopic',function(req,res){
     talk.myTopic(req,res);
   });
+
+  //提交评论
+  app.post('/submitCommentTopic',function(req,res){
+    talk.submitCommentTopic(req,res);
+  });
+
+  //获取话题评论
+  app.get('/getComment',function(req,res){
+    talk.getComment(req,res);
+  });
 };
