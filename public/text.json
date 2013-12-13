@@ -1,7 +1,10 @@
-//评论数据结构
-//评论回复拆分
+//评论，转发数据结构
+//下面是直接发布话题
 {
   "uid" :0,//自动增加，这个为识别评论回复的id
+
+  "isForward":false,
+
   "topic" : "@夏日 炎炎，大家热情依旧，@我们 又一起聚在一起",
   "aboutPeople":["001","sh001"],
   "aboutStockcode":["sh6001212"],
@@ -13,6 +16,30 @@
   "comment":0
 }
 
+//下面为评论并且转发生成的对象
+//评论并且转发需要操作两个表
+{
+  "uid" :0,//自动增加，这个为识别评论回复的id
+
+  "isForward":true,
+  "forwardObj":{
+    "topic":"@夏日 炎炎，大家热情依旧，@我们 又一起聚在一起",
+    "time":"2013-08-25 01:55:50",
+    "name":"guang"
+  },
+
+  "topic" : "转发话题",
+  "aboutPeople":["001","sh001"],
+  "aboutStockcode":["sh6001212"],
+  "aboutStockName":["平安银行"],
+  "name" : "tang",//通过用户名可以获得头像
+  "hide" : false,
+  "time" : "2013-08-28 07:55:50",
+  "forward":0,
+  "comment":0
+}
+
+
 //评论回复
 {
   "pid":"0",//pid等于uid
@@ -22,10 +49,20 @@
   "aboutStockName":["平安银行"],
   "user" : "guang",//通过用户名可以获得头像
   "hide":false,
-  "isCall":false,
-  "call":"",
   "time" : "2013-08-28T07:55:50.176Z"
 }
+//回复他人评论
+{
+  "pid":"0",//pid等于uid
+  "answer" : "回复了@guang 大家@热情 依旧，我们又一起聚在一起，享受一次有爱的会议",
+  "aboutPeople":["001","sh001"],
+  "aboutStockcode":["sh6001212"],
+  "aboutStockName":["平安银行"],
+  "user" : "guang",//通过用户名可以获得头像
+  "hide":false,
+  "time" : "2013-08-28T07:55:50.176Z"
+}
+//下面暂时不用
 {
   "pid":"0",//pid等于uid
   "answer" : "大家@热情 依旧，我们又一起聚在一起，享受一次有爱的会议",

@@ -28,6 +28,9 @@ function IndexCtrl($scope, $http, $templateCache) {
   var openMyTopic=true;
   //储存我的话题过度数组
   var myTopicList;
+  //储存话题的评论过度数组
+  var commentList=[];
+
 
   //定时获取关注数据
   function ajaxStock(){
@@ -349,18 +352,17 @@ function IndexCtrl($scope, $http, $templateCache) {
   */
 
   //点击评论,获取评论
-  $scope.commentTopic=function(myTopic,index){
-    var thisTopicComment=$("#profile .topicComment:eq("+index+")");
-    //如果评论数为0，就不用请求
-    var thisTopicComCount=$("#profile .toolComment:eq("+index+") em").text()=="0"?false:true;
+  $scope.commentTopic=function(myTopic,e){
+    var thisTopicComment=$(e.target).parent().parent().next();
+
     if(thisTopicComment.attr("data-open")=="close"){
       thisTopicComment.show().attr("data-open","open");
-      if(thisTopicComCount && thisTopicComment.attr("data-first")=="yes"){
+      if(myTopic.comment>0 && thisTopicComment.attr("data-first")=="yes"){
         //评论大于0 并且第一次打开
         getComment(myTopic.uid,10,0,function(data){
           thisTopicComment.attr("data-first","no");
           //双层嵌套
-          myTopic.comlist=data.data;
+          myTopic.comlist=commentList=data.data;
         });
       }
     }else{
@@ -381,32 +383,86 @@ function IndexCtrl($scope, $http, $templateCache) {
       });
   }
 
-  //提交评论，改用jquery事件代理实现
-  $("#profile").on("click",function(e){
-    //定位提交评论按钮
-    if($(e.target).attr("data-click")=="submitCommentTopic"){
-      var textComment=$(e.target).parent().parent().find(".topicCommentText").val();
+  //提交话题评论
+  $scope.submitCommentTopic=function(e,myTopic){
+    var textComment=$(e.target).parent().parent().find(".topicCommentText").val();
+    if(textComment==""){
+      alert("请填写评价");
+    }else{
+      //判断是否转发
       var commentObj=textExtract(textComment);
-      commentObj.pid=Number($(e.target).attr("pid"));
+      commentObj.pid=myTopic.uid;
+      
+      if(myTopic.ifForward){
+        //是转发
+        commentObj.isForward=true;
+        commentObj.forwardObj={
+          topic:myTopic.topic,
+          time:myTopic.time,
+          name:myTopic.name
+        }
 
-      if(textComment==""){
-        alert("请填写评价");
+        //存在转发内容，需要组合
+        if(myTopic.isForward){
+          commentObj.topic=commentObj.topic+"//@"+myTopic.forwardObj.name+":"+myTopic.forwardObj.topic;
+        }
+
+        $http.post("/submitCommentTopic", commentObj).
+          success(function(data,status){
+            if(data.isok){
+              //展示刚刚转发内容
+              myTopicList.unshift(data.topic.data[0]);
+              //刷新我的评论内容
+              $scope.myTopicList=myTopicList;
+
+              //处理评论
+              //成功后评论+1,转发+1
+              myTopic.comment++;
+              myTopic.forward++;
+              //清空评论
+              $(e.target).parent().parent().find(".topicCommentText").val("");
+              //新加评论插入第一个
+              if(commentList.length>0){//存在就添加
+                commentList.unshift(data.comment.data[0]);
+              }else{//不存在,新建
+                myTopic.comlist=commentList=data.comment.data;
+              }
+            }else{
+              alert("提交失败!");
+            }
+          });
       }else{
+        //不是转发
+        commentObj.isForward=false;
         $http.post("/submitCommentTopic", commentObj).
           success(function(data,status){
             if(data.isOk){
               //成功后评论+1
-              $scope.myTopicList[0].comment++;
+              myTopic.comment++;
+              //清空评论
+              $(e.target).parent().parent().find(".topicCommentText").val("");
+              //新加评论插入第一个
+              if(commentList.length>0){//存在就添加
+                commentList.unshift(data.data[0]);
+              }else{//不存在,新建
+                myTopic.comlist=commentList=data.data;
+              }
             }else{
               alert("提交失败!");
             }
           });
       }
     }
-  });
-
-  $scope.test=function(e){
-    e.target//捕获节点了
-    //参考http://www.360doc.com/content/13/0729/13/13328522_303333441.shtml
   }
+
+  //回复评论
+  $scope.comRe=function(e,myTopic){
+    var thisComRe=$(e.target).next().next();
+    if(thisComRe.attr("show")=="false"){
+      thisComRe.show().attr("show","true");
+    }else{
+      thisComRe.hide().attr("show","false");
+    }
+  }
+  
 }

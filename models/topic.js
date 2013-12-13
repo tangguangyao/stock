@@ -50,45 +50,28 @@ topic.myTopic=function(name,size,num,callback){
 
 
 //评论数据库
-topic.addComment=function(obj,callback){
+topic.addComment=function(isForward,obj,callback){
 	global.db.collection('comment',function(err,collection){
 		collection.insert(obj,{safe: true},function(err,topicItem){
 			if(!err){
-				callback({isOk:true});
-				//topic 评论量+1操作
-				global.db.collection('topic',function(err,collection){
-					var pid=Number(obj.pid);
-					collection.update({uid:pid},{$inc:{comment:1}},function(err,items){
-						if(!err){
-							callback({isOk:true});
-						}
+				callback({isOk:true,data:topicItem});
+
+				if(isForward){
+					//topic 评论量+1,转发+1操作
+					global.db.collection('topic',function(err,collection){
+						var pid=Number(obj.pid);
+						collection.update({uid:pid},{$inc:{comment:1,forward:1}},function(err,items){});
 					});
-				});
+				}else{
+					//topic 评论量+1操作
+					global.db.collection('topic',function(err,collection){
+						var pid=Number(obj.pid);
+						collection.update({uid:pid},{$inc:{comment:1}},function(err,items){});
+					});
+				}
+				
 			}
 		});
-
-		// //增加一个自增uid
-		// collection.find().sort({_id: -1}).limit(1).toArray(function(err,items){
-		// 	if(items.length>0){
-		// 		obj.uid=items[0].uid+1;
-		// 		collection.insert(obj,{safe: true},function(err,topicItem){
-		// 			if(err){
-		// 				callback({isOk:false});
-		// 			}else{
-		// 				callback({isOk:true});
-		// 			}
-		// 		});
-		// 	}else{
-		// 		obj.uid=0;
-		// 		collection.insert(obj,{safe: true},function(err,topicItem){
-		// 			if(err){
-		// 				callback({isOk:false});
-		// 			}else{
-		// 				callback({isOk:true});
-		// 			}
-		// 		});
-		// 	}	
-		// });
     });
 }
 
