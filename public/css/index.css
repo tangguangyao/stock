@@ -108,7 +108,7 @@ border-radius: 3px;
 background: #f2f2f2;
 }
 .commentRe{
-display: none;
+/*display: none;*/
 }
 .topicCommentlist li{
 margin: 5px 0px;

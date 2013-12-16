@@ -28,10 +28,10 @@
         <li ng-repeat="comment in myTopic.comlist">
           <div class="CommentlistCom">
             <div class="CommentlistPic"><img width="30" heigth="30" ng-src="{{ '/images/user/small/pic_' + comment.name +'.jpg' }}" /></div>
-            <p>{{comment.topic}}({{comment.time}})</p>
-            <span class="clickRe" ng-click="comRe($event,myTopic,comment)">回复</span>
+            <p><a ng-href="{{ '/people/' + comment.name }}">{{comment.name}}</a>:{{comment.topic}}({{comment.time}})</p>
+            <span class="clickRe" ng-click="comRe(comment)">回复</span>
             <div style="clear:both"></div>
-            <div class="commentRe" show="false">
+            <div class="commentRe" ng-show="comment.reShow">
               <textarea ng-model="comment.commentReText"></textarea>
               <div>
                 <span><input type="checkbox" ng-model="myTopic.ifForwardRe"/>同时转发到我的微博</span>
@@ -50,3 +50,4 @@
   <!-- 第一层循环结束 -->
 
 </ul>
+<script src="js/tgy/topic.js"></script>
