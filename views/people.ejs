@@ -46,7 +46,7 @@
       </table>
 
       <ul class="nav nav-tabs" id="myTab">
-        <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+        <li class="active"><a href="#home" data-toggle="tab">话题</a></li>
         <li><a href="#profile" data-toggle="tab">Profile</a></li>
         <li><a href="#messages" data-toggle="tab" ng-click="watchTab()">关注(<%= people.watch.length %>)</a></li>
         <li><a href="#settings" data-toggle="tab" ng-click="fensTab()">粉丝(<%= people.beWatch.length %>)</a></li>
@@ -54,9 +54,7 @@
 
       <div class="tab-content">
         <div class="tab-pane active" id="home">
-          <ul class="list-group">
-            <li>Home</li>
-          </ul>
+          <%- include mode/mytopic %>
         </div>
         <div class="tab-pane" id="profile">
           <ul class="list-group">
@@ -86,5 +84,6 @@
 	</div>
 </div>
 
+<script src="js/tgy/function.js"></script>
 <script src="js/tgy/peo.js"></script>
 <%- include footer %>

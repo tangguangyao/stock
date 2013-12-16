@@ -53,7 +53,7 @@
         </tbody>
       </table>
       <h3>发布评论</h3>
-      <textarea id="comment"></textarea>
+      <textarea id="comment" ng-model="sayCom"></textarea>
       <button type="button" class="btn btn-primary navbar-right" ng-click="submitCom()">发布</button>
 
       <div class="clearfix"></div>
@@ -122,49 +122,7 @@
           </ul>
         </div>
         <div class="tab-pane" id="profile">
-          <ul class="list-group">
-
-            <!-- 第二层循环 -->
-            
-            <li class="myTopiclist" ng-repeat="myTopic in myTopicList">
-              <div class="myTopic">{{myTopic.topic}}</div>
-              <div class="forwardTopic" ng-show="{{myTopic.isForward}}">
-                <span>{{myTopic.forwardObj.name}}</span>
-                <p>{{myTopic.forwardObj.topic}}({{myTopic.forwardObj.time}})</p>
-              </div>
-              <div class="tool">
-                <div class="tool-time">{{myTopic.time}}</div>
-                <div class="tool-do">
-                  <span>转发({{myTopic.forward}})</span>
-                  <span ng-click="commentTopic(myTopic,$event)" class="toolComment">评论(<em>{{myTopic.comment}}</em>)</span>
-                </div>
-              </div>
-              <div class="topicComment" data-open="close" data-first="yes">
-                <textarea class="topicCommentText"></textarea>
-                <div>
-                  <span><input type="checkbox" ng-model="myTopic.ifForward"/>同时转发到我的微博</span>
-                  <button type="button" class="btn btn-primary navbar-right btn-xs" ng-click="submitCommentTopic($event,myTopic)">评论</button>
-                </div>
-                <ul class="topicCommentlist" data-show="0">
-                  <li ng-repeat="comment in myTopic.comlist">
-                    <div class="CommentlistCom">
-                      <div class="CommentlistPic"><img width="30" heigth="30" ng-src="{{ '/images/user/small/pic_' + comment.name +'.jpg' }}" /></div>
-                      <p>{{comment.topic}}({{comment.time}})</p>
-                      <span class="clickRe" ng-click="comRe($event,myTopic)">回复</span>
-                      <div style="clear:both"></div>
-                      <div class="commentRe" show="false">
-                        <textarea></textarea>
-                        <div>
-                          <span><input type="checkbox" />同时转发到我的微博</span>
-                          <button type="button" class="btn btn-primary navbar-right btn-xs">评论</button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </ul>
+          <%- include mode/mytopic %>
         </div>
         <div class="tab-pane" id="messages">
           <ul class="list-group">
@@ -218,6 +176,7 @@
 	</div>
 </div>
 
+<script src="js/tgy/function.js"></script>
 <script src="js/tgy/index.js"></script>
 
 <%- include footer %>
