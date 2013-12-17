@@ -49,6 +49,9 @@ margin-bottom:10px;
 .myTopic{
 padding: 5px 20px;
 }
+.myTopic img{
+margin-right: 5px;
+}
 .forwardTopic,.topicComment{
 margin: 0px 20px;
 border: 1px solid #f4f0e7;
@@ -80,6 +83,8 @@ margin: 5px auto;
 }
 .myTopiclist{
 margin: 10px 0px;
+border-bottom: 1px solid #f4f0e7;
+padding-bottom: 10px;
 }
 .topicCommentlist{
 margin: 10px;
@@ -112,4 +117,9 @@ background: #f2f2f2;
 }
 .topicCommentlist li{
 margin: 5px 0px;
+}
+#myTopicGetmore,#aboutTopicGetmore{
+text-align: center;
+background: #f4f0e7;
+cursor: pointer;
 }

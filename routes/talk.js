@@ -55,6 +55,8 @@ var filterComment=function(info){
 talk.submitTopic=function(req,res){
 	var date=new Date();
 	var talkObj=req.body;
+	//这里出于安全性考虑，后台赋值评论人，防止前台修改
+	talkObj.name=req.session.user.name;
 	//服务器上补充初始化信息
 	talkObj.hide=false;//默认不隐藏
 	talkObj.time=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes();
@@ -83,6 +85,8 @@ talk.myTopic=function(req,res){
 talk.submitCommentTopic=function(req,res){
 	var date=new Date();
 	var commentObj=req.body;
+	//安全考虑，重新复制
+	commentObj.name=req.session.user.name;
 	commentObj.time=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes();
 	commentObj.hide=false;//默认不隐藏
 
@@ -125,7 +129,8 @@ talk.submitCommentTopic=function(req,res){
 	}else{
 		//存入评论数据库
 		topic.addComment(false,newCommentObj,function(info){
-			res.send(info);
+			var comObj=filterComment(info);
+			res.send(comObj);
 		});
 	}
 }
@@ -137,6 +142,17 @@ talk.getComment=function(req,res){
 	topic.getComment(uid,size,num,function(info){
 		//过滤数据
 		var obj=filterComment(info);
+		res.send(obj);
+	});
+}
+
+talk.aboutTopic=function(req,res){
+	var name=req.query.name;
+	var size=Number(req.query.pageSize);
+	var num=Number(req.query.pageNum);
+	topic.aboutTopic(name,size,num,function(info){
+		//过滤数据
+		var obj=filterTopic(info);
 		res.send(obj);
 	});
 }

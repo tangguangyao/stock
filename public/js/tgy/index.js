@@ -24,13 +24,6 @@ function IndexCtrl($scope, $http, $templateCache) {
   var topWatchUrl
   //为了解决删除自选股，增加热门关注效果的ng-show问题
   var newArrtop=[];
-  //判断第一次加载我的评论
-  var openMyTopic=true;
-  //储存我的话题过度数组
-  var myTopicList;
-  //储存话题的评论过度数组
-  var commentList=[];
-
 
   //定时获取关注数据
   function ajaxStock(){
@@ -261,9 +254,8 @@ function IndexCtrl($scope, $http, $templateCache) {
   }
 
 
-
   /*
-  话题模块
+  我的话题模块
   */
   //初始化stock.angular函数，传入这个作用域内需要用到的函数
   var angular=stock.angular($http,$scope,myName,myName);
@@ -284,9 +276,15 @@ function IndexCtrl($scope, $http, $templateCache) {
       });
   }
 
-
   //初始化我的话题
   angular.clickmyTopic();
   angular.init();
   
+  /*
+  关于话题
+  */
+  var adoutTopic=topic.angular($http,$scope,myName,myName);
+  adoutTopic.havemyTopic();
+  adoutTopic.init();
+
 }

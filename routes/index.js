@@ -117,4 +117,9 @@ module.exports = function(app){
   app.get('/getComment',function(req,res){
     talk.getComment(req,res);
   });
+
+  //获取相关话题
+  app.get('/aboutTopic',function(req,res){
+    talk.aboutTopic(req,res);
+  });
 };
