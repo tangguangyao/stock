@@ -61,7 +61,7 @@
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home" data-toggle="tab">我的关注</a></li>
         <li><a href="#profile" data-toggle="tab" ng-click="myTopic()">我的评论</a></li>
-        <li><a href="#messages" data-toggle="tab">关于我</a></li>
+        <li><a href="#messages" data-toggle="tab">@我</a></li>
       </ul>
 
       <div class="tab-content">
@@ -72,9 +72,7 @@
           <%- include mode/mytopic %>
         </div>
         <div class="tab-pane" id="messages">
-          <ul class="list-group">
-            <li>我关注的内容的新闻</li>
-          </ul>
+          <%- include mode/atmetopic %>
         </div>
       </div>
 

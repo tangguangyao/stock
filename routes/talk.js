@@ -156,3 +156,15 @@ talk.aboutTopic=function(req,res){
 		res.send(obj);
 	});
 }
+
+talk.stockTopic=function(req,res){
+	var uid=req.query.uid;
+	var stockName=req.query.stockName;
+	var size=Number(req.query.pageSize);
+	var num=Number(req.query.pageNum);
+	topic.stockTopic(uid,stockName,size,num,function(info){
+		//过滤数据
+		var obj=filterTopic(info);
+		res.send(obj);
+	});
+}

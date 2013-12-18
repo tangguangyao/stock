@@ -261,6 +261,10 @@ function IndexCtrl($scope, $http, $templateCache) {
   var angular=stock.angular($http,$scope,myName,myName);
   //提交话题
   $scope.submitCom=function(){
+    if(!$scope.sayCom){
+      alert("请填写内容");
+      return;
+    }
     var commentObj=stock.textExtract($scope.sayCom,myName);
     $http.post("/submitTopic", commentObj).
       success(function(data,status){

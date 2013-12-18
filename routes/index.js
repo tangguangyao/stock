@@ -122,4 +122,8 @@ module.exports = function(app){
   app.get('/aboutTopic',function(req,res){
     talk.aboutTopic(req,res);
   });
+
+  app.get('/stockTopic',function(req,res){
+    talk.stockTopic(req,res);
+  });
 };

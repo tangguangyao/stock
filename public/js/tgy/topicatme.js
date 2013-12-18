@@ -1,6 +1,6 @@
-var stock={};
+var topicAtMe={};
 //公共函数，提取评论信息
-stock.textExtract=function(comment,name){
+topicAtMe.textExtract=function(comment,name){
 	//正则获取@ 的用户,用户名3-15个英文或数字
 	var aboutPeople=comment.match(/@\w{3,15}\s|@\w{3,15}$/g);
 	if(!!aboutPeople){
@@ -39,7 +39,7 @@ stock.textExtract=function(comment,name){
 	return commentObj;
 }
 
-stock.commentTopic=function(myTopic,e,callback){
+topicAtMe.commentTopic=function(myTopic,e,callback){
   var thisTopicComment=$(e.target);
   if(!myTopic.toCoShow){
     myTopic.toCoShow=true;
@@ -53,37 +53,18 @@ stock.commentTopic=function(myTopic,e,callback){
   }
 }
 
-stock.comRe=function(comment){
+topicAtMe.comRe=function(comment){
 	comment.commentReText="回复@"+comment.name+" :";
   comment.reShow=!comment.reShow?true:false;
 }
 
-//处理转发数据
-stock.forwordObj=function(commentObj,myTopic,comment){
-	//是转发
-  commentObj.isForward=true;
-  commentObj.forwardObj={
-    topic:myTopic.topic,
-    time:myTopic.time,
-    name:myTopic.name
-  }
-
-  if(myTopic.isForward){
-  	//存在转发内容，需要组合
-  	comment?commentObj.topic=comment.commentReText+"//@"+comment.name+" :"+comment.topic+"//@"+myTopic.name+" :"+myTopic.topic:commentObj.topic=commentObj.topic+"//@"+myTopic.forwardObj.name+":"+myTopic.forwardObj.topic;
-  }else{
-  	comment?commentObj.topic=comment.commentReText+"//@"+comment.name+" :"+comment.topic+"//@"+myTopic.name+" :"+myTopic.topic:commentObj.topic=commentObj.topic;
-  }
-}
-
 //所以需要$http,$scope 的公共函数写在下面，统一传入angularjs作用域内容
-stock.angular=function($http,$scope,myName,selfName){
+topicAtMe.angular=function($http,$scope,myName,selfName){
 	var $http=$http,
 			$scope=$scope,
 			myName=myName,
 			selfName=selfName;
-	var openMyTopic=true;
-
+	var atMeTopic=true;
 	//分页
 	var getMorePage=0;
 
@@ -94,63 +75,64 @@ stock.angular=function($http,$scope,myName,selfName){
 			//获取我的话题
   		//初始化我的话题
 			$scope.myTopic=function(){
-		    if(openMyTopic){
+		    if(atMeTopic){
 		      _this.getMyTopic(myName,10,0);
 		    }
 		  }
 		},
 		//初始化
-		havemyTopic:function(){
-		  this.getMyTopic(myName,10,0);
-		},
-		//初始化
 		init:function(){
 			var _this=this;
 		  //点击评论,获取评论
-		  $scope.commentTopic=function(myTopic,e){
-		    stock.commentTopic(myTopic,e,function(){
+		  $scope.comStockTopic=function(myTopic,e){
+		    topicAtMe.commentTopic(myTopic,e,function(){
 		      //评论大于0 并且第一次打开
 		      _this.getComment(myTopic.uid,10,0,function(data){
+		        //双层嵌套
 		        //这里需要后台过滤数据内容
 		        myTopic.comlist=data.data;
 		      });
 		    });
 		  }
 		  //展开回复评论
-		  $scope.comRe=function(comment){
-		    stock.comRe(comment);
+		  $scope.comStockReShow=function(comment){
+		    topicAtMe.comRe(comment);
 		  }
 
-		  //提交话题评论-回调有差异
-		  $scope.submitCommentTopic=function(e,myTopic){
-		    _this.subComTop(e,myTopic,function(data){
-		    	//展示刚刚转发内容
-          if(myName==selfName){
-          	$scope.myTopicList.unshift(data);
-          }
-		    });
+		  //提交话题评论
+		  $scope.submitComStockTopic=function(e,myTopic){
+		    if(myTopic.topicCommentText==""){
+		      alert("请填写评价");
+		    }else{
+		      var commentObj=topicAtMe.textExtract(myTopic.topicCommentText,selfName);
+		      commentObj.pid=myTopic.uid;
+		      if(myTopic.ifForward){
+		        //是转发
+		        //处理转发数据
+		        _this.forwordObj(commentObj,myTopic);
+		        //post数据和显示返回情况
+		        _this.postComfor(commentObj,myTopic);
+		      }else{
+		        //不是转发
+		        _this.postComNofor(commentObj,myTopic);
+		      }
+		    }
 		  }
 
 		  //提交回复评论
-		  $scope.commentRe=function(comment,myTopic){
+		  $scope.comStockRe=function(comment,myTopic){
 		    var noText="回复@"+comment.name+" :";
 		    if(comment.commentReText==noText){
 		    	alert("请填写回复");
 		    }else{
-			    var commentObj=stock.textExtract(comment.commentReText,selfName);
+			    var commentObj=topicAtMe.textExtract(comment.commentReText,selfName);
 			    commentObj.pid=myTopic.uid;
 			    if(myTopic.ifForwardRe){
 			      //是转发
 			      //处理转发数据
-		        stock.forwordObj(commentObj,myTopic,comment);
+		        _this.forwordObj(commentObj,myTopic,comment);
 			      //post数据和显示返回情况
-			      _this.postComfor(commentObj,myTopic,comment,function(data){
-			      	//展示刚刚转发内容
-	            if(myName==selfName){
-	            	$scope.myTopicList.unshift(data);
-	            }
-			      });
-
+			      _this.postComfor(commentObj,myTopic,comment);
 			    }else{
 			    	//不是转发
 		        _this.postComNofor(commentObj,myTopic,comment);
@@ -159,53 +141,31 @@ stock.angular=function($http,$scope,myName,selfName){
 		  }
 
 		  //加载更多
-		  $scope.getTopicMore=function(){
-		  	_this.getMyTopic(myName,10,getMorePage*10);
+		  $scope.getStockTopicMore=function(){
+		  	_this.getStockTopic(uid,stockName,10,getMorePage*10);
 		  }
 		},
-		//处理话题评论过程
-		subComTop:function(e,myTopic,callback){
-			var _this=this;
-			if(myTopic.topicCommentText==""){
-	      alert("请填写评价");
-	    }else{
-	      var commentObj=stock.textExtract(myTopic.topicCommentText,selfName);
-	      commentObj.pid=myTopic.uid;
-	      if(myTopic.ifForward){
-	        //是转发
-	        //处理转发数据
-	        stock.forwordObj(commentObj,myTopic);
-
-	        //post数据和显示返回情况
-	        _this.postComfor(commentObj,myTopic,null,function(data){
-	        	callback(data);
-	        });
-	      }else{
-	        //不是转发
-	        _this.postComNofor(commentObj,myTopic);
-	      }
-	    }
-		},
 		//加载我的话题函数
-		getMyTopic:function(name,pageSize,pageNum){
-			$http({method: "GET", url: "/myTopic?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize}).
+		getStockTopic:function(uid,stockName,pageSize,pageNum){
+			$http({method: "GET", url: "/stockTopic?uid="+uid+"&stockName="+stockName+"&pageNum="+pageNum+"&pageSize="+pageSize}).
 			  success(function(data,status){
 			    if(data.isOk){
-			      openMyTopic=false;
+
+		  			atMeTopic=false;
 			      
 			      getMorePage++;
 			      
 			      if(pageNum==0){
-			      	$scope.myTopicList=data.data;
+			      	$scope.stockTopicList=data.data;
 			      }else{
-			      	$scope.myTopicList=$scope.myTopicList.concat(data.data);
+			      	$scope.stockTopicList=$scope.stockTopicList.concat(data.data);
 			      }
 			      
 			      //超过10条显示加载跟多
 			      if(data.data.length==10){
-			      	$scope.myTopicGetmore=true;
+			      	$scope.stockTopicGetmore=true;
 			      }else{
-			      	$scope.myTopicGetmore=false;
+			      	$scope.stockTopicGetmore=false;
 			      }
 			    }else{
 			      alert("获取失败")
@@ -252,14 +212,14 @@ stock.angular=function($http,$scope,myName,selfName){
           });
   	},
   	//post回复，并且转发
-  	postComfor:function(commentObj,myTopic,comment,callback){
+  	postComfor:function(commentObj,myTopic,comment){
   		$http.post("/submitCommentTopic", commentObj).
         success(function(data,status){
           if(data.isok){
-
-          	//回调出路是否展示
-          	callback(data.topic.data[0]);
-            
+            //不用展示刚刚转发内容
+            // if(myName==selfName){
+            // 	$scope.myTopicList.unshift(data.topic.data[0]);
+            // }
             //处理评论
             //成功后评论+1,转发+1
             myTopic.comment++;
@@ -281,6 +241,22 @@ stock.angular=function($http,$scope,myName,selfName){
             alert("提交失败!");
           }
         });
+  	},
+  	//处理转发数据
+  	forwordObj:function(commentObj,myTopic,comment){
+  		//是转发
+      commentObj.isForward=true;
+      commentObj.forwardObj={
+        topic:myTopic.topic,
+        time:myTopic.time,
+        name:myTopic.name
+      }
+      if(myTopic.isForward){
+      	//存在转发内容，需要组合
+      	comment?commentObj.topic=comment.commentReText+"//@"+comment.name+" :"+comment.topic+"//@"+myTopic.name+" :"+myTopic.topic:commentObj.topic=commentObj.topic+"//@"+myTopic.forwardObj.name+":"+myTopic.forwardObj.topic;
+      }else{
+      	comment?commentObj.topic=comment.commentReText+"//@"+comment.name+" :"+comment.topic+"//@"+myTopic.name+" :"+myTopic.topic:commentObj.topic=commentObj.topic;
+      } 
   	}
 	}
 };

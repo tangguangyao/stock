@@ -53,25 +53,41 @@ topic.aboutTopic=function(name,size,num,callback){
 	global.db.collection('user',function(err,collection){
 		collection.findOne({name:name},function(err,obj){
 			if(!err){
-				var arr=[];
-				obj.watch.forEach(function(k){
-					arr.push({name:k});
-				});
-				//在topic中查找他关注用户的话题
-				global.db.collection('topic',function(err,collection){
-					collection.find({$or:arr}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
-						if(err){
-							callback({isOk:false});
-						}else{
-							callback({isOk:true,data:items});
-						}
+				if(obj.watch.length>0){
+					//存在关注用户
+					var arr=[];
+					obj.watch.forEach(function(k){
+						arr.push({name:k});
 					});
-				});
+					//在topic中查找他关注用户的话题
+					global.db.collection('topic',function(err,collection){
+						collection.find({$or:arr}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
+							if(err){
+								callback({isOk:false});
+							}else{
+								callback({isOk:true,data:items});
+							}
+						});
+					});
+				}else{
+					callback({isOk:true,data:[]});
+				}
 			}
 		})
 	});
 }
 
+topic.stockTopic=function(uid,stockName,size,num,callback){
+	global.db.collection('topic',function(err,collection){
+		collection.find({$or:[{aboutStockcode:uid},{aboutStockName:stockName}]}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
+			if(err){
+				callback({isOk:false});
+			}else{
+				callback({isOk:true,data:items});
+			}
+		});
+	});
+}
 
 
 //评论数据库

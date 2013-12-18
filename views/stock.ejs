@@ -84,19 +84,17 @@
       </div>
 
       <h3>发布评论</h3>
-      <textarea style="width:100%;height:80px;margin-bottom:10px;">${{stock.name}}({{stock.symbol}})$</textarea>
-      <button type="button" class="btn btn-primary navbar-right">发布</button>
+      <textarea style="width:100%;height:80px;margin-bottom:10px;" ng-model="sayCom" >({{stock.symbol}})${{stock.name}}$ :</textarea>
+      <button type="button" class="btn btn-primary navbar-right" ng-click="submitCom()">发布</button>
       <div class="clearfix"></div>
       <ul class="nav nav-tabs" id="myTab">
-        <li class="active"><a href="#home" data-toggle="tab">全部</a></li>
+        <li class="active"><a href="#home" data-toggle="tab">相关</a></li>
         <li><a href="#profile" data-toggle="tab">新闻</a></li>
-        <li><a href="#messages" data-toggle="tab">相关</a></li>
+        <li><a href="#messages" data-toggle="tab">全部</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="home">
-          <ul class="list-group">
-            <li>全部</li>
-          </ul>
+          <%- include mode/stocktopic %>
         </div>
         <div class="tab-pane" id="profile">
           <ul class="list-group">
@@ -105,7 +103,7 @@
         </div>
         <div class="tab-pane" id="messages">
           <ul class="list-group">
-            <li>相关</li>
+            <li>全部</li>
           </ul>
         </div>
       </div>

@@ -3,6 +3,9 @@ angular.module('App', []);
 function FetchCtrl($scope, $http, $templateCache) {
   //用户名
   var myName=$("#headShowName").text();
+  var stockName;//股名字
+  var sayComText;//默认评论内容
+  
   //历史聊天记录
   var historyNum=0;
   var historyCache=20;
@@ -133,7 +136,7 @@ function FetchCtrl($scope, $http, $templateCache) {
   $scope.code = null;
   $scope.response = null;
 
-  function ajaxData(){
+  function ajaxData(callback){
     $http({method: $scope.method, url: $scope.url, cache: $templateCache}).
       success(function(data, status) {
         $scope.status = status;
@@ -158,9 +161,20 @@ function FetchCtrl($scope, $http, $templateCache) {
         data.quotes[0].volumeAverage=(data.quotes[0].volumeAverage/10000).toFixed(2);
         data.quotes[0].amount=(data.quotes[0].amount/10000).toFixed(2);
         $scope.stock = data.quotes[0];
+
+        if(callback){
+          callback();
+        }
       });
   }
-  ajaxData();
+  ajaxData(function(){
+    //第一次加载完数据显示后执行
+    //股名,这里为添加匹配股名
+    stockName=$scope.stock.name;
+    sayComText="("+pathUrl+")$"+stockName+"$ :";
+    $scope.sayCom=sayComText;
+    delay();
+  });
   var hours;
   var now;
   function start(){
@@ -261,4 +275,33 @@ function FetchCtrl($scope, $http, $templateCache) {
         }
       });
   }
+
+  /*
+  发布评论
+  */
+  //提交话题
+  $scope.submitCom=function(){
+    var commentObj=topicStock.textExtract($scope.sayCom,myName);
+    $http.post("/submitTopic", commentObj).
+      success(function(data,status){
+        if(data.isOk){
+          $scope.sayCom=sayComText;
+        }else{
+          alert("提交失败!");
+        }
+      });
+  }
+
+
+  //下面是延迟执行的内容
+  var delay=function(){
+    /*
+    下方讨论模块
+    */
+    
+    var stockTopic=topicStock.angular($http,$scope,pathUrl,stockName,myName);
+    stockTopic.haveStockTopic();
+    stockTopic.init();
+  }
+  
 }

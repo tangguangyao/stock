@@ -2,7 +2,7 @@
 
   <!-- 第一层循环 -->
 
-  <li class="myTopiclist" ng-repeat="myTopic in aboutTopicList">
+  <li class="myTopiclist" ng-repeat="myTopic in stockTopicList">
     <div class="myTopic">
       <img width="45" heigth="45" ng-src="{{ '/images/user/small/pic_' + myTopic.name +'.jpg' }}" />
       <a ng-href="{{ '/people/' + myTopic.name }}">{{myTopic.name}}</a>: {{myTopic.topic}}
@@ -15,14 +15,14 @@
       <div class="tool-time">{{myTopic.time}}</div>
       <div class="tool-do">
         <span>转发({{myTopic.forward}})</span>
-        <span ng-click="commentTopic(myTopic,$event)" class="toolComment" data-first="yes">评论(<em>{{myTopic.comment}}</em>)</span>
+        <span ng-click="comStockTopic(myTopic,$event)" class="toolComment" data-first="yes">评论(<em>{{myTopic.comment}}</em>)</span>
       </div>
     </div>
     <div class="topicComment" ng-show="myTopic.toCoShow">
       <textarea class="topicCommentText" ng-model="myTopic.topicCommentText"></textarea>
       <div>
         <span><input type="checkbox" ng-model="myTopic.ifForward"/>同时转发到我的微博</span>
-        <button type="button" class="btn btn-primary navbar-right btn-xs" ng-click="submitComAboutTopic($event,myTopic)">评论</button>
+        <button type="button" class="btn btn-primary navbar-right btn-xs" ng-click="submitComStockTopic($event,myTopic)">评论</button>
       </div>
       <ul class="topicCommentlist" data-show="0">
 
@@ -32,13 +32,13 @@
           <div class="CommentlistCom">
             <div class="CommentlistPic"><img width="30" heigth="30" ng-src="{{ '/images/user/small/pic_' + comment.name +'.jpg' }}" /></div>
             <p><a ng-href="{{ '/people/' + comment.name }}">{{comment.name}}</a>:{{comment.topic}}({{comment.time}})</p>
-            <span class="clickRe" ng-click="comRe(comment)">回复</span>
+            <span class="clickRe" ng-click="comStockReShow(comment)">回复</span>
             <div style="clear:both"></div>
             <div class="commentRe" ng-show="comment.reShow">
               <textarea ng-model="comment.commentReText"></textarea>
               <div>
                 <span><input type="checkbox" ng-model="myTopic.ifForwardRe"/>同时转发到我的微博</span>
-                <button type="button" class="btn btn-primary navbar-right btn-xs" ng-click="comAboutRe(comment,myTopic)">评论</button>
+                <button type="button" class="btn btn-primary navbar-right btn-xs" ng-click="comStockRe(comment,myTopic)">评论</button>
               </div>
             </div>
           </div>
@@ -53,5 +53,5 @@
   <!-- 第一层循环结束 -->
 
 </ul>
-<div id="aboutTopicGetmore" ng-show="aboutTopicGetmore" ng-click="getAboutMore()">加载更多</div>
-<script src="js/tgy/topicabout.js"></script>
+<div id="stockTopicGetmore" ng-show="stockTopicGetmore" ng-click="getStockTopicMore()">加载更多</div>
+<script src="js/tgy/topicstock.js"></script>
