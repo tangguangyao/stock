@@ -254,11 +254,6 @@ function IndexCtrl($scope, $http, $templateCache) {
   }
 
 
-  /*
-  我的话题模块
-  */
-  //初始化stock.angular函数，传入这个作用域内需要用到的函数
-  var angular=stock.angular($http,$scope,myName,myName);
   //提交话题
   $scope.submitCom=function(){
     if(!$scope.sayCom){
@@ -280,15 +275,139 @@ function IndexCtrl($scope, $http, $templateCache) {
       });
   }
 
+  /*
+  我的话题模块
+  */
+  //初始化stock.angular函数，传入这个作用域内需要用到的函数
+  var selfName=myName;//selfName登陆用户
+  var openMyTopic=true;
+  var angular=stock.angular($http,$scope,myName,selfName);
+  //自定义加载内容
+  angular.getMyTopic=function(url,name,pageSize,pageNum,event){
+    $http({method: "GET", url: "/"+url+"?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize}).
+      success(function(data,status){
+        if(data.isOk){
+          openMyTopic=false;
+          //处理分页
+          if(event){
+            event.attr("num",pageNum/10+1);
+          }       
+          if(pageNum==0){
+            $scope.myTopicList=data.data;
+          }else{
+            $scope.myTopicList=$scope.myTopicList.concat(data.data);
+          }
+          
+          //超过10条显示加载跟多
+          if(data.data.length==10){
+            $scope.myTopicGetmore=true;
+          }else{
+            $scope.myTopicGetmore=false;
+          }
+        }else{
+          alert("获取失败")
+        }
+      });
+  }
+  //有差异处理的ng-click
+  angular.clickNg=function(){
+    var _this=this;
+    //初始化我的话题
+    $scope.myTopic=function(){
+      if(openMyTopic){
+        _this.getMyTopic("myTopic",myName,10,0);
+      }
+    }
+    //提交话题评论-回调有差异
+    $scope.submitCommentTopic=function(e,myTopic){
+      _this.subComTop(e,myTopic,function(data){
+        //展示刚刚转发内容
+        if(myName==selfName){
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+
+    //提交回复评论-回调有差异
+    $scope.commentRe=function(comment,myTopic){
+      _this.comRe(comment,myTopic,function(data){
+        //展示刚刚转发内容
+        if(myName==selfName){
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+    //加载更多-有差异
+    $scope.getTopicMore=function(e){
+      var num=Number($(e.target).attr("num"));
+      _this.getMyTopic("myTopic",myName,10,num*10,$(e.target));
+    }
+  }
   //初始化我的话题
-  angular.clickmyTopic();
   angular.init();
   
   /*
-  关于话题
+  关于话题模块
   */
-  var adoutTopic=topic.angular($http,$scope,myName,myName);
-  adoutTopic.havemyTopic();
+
+  var adoutTopic=stock.angular($http,$scope,myName,selfName);
+  adoutTopic.getAboutTopic=function(url,name,pageSize,pageNum,event){
+    $http({method: "GET", url: "/"+url+"?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize}).
+      success(function(data,status){
+        if(data.isOk){
+          //openMyTopic=false;
+          
+          //处理分页
+          if(event){
+            event.attr("num",pageNum/10+1);
+          }
+          
+          if(pageNum==0){
+            $scope.aboutTopicList=data.data;
+          }else{
+            $scope.aboutTopicList=$scope.aboutTopicList.concat(data.data);
+          }
+          
+          //超过10条显示加载跟多
+          if(data.data.length==10){
+            $scope.aboutTopicGetmore=true;
+          }else{
+            $scope.aboutTopicGetmore=false;
+          }
+        }else{
+          alert("获取失败")
+        }
+      });
+  }
+  adoutTopic.clickNg=function(){
+    var _this=this;
+    this.getAboutTopic("aboutTopic",myName,10,0);
+    //提交话题评论
+    $scope.submitComAboutTopic=function(e,myTopic){
+      _this.subComTop(e,myTopic,function(data){
+        if(!!$scope.myTopicList){
+          //在我的话题栏目展示刚刚转发内容
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+
+    //提交回复评论
+    $scope.comAboutRe=function(comment,myTopic){
+      _this.comRe(comment,myTopic,function(data){
+        if(!!$scope.myTopicList){
+          //在我的话题栏目展示刚刚转发内容
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+    //加载更多
+    $scope.getAboutMore=function(e){
+      var num=Number($(e.target).attr("num"));
+      _this.getAboutTopic("aboutTopic",myName,10,num*10,$(e.target));
+    }
+  }
+  //初始化
   adoutTopic.init();
 
 }

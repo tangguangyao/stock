@@ -146,10 +146,67 @@ function peopleCtrl($scope, $http, $templateCache){
   话题模块
   */
   //初始化stock.angular函数，传入这个作用域内需要用到的函数
+  //var selfName=myName;//selfName登陆用户
+  var openMyTopic=true;
   var angular=stock.angular($http,$scope,myName,selfName);
+  //自定义加载内容
+  angular.getMyTopic=function(url,name,pageSize,pageNum,event){
+    $http({method: "GET", url: "/"+url+"?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize}).
+      success(function(data,status){
+        if(data.isOk){
+          openMyTopic=false;
+          //处理分页
+          if(event){
+            event.attr("num",pageNum/10+1);
+          }       
+          if(pageNum==0){
+            $scope.myTopicList=data.data;
+          }else{
+            $scope.myTopicList=$scope.myTopicList.concat(data.data);
+          }
+          
+          //超过10条显示加载跟多
+          if(data.data.length==10){
+            $scope.myTopicGetmore=true;
+          }else{
+            $scope.myTopicGetmore=false;
+          }
+        }else{
+          alert("获取失败")
+        }
+      });
+  }
+  //有差异处理的ng-click
+  angular.clickNg=function(){
+    var _this=this;
+    //初始化我的话题
+    _this.getMyTopic("myTopic",myName,10,0);
 
-  //获取被访问的话题
-  angular.havemyTopic();
+    //提交话题评论-回调有差异
+    $scope.submitCommentTopic=function(e,myTopic){
+      _this.subComTop(e,myTopic,function(data){
+        //展示刚刚转发内容
+        if(myName==selfName){
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+
+    //提交回复评论-回调有差异
+    $scope.commentRe=function(comment,myTopic){
+      _this.comRe(comment,myTopic,function(data){
+        //展示刚刚转发内容
+        if(myName==selfName){
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+    //加载更多-有差异
+    $scope.getTopicMore=function(e){
+      var num=Number($(e.target).attr("num"));
+      _this.getMyTopic("myTopic",myName,10,num*10,$(e.target));
+    }
+  }
+  //初始化我的话题
   angular.init();
-
 };
