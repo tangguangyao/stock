@@ -39,7 +39,7 @@ function FetchCtrl($scope, $http, $templateCache) {
           }
         });
     }else{
-      alert("请先登录")
+      alert("请先登录");
     }
   }
 
@@ -58,7 +58,7 @@ function FetchCtrl($scope, $http, $templateCache) {
     }else{
       alert("请先登录");
     }
-  }
+  };
 
   // var test=document.getElementsById(test);
   // test.onclick=function(){
@@ -128,7 +128,7 @@ function FetchCtrl($scope, $http, $templateCache) {
     }
     $scope.adoutNames=newMabout;
     adoutArrage.push(newMabout);
-  }
+  };
 
   //定时获取实时数据
   $scope.method = 'JSONP';
@@ -150,7 +150,7 @@ function FetchCtrl($scope, $http, $templateCache) {
         if(change>0){
           data.quotes[0].zdClass="red";
           data.quotes[0].zdf="+";
-        }else if(change==0){
+        }else if(change===0){
           data.quotes[0].zdClass="";
           data.quotes[0].zdf="";
         }else{
@@ -204,7 +204,7 @@ function FetchCtrl($scope, $http, $templateCache) {
   //只有登录用户才能加入聊天室
   $scope.addTalk=function(){
     var myName=$("#headShowName").text();
-    if($("#headShowName").text()==""){
+    if($("#headShowName").text()===""){
       alert("登录后才能加入聊天室");
     }else{
       if(!$scope.addRoom){
@@ -230,13 +230,13 @@ function FetchCtrl($scope, $http, $templateCache) {
         });
       }
     }
-  }
+  };
 
   $scope.talkSubmit=function(){
     if(talkOpen){
       talkOpen=false;
       var talkText=$("#talkText").val();
-      if(talkText==""){
+      if(talkText===""){
         alert("请输入内容");
       }
       chat.emit('talk',{
@@ -252,7 +252,7 @@ function FetchCtrl($scope, $http, $templateCache) {
         }
       });
     }
-  }
+  };
   //查看聊天室早期内容
   $scope.lookTalkMessage=function(){
     historyNum=parseInt($(".talkNum").length/historyCache);
@@ -274,7 +274,7 @@ function FetchCtrl($scope, $http, $templateCache) {
           $(".lookTalkMessage").hide();
         }
       });
-  }
+  };
 
   /*
   发布评论
@@ -290,7 +290,7 @@ function FetchCtrl($scope, $http, $templateCache) {
           alert("提交失败!");
         }
       });
-  }
+  };
 
 
   //下面是延迟执行的内容
@@ -308,7 +308,7 @@ function FetchCtrl($scope, $http, $templateCache) {
               event.attr("num",pageNum/10+1);
             } 
             
-            if(pageNum==0){
+            if(pageNum===0){
               $scope.stockTopicList=data.data;
             }else{
               $scope.stockTopicList=$scope.stockTopicList.concat(data.data);
@@ -321,10 +321,10 @@ function FetchCtrl($scope, $http, $templateCache) {
               $scope.stockTopicGetmore=false;
             }
           }else{
-            alert("获取失败")
+            alert("获取失败");
           }
         });
-    }
+    };
     stockTopic.clickNg=function(){
       var _this=this;
       //初始化我的话题
@@ -333,24 +333,23 @@ function FetchCtrl($scope, $http, $templateCache) {
       $scope.getStockTopicMore=function(e){
         var num=Number($(e.target).attr("num"));
         _this.getTopic(pathUrl,stockName,10,num*10,$(e.target));
-      }
+      };
 
       //提交话题评论-回调有差异
       $scope.submitComStockTopic=function(e,myTopic){
         _this.subComTop(e,myTopic,function(data){
           //不展示刚刚转发内容
         });
-      }
+      };
 
       //提交回复评论-回调有差异
       $scope.comStockRe=function(comment,myTopic){
         _this.comRe(comment,myTopic,function(data){
           //不展示刚刚转发内容
         });
-      }
-    }
+      };
+    };
     //初始化
     stockTopic.init();
-  }
-  
+  };
 }

@@ -29,7 +29,7 @@ function peopleCtrl($scope, $http, $templateCache){
           alert(data.message);
         }
       });
-  }
+  };
 
   $scope.unwatchPeo=function(){
     $http({method: "GET", url: "/unwatchPeople?name="+myName, cache: $templateCache}).
@@ -39,14 +39,14 @@ function peopleCtrl($scope, $http, $templateCache){
           $("#watchNo").hide();
         }
       });
-  }
+  };
 
 	//股票实时数据
 	function ajaxStock(){
 		$scope.method = 'JSONP';
     stockCode=$("#stockList").attr("my-stock");
     //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
-    if(stockCode==""){
+    if(stockCode===""){
       //如果没有信息，就不请求
       return;
     }
@@ -57,13 +57,13 @@ function peopleCtrl($scope, $http, $templateCache){
       success(function(data, status) {
         for(var i=0,l=data.quotes.length;i<l;i++){
           data.quotes[i].volume=(data.quotes[i].volume/10000).toFixed(2);
-          data.quotes[i].marketCapital=(data.quotes[i].marketCapital/100000000).toFixed(2)
+          data.quotes[i].marketCapital=(data.quotes[i].marketCapital/100000000).toFixed(2);
           if(Number(data.quotes[i].change)>0){
             data.quotes[i].zdClass="red";
             data.quotes[i].zdBack="danger";
             data.quotes[i].change="+"+data.quotes[i].change;
             data.quotes[i].percentage="+"+data.quotes[i].percentage+"%";
-          }else if(Number(data.quotes[i].change)==0){
+          }else if(Number(data.quotes[i].change)===0){
             data.quotes[i].zdClass="";
             data.quotes[i].zdBack="";
             data.quotes[i].percentage=data.quotes[i].percentage+"%";
@@ -101,7 +101,7 @@ function peopleCtrl($scope, $http, $templateCache){
           $scope.looks=data.list;
         }
       });
-  }
+  };
 
   //展示粉丝
   $scope.fensTab=function(){
@@ -115,7 +115,7 @@ function peopleCtrl($scope, $http, $templateCache){
           $scope.fens=data.list;
         }
       });
-  }
+  };
 
 
   /*
@@ -137,7 +137,7 @@ function peopleCtrl($scope, $http, $templateCache){
         }
       }
     }
-  }
+  };
 
 
 
@@ -159,7 +159,7 @@ function peopleCtrl($scope, $http, $templateCache){
           if(event){
             event.attr("num",pageNum/10+1);
           }       
-          if(pageNum==0){
+          if(pageNum===0){
             $scope.myTopicList=data.data;
           }else{
             $scope.myTopicList=$scope.myTopicList.concat(data.data);
@@ -172,10 +172,10 @@ function peopleCtrl($scope, $http, $templateCache){
             $scope.myTopicGetmore=false;
           }
         }else{
-          alert("获取失败")
+          alert("获取失败");
         }
       });
-  }
+  };
   //有差异处理的ng-click
   angular.clickNg=function(){
     var _this=this;
@@ -190,7 +190,7 @@ function peopleCtrl($scope, $http, $templateCache){
           $scope.myTopicList.unshift(data);
         }
       });
-    }
+    };
 
     //提交回复评论-回调有差异
     $scope.commentRe=function(comment,myTopic){
@@ -200,13 +200,13 @@ function peopleCtrl($scope, $http, $templateCache){
           $scope.myTopicList.unshift(data);
         }
       });
-    }
+    };
     //加载更多-有差异
     $scope.getTopicMore=function(e){
       var num=Number($(e.target).attr("num"));
       _this.getMyTopic("myTopic",myName,10,num*10,$(e.target));
-    }
-  }
+    };
+  };
   //初始化我的话题
   angular.init();
-};
+}

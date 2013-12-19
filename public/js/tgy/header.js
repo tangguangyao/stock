@@ -45,7 +45,7 @@ stock.header=(function(){
 				});
 			});
 		}
-	}
+	};
 })();
 
 stock.header.init();
