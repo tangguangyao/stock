@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "stock",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -13,5 +13,11 @@
     "connect-flash": "*", 
     "socket.io": "*",
     "gm": "*"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-nodeunit": "*",
+    "grunt-contrib-uglify": "*"
   }
 }
