@@ -211,7 +211,7 @@ function IndexCtrl($scope, $http, $templateCache) {
           $scope.topList=newTopList;
           //刷新我的收藏
           $scope.addMethod = 'JSONP';
-          $scope.addUrl = 'http://xueqiu.com/stock/quote.json?code='+topStockUid+'&access_token=aZy51015GfDGsvsNtit2XY&_=1384756173203&callback=JSON_CALLBACK';
+          $scope.addUrl = 'http://xueqiu.com/stock/quote.json?code='+topStockUid+'&key=47bce5c74f&access_token=gbQtYjUWioQ9DQWGpDIREK&_=1386664870607&callback=JSON_CALLBACK';
           $http({method: $scope.addMethod, url: $scope.addUrl, cache: $templateCache}).
             success(function(data, status) {
               //请求关注的数据
@@ -347,16 +347,14 @@ function IndexCtrl($scope, $http, $templateCache) {
   angular.init();
   
   /*
-  关于话题模块
+  我关注的用户话题模块
   */
-
   var adoutTopic=stock.angular($http,$scope,myName,selfName);
   adoutTopic.getAboutTopic=function(url,name,pageSize,pageNum,event){
     $http({method: "GET", url: "/"+url+"?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize}).
       success(function(data,status){
         if(data.isOk){
-          //openMyTopic=false;
-          
+          //openMyTopic=false; 
           //处理分页
           if(event){
             event.attr("num",pageNum/10+1);
@@ -410,4 +408,140 @@ function IndexCtrl($scope, $http, $templateCache) {
   //初始化
   adoutTopic.init();
 
+  /*
+  我关注的股票话题模块
+  */
+  var openAboutStockTopic=true;
+  var adoutStockTopic=stock.angular($http,$scope,myName,selfName);
+  adoutStockTopic.getAboutStockTopic=function(name,pageSize,pageNum,event){
+    $http({method: "GET", url: "/aboutStockTopic?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize}).
+      success(function(data,status){
+        if(data.isOk){
+          openAboutStockTopic=false; 
+          //处理分页
+          if(event){
+            event.attr("num",pageNum/10+1);
+          }
+          
+          if(pageNum==0){
+            $scope.aboutStockTopicList=data.data;
+          }else{
+            $scope.aboutStockTopicList=$scope.aboutStockTopicList.concat(data.data);
+          }
+          
+          //超过10条显示加载跟多
+          if(data.data.length==10){
+            $scope.aboutStockTopicMore=true;
+          }else{
+            $scope.aboutStockTopicMore=false;
+          }
+        }else{
+          alert("获取失败")
+        }
+      });
+  }
+  adoutStockTopic.clickNg=function(){
+    var _this=this;
+    //点击初始化
+    $scope.aboutStockTopic=function(){
+      if(openAboutStockTopic){
+        _this.getAboutStockTopic(myName,10,0);
+      }
+    }
+    //提交话题评论
+    $scope.submitComAboutStockTopic=function(e,myTopic){
+      _this.subComTop(e,myTopic,function(data){
+        if(!!$scope.myTopicList){
+          //在我的话题栏目展示刚刚转发内容
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+
+    //提交回复评论
+    $scope.comAboutStockRe=function(comment,myTopic){
+      _this.comRe(comment,myTopic,function(data){
+        if(!!$scope.myTopicList){
+          //在我的话题栏目展示刚刚转发内容
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+
+    //加载更多
+    $scope.getStockTopicMore=function(e){
+      var num=Number($(e.target).attr("num"));
+      _this.getAboutStockTopic(myName,10,num*10,$(e.target));
+    }
+  }
+  //初始化
+  adoutStockTopic.init();
+
+  /*
+  @我话题模块
+  */
+  var openAtmeTopic=true;
+  var atmeTopic=stock.angular($http,$scope,myName,selfName);
+  atmeTopic.getAtmeTopic=function(name,pageSize,pageNum,event){
+    $http({method: "GET", url: "/atmeTopic?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize}).
+      success(function(data,status){
+        if(data.isOk){
+          openAtmeTopic=false; 
+          //处理分页
+          if(event){
+            event.attr("num",pageNum/10+1);
+          }
+          
+          if(pageNum==0){
+            $scope.atmeTopicList=data.data;
+          }else{
+            $scope.atmeTopicList=$scope.atmeTopicList.concat(data.data);
+          }
+          
+          //超过10条显示加载跟多
+          if(data.data.length==10){
+            $scope.atmeTopicMore=true;
+          }else{
+            $scope.atmeTopicMore=false;
+          }
+        }else{
+          alert("获取失败")
+        }
+      });
+  }
+  atmeTopic.clickNg=function(){
+    var _this=this;
+    //点击初始化
+    $scope.atTopic=function(){
+      if(openAtmeTopic){
+        _this.getAtmeTopic(myName,10,0);
+      }
+    }
+    //提交话题评论
+    $scope.submitComAtmeTopic=function(e,myTopic){
+      _this.subComTop(e,myTopic,function(data){
+        if(!!$scope.myTopicList){
+          //在我的话题栏目展示刚刚转发内容
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+
+    //提交回复评论
+    $scope.comAtmeRe=function(comment,myTopic){
+      _this.comRe(comment,myTopic,function(data){
+        if(!!$scope.myTopicList){
+          //在我的话题栏目展示刚刚转发内容
+          $scope.myTopicList.unshift(data);
+        }
+      });
+    }
+
+    //加载更多
+    $scope.getStockTopicMore=function(e){
+      var num=Number($(e.target).attr("num"));
+      _this.getAtmeTopic(myName,10,num*10,$(e.target));
+    }
+  }
+  atmeTopic.init();
 }

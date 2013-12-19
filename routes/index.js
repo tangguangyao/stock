@@ -126,4 +126,13 @@ module.exports = function(app){
   app.get('/stockTopic',function(req,res){
     talk.stockTopic(req,res);
   });
+
+  //获取用户关注的股票的话题
+  app.get('/aboutStockTopic',function(req,res){
+    talk.aboutStockTopic(req,res);
+  });
+  //获取@我的话题
+  app.get('/atmeTopic',function(req,res){
+    talk.atmeTopic(req,res);
+  });
 };

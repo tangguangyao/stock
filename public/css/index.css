@@ -118,7 +118,7 @@ background: #f2f2f2;
 .topicCommentlist li{
 margin: 5px 0px;
 }
-#myTopicGetmore,#aboutTopicGetmore,#stockTopicGetmore{
+#myTopicGetmore,#aboutTopicGetmore,#stockTopicGetmore,#atmeTopicMore,#aboutStockTopicMore{
 text-align: center;
 background: #f4f0e7;
 cursor: pointer;

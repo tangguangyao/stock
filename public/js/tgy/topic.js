@@ -148,7 +148,6 @@ stock.angular=function($http,$scope,myName,selfName){
 		      //post数据和显示返回情况
 		      _this.postComfor(commentObj,myTopic,comment,function(data){
 		      	callback(data);
-		      	
 		      });
 
 		    }else{
@@ -175,6 +174,15 @@ stock.angular=function($http,$scope,myName,selfName){
         $http.post("/submitCommentTopic", commentObj).
           success(function(data,status){
             if(data.isOk){
+
+            	//取消转发按键
+	          	myTopic.ifForwardRe=false;
+
+	          	if(comment){
+	          		//隐藏回复框
+	          		comment.reShow=false;
+	          	}
+	          	
               //成功后评论+1
               myTopic.comment++;
               //清空评论comment 不存在，清空话题评论，存在，清空评论的评论
@@ -202,6 +210,14 @@ stock.angular=function($http,$scope,myName,selfName){
         success(function(data,status){
           if(data.isok){
 
+          	//取消转发按键
+          	myTopic.ifForwardRe=false;
+
+          	if(comment){
+          		//隐藏回复框
+          		comment.reShow=false;
+          	}
+          	
           	//回调出路是否展示
           	callback(data.topic.data[0]);
             

@@ -89,6 +89,47 @@ topic.stockTopic=function(uid,stockName,size,num,callback){
 	});
 }
 
+topic.aboutStockTopic=function(name,size,num,callback){
+	//先查找这个用户关注的股票
+	global.db.collection('user',function(err,collection){
+		collection.findOne({name:name},function(err,obj){
+			if(!err){
+				if(obj.stock.length>0){
+					//存在关注
+					var arr=[];
+					//这里只能查询sh600171这种code代码
+					obj.stock.forEach(function(k){
+						arr.push({aboutStockcode:k});
+					});
+					//在topic中查找他关注用户的话题
+					global.db.collection('topic',function(err,collection){
+						collection.find({$or:arr}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
+							if(err){
+								callback({isOk:false});
+							}else{
+								callback({isOk:true,data:items});
+							}
+						});
+					});
+				}else{
+					callback({isOk:true,data:[]});
+				}
+			}
+		})
+	});
+}
+
+topic.atmeTopic=function(name,size,num,callback){
+	global.db.collection('topic',function(err,collection){
+		collection.find({$or:[{aboutPeople:name}]}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
+			if(err){
+				callback({isOk:false});
+			}else{
+				callback({isOk:true,data:items});
+			}
+		});
+	});
+}
 
 //评论数据库
 topic.addComment=function(isForward,obj,callback){

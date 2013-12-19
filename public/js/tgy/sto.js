@@ -281,7 +281,7 @@ function FetchCtrl($scope, $http, $templateCache) {
   */
   //提交话题
   $scope.submitCom=function(){
-    var commentObj=topicStock.textExtract($scope.sayCom,myName);
+    var commentObj=stock.textExtract($scope.sayCom,myName);
     $http.post("/submitTopic", commentObj).
       success(function(data,status){
         if(data.isOk){
@@ -298,9 +298,58 @@ function FetchCtrl($scope, $http, $templateCache) {
     /*
     下方讨论模块
     */
-    
-    var stockTopic=topicStock.angular($http,$scope,pathUrl,stockName,myName);
-    stockTopic.haveStockTopic();
+    var stockTopic=stock.angular($http,$scope,null,myName);
+    stockTopic.getTopic=function(uid,stockName,pageSize,pageNum,event){
+      $http({method: "GET", url: "/stockTopic?uid="+uid+"&stockName="+stockName+"&pageNum="+pageNum+"&pageSize="+pageSize}).
+        success(function(data,status){
+          if(data.isOk){
+            
+            if(event){
+              event.attr("num",pageNum/10+1);
+            } 
+            
+            if(pageNum==0){
+              $scope.stockTopicList=data.data;
+            }else{
+              $scope.stockTopicList=$scope.stockTopicList.concat(data.data);
+            }
+            
+            //超过10条显示加载跟多
+            if(data.data.length==10){
+              $scope.stockTopicGetmore=true;
+            }else{
+              $scope.stockTopicGetmore=false;
+            }
+          }else{
+            alert("获取失败")
+          }
+        });
+    }
+    stockTopic.clickNg=function(){
+      var _this=this;
+      //初始化我的话题
+      this.getTopic(pathUrl,stockName,10,0);
+      //加载更多-有差异
+      $scope.getStockTopicMore=function(e){
+        var num=Number($(e.target).attr("num"));
+        _this.getTopic(pathUrl,stockName,10,num*10,$(e.target));
+      }
+
+      //提交话题评论-回调有差异
+      $scope.submitComStockTopic=function(e,myTopic){
+        _this.subComTop(e,myTopic,function(data){
+          //不展示刚刚转发内容
+        });
+      }
+
+      //提交回复评论-回调有差异
+      $scope.comStockRe=function(comment,myTopic){
+        _this.comRe(comment,myTopic,function(data){
+          //不展示刚刚转发内容
+        });
+      }
+    }
+    //初始化
     stockTopic.init();
   }
   

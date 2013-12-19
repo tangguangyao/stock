@@ -60,13 +60,17 @@
 
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home" data-toggle="tab">我的关注</a></li>
+        <li><a href="#stock" data-toggle="tab" ng-click="aboutStockTopic()">我的股票</a></li>
         <li><a href="#profile" data-toggle="tab" ng-click="myTopic()">我的评论</a></li>
-        <li><a href="#messages" data-toggle="tab">@我</a></li>
+        <li><a href="#messages" data-toggle="tab" ng-click="atTopic()">@我</a></li>
       </ul>
 
       <div class="tab-content">
         <div class="tab-pane active" id="home">
           <%- include mode/topic %>
+        </div>
+        <div class="tab-pane" id="stock">
+          <%- include mode/aboutstocktopic %>
         </div>
         <div class="tab-pane" id="profile">
           <%- include mode/mytopic %>

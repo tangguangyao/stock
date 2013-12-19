@@ -168,3 +168,25 @@ talk.stockTopic=function(req,res){
 		res.send(obj);
 	});
 }
+
+talk.aboutStockTopic=function(req,res){
+	var name=req.query.name;
+	var size=Number(req.query.pageSize);
+	var num=Number(req.query.pageNum);
+	topic.aboutStockTopic(name,size,num,function(info){
+		//过滤数据
+		var obj=filterTopic(info);
+		res.send(obj);
+	});
+}
+
+talk.atmeTopic=function(req,res){
+	var name=req.query.name;
+	var size=Number(req.query.pageSize);
+	var num=Number(req.query.pageNum);
+	topic.atmeTopic(name,size,num,function(info){
+		//过滤数据
+		var obj=filterTopic(info);
+		res.send(obj);
+	});
+}
