@@ -25,7 +25,7 @@ setting.show=function(req,res){
 	}else{
 		res.redirect('/login');
 	}
-}
+};
 
 setting.post=function(req,res){
 	var name=req.session.user.name;
@@ -53,21 +53,21 @@ setting.post=function(req,res){
 				.resize(150, 150, '!') //加('!')强行把图片缩放成对应尺寸150*150！
 				.autoOrient()
 				.write(target_path_big, function(err){
-				  if (err) {
-				    console.log(err);
-				    req.flash('error', err); 
-	    			return res.redirect('/setting'); 
-				  }
+					if (err) {
+						console.log(err);
+						req.flash('error', err); 
+						return res.redirect('/setting'); 
+					}
 				});
 			imageMagick(target_path_small)
 				.resize(80, 80, '!') //加('!')强行把图片缩放成对应尺寸150*150！
 				.autoOrient()
 				.write(target_path_small, function(err){
-				  if (err) {
-				    console.log(err);
-				    req.flash('error', err); 
-	    			return res.redirect('/setting'); 
-				  }
+					if (err) {
+						console.log(err);
+						req.flash('error', err); 
+						return res.redirect('/setting'); 
+					}
 				});
 			var info={
 				Spec:Spec,
@@ -77,12 +77,12 @@ setting.post=function(req,res){
 					big:bigUrl,
 					small:smallUrl
 				}
-			}
+			};
 			//地址存入数据库
 			User.setInfo(name,info,function(err){
 				if(err){
 					req.flash('error', err); 
-	    		return res.redirect('/setting'); 
+					return res.redirect('/setting'); 
 				}
 				req.flash('error', "修改信息成功"); 
 				req.session.user.info=info;
@@ -96,12 +96,12 @@ setting.post=function(req,res){
 				interest:interest,
 				email:email,
 				pic:req.session.user.info.pic
-			}
+			};
 			//地址存入数据库
 			User.setInfo(name,info,function(err){
 				if(err){
 					req.flash('error', err); 
-	    		return res.redirect('/setting'); 
+					return res.redirect('/setting'); 
 				}
 				req.flash('error', "修改信息成功"); 
 				req.session.user.info=info;
@@ -109,34 +109,34 @@ setting.post=function(req,res){
 			});		
 		});	
 	}
-}
+};
 
 setting.setPassword=function(req,res){
 	var md5 = crypto.createHash('md5');
-  var oldPassword = md5.update(req.body.oldPassword).digest('hex'),
-  		newPassword=req.body.newPassword,
-  		reNewPassword=req.body.reNewPassword,
-  		name=req.session.user.name;
-  if(newPassword!==reNewPassword){
-  	req.flash('error', "两次密码不一致"); 
+	var oldPassword = md5.update(req.body.oldPassword).digest('hex'),
+			newPassword=req.body.newPassword,
+			reNewPassword=req.body.reNewPassword,
+			name=req.session.user.name;
+	if(newPassword!==reNewPassword){
+		req.flash('error', "两次密码不一致"); 
 		return res.redirect('/setting'); 
-  }
-  var md52 = crypto.createHash('md5');
-  newPassword=md52.update(newPassword).digest('hex');
-  User.password(name,oldPassword,newPassword,function(message){
-  	req.flash('error', message); 
+	}
+	var md52 = crypto.createHash('md5');
+	newPassword=md52.update(newPassword).digest('hex');
+	User.password(name,oldPassword,newPassword,function(message){
+		req.flash('error', message); 
 		return res.redirect('/setting'); 
-  });
-}
+	});
+};
 
 /*
 公共函数
 */
 //复制文件
 function copyFile(src, dst){
-    var is = fs.createReadStream(src);
-    var os = fs.createWriteStream(dst);
-   	//readable.pipe(destination, [options])
-   	//http://nodeapi.ucdok.com/#/api/stream.html
-    is.pipe(os);
+	var is = fs.createReadStream(src);
+	var os = fs.createWriteStream(dst);
+	//readable.pipe(destination, [options])
+	//http://nodeapi.ucdok.com/#/api/stream.html
+	is.pipe(os);
 }

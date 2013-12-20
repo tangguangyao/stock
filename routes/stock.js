@@ -27,7 +27,7 @@ stock.show = function(req,res){
 		isWatch:isWatch,
 		user:req.session.user
 	});
-}
+};
 
 stock.watch=function(req,res){
 	var stoc = new Stoc({
@@ -55,8 +55,8 @@ stock.watch=function(req,res){
 			}
 			res.send({ok:true});
 		}
-	})
-}
+	});
+};
 
 stock.aboutName=function(req,res){
 	var uid=req.query.uid;
@@ -67,13 +67,13 @@ stock.aboutName=function(req,res){
 			res.send({ok:false});
 		}
 	});
-}
+};
 
 stock.hotStock=function(req,res){
 	Stoc.hotStock(function(obj){
 		res.send({ok:true,list:obj});
-	})
-}
+	});
+};
 
 stock.talkHistory=function(req,res){
 	var uid=req.query.stock;
@@ -87,4 +87,4 @@ stock.talkHistory=function(req,res){
 		}
 		
 	});
-}
+};

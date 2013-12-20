@@ -40,7 +40,7 @@ people.show=function(req,res){
 			});
 		});
 	}
-}
+};
 
 people.watchPeople=function(req,res){
 	var name=req.query.name;
@@ -56,7 +56,7 @@ people.watchPeople=function(req,res){
 			}
 		}
 	});
-}
+};
 
 people.unwatchPeople=function(req,res){
 	var name=req.query.name;
@@ -76,20 +76,21 @@ people.unwatchPeople=function(req,res){
 			res.send({ok:true});
 		}
 	});
-}
+};
 
 people.watchTab=function(req,res){
 	var name=req.query.name;
 	var pageNum=req.query.pageNum;//20
 	var pageSize=req.query.pageSize;//2
 	var nameWatch;//本页用户关注的对象
+	var num,watchArr=[];
 	if(req.session.user){//已经登录用户，需要判断列表中用户是否已经关注过
 		var myName=req.session.user.name;
 		//这里存在性能问题，如果关注量，被关注量特别大会肯出问题
 		var myWatch=req.session.user.watch;//["tang","guang","yao"]
 		if(myName!=name){
 			//不是是自己的页面
-			if(pageNum==0){
+			if(pageNum===0){
 				User.watchPage(name,function(err,data){
 					//第一次分页获取所有值
 					nameWatch=data.watch;
@@ -101,8 +102,7 @@ people.watchTab=function(req,res){
 				res.send({ok:true,list:watchArray});
 			}
 		}else{
-			var num=myWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):myWatch.length;
-			var watchArr=[];
+			num=myWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):myWatch.length;
 			for(var k=pageSize*pageNum,l=num;k<l;k++){
 				watchArr.push({haveWatch:true,name:myWatch[k],myself:false});
 			}
@@ -110,12 +110,12 @@ people.watchTab=function(req,res){
 		}
 	}else{
 		//noLoginWatch(name,nameWatch,pageNum,pageSize);
-		if(pageNum==0){
+		if(pageNum===0){
 			User.watchPage(name,function(err,data){
 				//第一次分页获取所有值
 				nameWatch=data.watch;
-				var num=nameWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameWatch.length;
-				var watchArr=[];
+				num=nameWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameWatch.length;
+				//watchArr=[];
 				for(var k=pageSize*pageNum,l=num;k<l;k++){
 					watchArr.push({haveWatch:false,name:nameWatch[k],myself:false});
 				}
@@ -123,22 +123,23 @@ people.watchTab=function(req,res){
 				res.send({ok:true,list:watchArr});
 			});
 		}else{
-			var num=nameWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameWatch.length;
-			var watchArr=[];
-			for(var k=pageSize*pageNum,l=num;k<l;k++){
-				watchArr.push({haveWatch:false,name:nameWatch[k],myself:false});
+			num=nameWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameWatch.length;
+			//watchArr=[];
+			for(var k2=pageSize*pageNum,l2=num;k2<l2;k2++){
+				watchArr.push({haveWatch:false,name:nameWatch[k2],myself:false});
 			}
 			//var watchArray=watchPageOther(myName,myWatch,nameWatch,pageSize,pageNum);
 			res.send({ok:true,list:watchArr});
 		}
 	}
-}
+};
 
 people.fensTab=function(req,res){
 	var name=req.query.name;
 	var pageNum=req.query.pageNum;//20
 	var pageSize=req.query.pageSize;//2
 	var nameFens;//本页用户的粉丝
+	var num,watchArr=[];
 	if(req.session.user){
 		var myName=req.session.user.name;
 		//这里存在性能问题，如果关注量，被关注量特别大会肯出问题
@@ -146,7 +147,7 @@ people.fensTab=function(req,res){
 		var myFens=req.session.user.beWatch;
 		if(myName!=name){
 			//不是是自己的页面
-			if(pageNum==0){
+			if(pageNum===0){
 				User.watchPage(name,function(err,data){
 					//第一次分页获取所有值
 					nameFens=data.beWatch;
@@ -158,8 +159,8 @@ people.fensTab=function(req,res){
 				res.send({ok:true,list:watchArray});
 			}
 		}else{
-			var num=myFens.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):myFens.length;
-			var watchArr=[];
+			num=myFens.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):myFens.length;
+			watchArr=[];
 			for(var k=pageSize*pageNum,l=num;k<l;k++){
 				watchArr.push({haveWatch:false,name:myFens[k],myself:false});
 				for(var j=0,l2=myWatch.length;j<l2;j++){
@@ -172,12 +173,12 @@ people.fensTab=function(req,res){
 		}
 	}else{
 		//noLoginWatch(name,nameFens,pageNum,pageSize);
-		if(pageNum==0){
+		if(pageNum===0){
 			User.watchPage(name,function(err,data){
 				//第一次分页获取所有值
 				nameFens=data.beWatch;
-				var num=nameFens.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameFens.length;
-				var watchArr=[];
+				num=nameFens.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameFens.length;
+				watchArr=[];
 				for(var k=pageSize*pageNum,l=num;k<l;k++){
 					watchArr.push({haveWatch:false,name:nameFens[k],myself:false});
 				}
@@ -185,16 +186,16 @@ people.fensTab=function(req,res){
 				res.send({ok:true,list:watchArr});
 			});
 		}else{
-			var num=nameFens.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameFens.length;
-			var watchArr=[];
-			for(var k=pageSize*pageNum,l=num;k<l;k++){
-				watchArr.push({haveWatch:false,name:nameFens[k],myself:false});
+			num=nameFens.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameFens.length;
+			watchArr=[];
+			for(var k3=pageSize*pageNum,l3=num;k3<l3;k3++){
+				watchArr.push({haveWatch:false,name:nameFens[k3],myself:false});
 			}
 			//var watchArray=watchPageOther(myName,myWatch,nameFens,pageSize,pageNum);
 			res.send({ok:true,list:watchArr});
 		}
 	}
-}
+};
 
 //首页热门用户
 people.hotPeople=function(req,res){
@@ -211,37 +212,9 @@ people.hotPeople=function(req,res){
 			}
 		}
 		res.send({ok:true,list:obj});
-	})
-}
+	});
+};
 
-
-/*
-内部函数
-*/
-//没有登录的用户关注
-// var noLoginWatch=function(toName,nameWatch,pageNum,pageSize){
-// 	if(pageNum==0){
-// 		User.watchPage(toName,function(err,data){
-// 			//第一次分页获取所有值
-// 			nameWatch=data.watch;
-// 			var num=nameWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameWatch.length;
-// 			var watchArr=[];
-// 			for(var k=pageSize*pageNum,l=num;k<l;k++){
-// 				watchArr.push({haveWatch:false,name:nameWatch[k],myself:false});
-// 			}
-// 			//var watchArray=watchPageOther(myName,myWatch,nameWatch,pageSize,pageNum);
-// 			res.send({ok:true,list:watchArr});
-// 		});
-// 	}else{
-// 		var num=nameWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameWatch.length;
-// 		var watchArr=[];
-// 		for(var k=pageSize*pageNum,l=num;k<l;k++){
-// 			watchArr.push({haveWatch:false,name:nameWatch[k],myself:false});
-// 		}
-// 		//var watchArray=watchPageOther(myName,myWatch,nameWatch,pageSize,pageNum);
-// 		res.send({ok:true,list:watchArr});
-// 	}
-// }
 //判断myName用户关注的用户myWatch是否在nameWatch中
 var watchPageOther=function(myName,myWatch,nameWatch,pageSize,pageNum){
 	var num=nameWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameWatch.length;
@@ -259,4 +232,4 @@ var watchPageOther=function(myName,myWatch,nameWatch,pageSize,pageNum){
 		}
 	}
 	return watchArr;
-}
+};

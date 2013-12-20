@@ -41,7 +41,7 @@ function FetchCtrl($scope, $http, $templateCache) {
     }else{
       alert("请先登录");
     }
-  }
+  };
 
   $scope.unWatchStock=function(name){
     if($("#headShowName").attr("login")=="in"){
@@ -59,12 +59,6 @@ function FetchCtrl($scope, $http, $templateCache) {
       alert("请先登录");
     }
   };
-
-  // var test=document.getElementsById(test);
-  // test.onclick=function(){
-  //   $scope.isWatch="false";
-  // }
-  
 
   //监听自定义事件
   $('#iswatch').on('loginWatch', function(event, info) {

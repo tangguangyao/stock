@@ -1,7 +1,6 @@
 var stock=stock||{};
 
 stock.header=(function(){
-
 	return {
 		init:function(){
 			this.loginOut();
@@ -20,7 +19,6 @@ stock.header=(function(){
 						$("#headShowName").attr("login","out");
 						$("#butIswatch").show();
 						$("#butNowatch").hide();
-
 					}
 				});
 			});

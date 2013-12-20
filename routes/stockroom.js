@@ -18,4 +18,4 @@ stockroom.talkHistory=function(req,res){
 			res.send({ok:false});
 		}
 	});
-}
+};

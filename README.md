@@ -22,6 +22,11 @@ angularjs和seajs 混用感觉不怎么好，去掉seajs了
 
 加入grunt
 
+12.20 用jshint规范单元测试
+
+qunit前端单元测试
+mocha后端单元测试
+
 
 
 

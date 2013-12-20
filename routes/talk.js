@@ -22,7 +22,7 @@ var filterTopic=function(info){
 				comment:data.comment,
 				isForward:data.isForward,
 				forwardObj:data.forwardObj
-			}
+			};
 		}else{
 			obj.data[i]={
 				forward:data.forward,
@@ -32,11 +32,11 @@ var filterTopic=function(info){
 				uid:data.uid,
 				comment:data.comment,
 				isForward:data.isForward
-			}
+			};
 		}
 	});
 	return obj;
-}
+};
 //过滤评论数据
 var filterComment=function(info){
 	var obj={};
@@ -47,10 +47,10 @@ var filterComment=function(info){
 			name:data.name,
 			time:data.time,
 			topic:data.topic
-		}
+		};
 	});
 	return obj;
-}
+};
 
 talk.submitTopic=function(req,res){
 	var date=new Date();
@@ -69,7 +69,7 @@ talk.submitTopic=function(req,res){
 		var obj=filterTopic(info);
 		res.send(obj);
 	});
-}
+};
 
 talk.myTopic=function(req,res){
 	var name=req.query.name;
@@ -80,7 +80,7 @@ talk.myTopic=function(req,res){
 		var obj=filterTopic(info);
 		res.send(obj);
 	});
-}
+};
 
 talk.submitCommentTopic=function(req,res){
 	var date=new Date();
@@ -100,7 +100,7 @@ talk.submitCommentTopic=function(req,res){
 		aboutPeople:commentObj.aboutPeople,
 		aboutStockcode:commentObj.aboutStockcode,
 		aboutStockName:commentObj.aboutStockName
-	}
+	};
 	if(commentObj.isForward){
 		//转发后
 		//存入我的话题
@@ -116,7 +116,7 @@ talk.submitCommentTopic=function(req,res){
 			forward:0,
 			forwardObj:commentObj.forwardObj,
 			isForward:commentObj.isForward
-		}
+		};
 
 		topic.addTopic(talkObj,function(data){
 			topic.addComment(true,newCommentObj,function(info){
@@ -133,7 +133,7 @@ talk.submitCommentTopic=function(req,res){
 			res.send(comObj);
 		});
 	}
-}
+};
 
 talk.getComment=function(req,res){
 	var uid=Number(req.query.uid);
@@ -144,7 +144,7 @@ talk.getComment=function(req,res){
 		var obj=filterComment(info);
 		res.send(obj);
 	});
-}
+};
 
 talk.aboutTopic=function(req,res){
 	var name=req.query.name;
@@ -155,7 +155,7 @@ talk.aboutTopic=function(req,res){
 		var obj=filterTopic(info);
 		res.send(obj);
 	});
-}
+};
 
 talk.stockTopic=function(req,res){
 	var uid=req.query.uid;
@@ -167,7 +167,7 @@ talk.stockTopic=function(req,res){
 		var obj=filterTopic(info);
 		res.send(obj);
 	});
-}
+};
 
 talk.aboutStockTopic=function(req,res){
 	var name=req.query.name;
@@ -178,7 +178,7 @@ talk.aboutStockTopic=function(req,res){
 		var obj=filterTopic(info);
 		res.send(obj);
 	});
-}
+};
 
 talk.atmeTopic=function(req,res){
 	var name=req.query.name;
@@ -189,4 +189,4 @@ talk.atmeTopic=function(req,res){
 		var obj=filterTopic(info);
 		res.send(obj);
 	});
-}
+};

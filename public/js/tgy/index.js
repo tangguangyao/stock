@@ -154,10 +154,10 @@ function IndexCtrl($scope, $http, $templateCache) {
           //在$("#stockList").attr("my-stock") 中减少删除数据,减少定时关注数据
           timeStock=$("#stockList").attr("my-stock").split(",");
           var newTimeStock=[];
-          for(var i=0,l=timeStock.length;i<l;i++){
-            if(timeStock[i]==delStockUid){
+          for(var i2=0,l2=timeStock.length;i2<l2;i2++){
+            if(timeStock[i2]==delStockUid){
             }else{
-              newTimeStock.push(timeStock[i]);
+              newTimeStock.push(timeStock[i2]);
             }
           }
           timeStock=newTimeStock.join(",");
@@ -168,13 +168,13 @@ function IndexCtrl($scope, $http, $templateCache) {
               topList[h].haveWatch=true;
               topList[h].top--;
               newArrtop=[];
-              for(var h=0,l6=topList.length;h<l6;h++){
+              for(var h2=0,l6=topList.length;h2<l6;h2++){
                 newArrtop.push({
-                  uid:topList[h].uid,
-                  name:topList[h].name,
-                  top:topList[h].top,
-                  haveWatch:topList[h].haveWatch,
-                  num:topList[h].num
+                  uid:topList[h2].uid,
+                  name:topList[h2].name,
+                  top:topList[h2].top,
+                  haveWatch:topList[h2].haveWatch,
+                  num:topList[h2].num
                 });
               }
               $scope.topList=newArrtop;
@@ -545,6 +545,6 @@ function IndexCtrl($scope, $http, $templateCache) {
       var num=Number($(e.target).attr("num"));
       _this.getAtmeTopic(myName,10,num*10,$(e.target));
     };
-  }
+  };
   atmeTopic.init();
 }

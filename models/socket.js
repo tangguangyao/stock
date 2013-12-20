@@ -95,7 +95,7 @@ module.exports = function(io){
             var index=stockRoom[i].user.indexOf(user);
             if(index>-1){
               stockRoom[i].user.splice(index,1);
-              if(stockRoom[i].user==0){
+              if(stockRoom[i].user===0){
                 //如果用户为0，数据存入数据库
                 room.stockRoom(stockRoom[i],function(){
                   stockRoom.splice(i,1);

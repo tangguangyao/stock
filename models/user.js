@@ -14,7 +14,7 @@ function User(user){
   this.beWatch=user.beWatch; 
   this.top=user.top; 
   this.admin=user.admin;
-}; 
+}
 
 module.exports = User; 
 User.prototype.save=function(callback){ 
@@ -51,7 +51,7 @@ User.prototype.save=function(callback){
       callback(err, user);//成功！返回插入的用户信息 
     }); 
   });
-}
+};
 //读取用户信息 
 User.get = function(name, callback){ 
   //读取 users 集合 
@@ -87,7 +87,7 @@ User.stockUp=function(db,watchName,uid,add,callback){
       });
     }
   });
-}
+};
 
 //关注用户
 User.watch=function(wat,req,name,callback){
@@ -135,7 +135,7 @@ User.watch=function(wat,req,name,callback){
       });
     }
   });
-}
+};
 
 User.isWatch=function(myName,name,callback){
   //读取 users 集合 
@@ -157,7 +157,7 @@ User.isWatch=function(myName,name,callback){
       });
     });
   });
-}
+};
 
 User.watchPage=function(name,callback){
   //读取 users 集合 
@@ -175,7 +175,7 @@ User.watchPage=function(name,callback){
       } 
     }); 
   }); 
-}
+};
 
 User.hotPeople=function(callback){
   global.db.collection('user',function(err,collection){
@@ -193,7 +193,7 @@ User.hotPeople=function(callback){
       }
     });
   });
-}
+};
 
 User.setInfo=function(name,info,callback){
   //读取 users 集合 
@@ -204,9 +204,9 @@ User.setInfo=function(name,info,callback){
     //查找用户名 name 值为 name文档 
     collection.update({name:name},{$set:{info:info}},function(err,items){
       callback(err,items);
-    })
+    });
   });  
-}
+};
 
 User.password=function(name,old,newP,callback){
   //读取 users 集合 
@@ -233,4 +233,4 @@ User.password=function(name,old,newP,callback){
       } 
     }); 
   }); 
-}
+};

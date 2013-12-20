@@ -34,7 +34,7 @@ topic.addTopic=function(obj,callback){
 			}	
 		});
     });
-}
+};
 
 topic.myTopic=function(name,size,num,callback){
 	global.db.collection('topic',function(err,collection){
@@ -46,7 +46,7 @@ topic.myTopic=function(name,size,num,callback){
 			}
 		});
 	});
-}
+};
 
 topic.aboutTopic=function(name,size,num,callback){
 	//先查找这个用户关注对象
@@ -73,9 +73,9 @@ topic.aboutTopic=function(name,size,num,callback){
 					callback({isOk:true,data:[]});
 				}
 			}
-		})
+		});
 	});
-}
+};
 
 topic.stockTopic=function(uid,stockName,size,num,callback){
 	global.db.collection('topic',function(err,collection){
@@ -87,7 +87,7 @@ topic.stockTopic=function(uid,stockName,size,num,callback){
 			}
 		});
 	});
-}
+};
 
 topic.aboutStockTopic=function(name,size,num,callback){
 	//先查找这个用户关注的股票
@@ -115,9 +115,9 @@ topic.aboutStockTopic=function(name,size,num,callback){
 					callback({isOk:true,data:[]});
 				}
 			}
-		})
+		});
 	});
-}
+};
 
 topic.atmeTopic=function(name,size,num,callback){
 	global.db.collection('topic',function(err,collection){
@@ -129,7 +129,7 @@ topic.atmeTopic=function(name,size,num,callback){
 			}
 		});
 	});
-}
+};
 
 //评论数据库
 topic.addComment=function(isForward,obj,callback){
@@ -155,7 +155,7 @@ topic.addComment=function(isForward,obj,callback){
 			}
 		});
     });
-}
+};
 
 topic.getComment=function(uid,size,num,callback){
 	global.db.collection('comment',function(err,collection){
@@ -167,4 +167,4 @@ topic.getComment=function(uid,size,num,callback){
 			}
 		});
 	});
-}
+};
