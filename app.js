@@ -51,3 +51,5 @@ server.listen(app.get('port'), function(){
 });
 
 routes(app);
+
+module.exports = app;
