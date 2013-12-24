@@ -44,7 +44,9 @@ people.show=function(req,res){
 
 people.watchPeople=function(req,res){
 	var name=req.query.name;
-	User.watch(true,req,name,function(err,data){
+	var fromName=req.session.user.name;
+  var watch=req.session.user.watch;
+	User.watch(true,fromName,watch,name,function(err,data){
 		if(err){
 			res.send({ok:false,message:err});
 		}else{
@@ -60,7 +62,7 @@ people.watchPeople=function(req,res){
 
 people.unwatchPeople=function(req,res){
 	var name=req.query.name;
-	User.watch(false,req,name,function(err,data){
+	User.watch(false,fromName,watch,name,function(err,data){
 		if(err){
 			res.send({ok:false});
 		}else{
@@ -80,7 +82,7 @@ people.unwatchPeople=function(req,res){
 
 people.watchTab=function(req,res){
 	var name=req.query.name;
-	var pageNum=req.query.pageNum;//20
+	var pageNum=Number(req.query.pageNum);//20
 	var pageSize=req.query.pageSize;//2
 	var nameWatch;//本页用户关注的对象
 	var num,watchArr=[];
@@ -136,7 +138,7 @@ people.watchTab=function(req,res){
 
 people.fensTab=function(req,res){
 	var name=req.query.name;
-	var pageNum=req.query.pageNum;//20
+	var pageNum=Number(req.query.pageNum);//20
 	var pageSize=req.query.pageSize;//2
 	var nameFens;//本页用户的粉丝
 	var num,watchArr=[];

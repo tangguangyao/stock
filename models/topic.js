@@ -94,7 +94,7 @@ topic.aboutStockTopic=function(name,size,num,callback){
 	global.db.collection('user',function(err,collection){
 		collection.findOne({name:name},function(err,obj){
 			if(!err){
-				if(obj.stock.length>0){
+				if(!!obj&&obj.stock.length>0){
 					//存在关注
 					var arr=[];
 					//这里只能查询sh600171这种code代码
@@ -131,13 +131,15 @@ topic.atmeTopic=function(name,size,num,callback){
 	});
 };
 
-//评论数据库
+/*
+评论数据库
+*/
+//添加评论
 topic.addComment=function(isForward,obj,callback){
 	global.db.collection('comment',function(err,collection){
 		collection.insert(obj,{safe: true},function(err,topicItem){
 			if(!err){
 				callback({isOk:true,data:topicItem});
-
 				if(isForward){
 					//topic 评论量+1,转发+1操作
 					global.db.collection('topic',function(err,collection){
@@ -151,12 +153,12 @@ topic.addComment=function(isForward,obj,callback){
 						collection.update({uid:pid},{$inc:{comment:1}},function(err,items){});
 					});
 				}
-				
 			}
 		});
-    });
+  });
 };
 
+//获取话题的评论
 topic.getComment=function(uid,size,num,callback){
 	global.db.collection('comment',function(err,collection){
 		collection.find({pid:uid,hide:false}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){

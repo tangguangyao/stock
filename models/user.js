@@ -36,7 +36,7 @@ User.prototype.save=function(callback){
     watch:[],
     beWatch:[],
     top:0,
-    admin:3
+    admin:this.admin||3 //admin=100是测试数据
   }; 
   //打开数据库
   //连接数据库中的名为user的表，没有就创建
@@ -57,7 +57,7 @@ User.get = function(name, callback){
   //读取 users 集合 
   global.db.collection('user', function(err, collection){ 
     if(err){  
-      return callback(err); 
+      return callback(err);
     } 
     //查找用户名 name 值为 name文档 
     collection.findOne({name: name},function(err, doc){  
@@ -72,7 +72,7 @@ User.get = function(name, callback){
 };
 
 //点击股票关注，更新表
-User.stockUp=function(db,watchName,uid,add,callback){
+User.stockUp=function(watchName,uid,add,callback){
   global.db.collection('user',function(err,collection){
     if(err){     
       return callback(err); 
@@ -90,10 +90,8 @@ User.stockUp=function(db,watchName,uid,add,callback){
 };
 
 //关注用户
-User.watch=function(wat,req,name,callback){
+User.watch=function(wat,fromName,watch,name,callback){
   //打开数据库
-  var fromName=req.session.user.name;
-  var watch=req.session.user.watch;
   var toName=name;
   //读取 users 集合 
   global.db.collection('user', function(err, collection){ 
@@ -113,30 +111,41 @@ User.watch=function(wat,req,name,callback){
       collection.update({name:toName},{$inc:{top:1},$push:{beWatch:fromName}},function(err,items){
         if(err){      
           return callback(err); 
-        } 
-        collection.update({name:fromName},{$push:{watch:toName}},function(err,items){
-          if(err){       
-            return callback(err); 
-          } 
-          callback(err,{ok:true});
-        });
+        }
+        if(items>0){
+          collection.update({name:fromName},{$push:{watch:toName}},function(err,items){
+            if(err){       
+              return callback(err); 
+            } 
+            callback(err,{ok:true});
+          });
+        }else{
+          var message="该用户不存在";
+          callback(err,{ok:false,message:message});
+        }
       });
     }else{
       collection.update({name:toName},{$inc:{top:-1},$pull:{beWatch:fromName}},function(err,items){
         if(err){         
           return callback(err); 
         }
-        collection.update({name:fromName},{$pull:{watch:toName}},function(err,items){
-          if(err){      
-            return callback(err); 
-          } 
-          callback(err,items);
-        });
+        if(items>0){
+          collection.update({name:fromName},{$pull:{watch:toName}},function(err,items){
+            if(err){      
+              return callback(err); 
+            } 
+            callback(err,items);
+          });
+        }else{
+          var message="该用户不存在";
+          callback(err,{ok:false,message:message});
+        }
       });
     }
   });
 };
 
+//是否关注过用户
 User.isWatch=function(myName,name,callback){
   //读取 users 集合 
   global.db.collection('user', function(err, collection){
@@ -159,15 +168,13 @@ User.isWatch=function(myName,name,callback){
   });
 };
 
+//用户页面，点击关注tab,name关注的用户
 User.watchPage=function(name,callback){
   //读取 users 集合 
-  global.db.collection('user', function(err, collection){ 
-    if(err){  
-      return callback(err); 
-    }
+  global.db.collection('user', function(err, collection){
     //查找name关注的人
-    collection.findOne({name: name},function(err, doc){ 
-      if(doc){ 
+    collection.findOne({name: name},function(err, doc){
+      if(doc){
         var user = new User(doc); 
         callback(err, user);//成功！返回查询的用户信息 
       } else {

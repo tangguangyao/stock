@@ -44,7 +44,7 @@ Stoc.prototype.watch=function(callback){
               return callback(err); 
             }
             //更新用户的表
-            user.stockUp(db,watchName,stoc.uid,true,function(err,items){
+            user.stockUp(watchName,stoc.uid,true,function(err,items){
               if(err) throw err;
               return callback({status:200,uid:stoc.uid});
             });
@@ -60,7 +60,7 @@ Stoc.prototype.watch=function(callback){
           collection.update({uid:stoc.uid},{$inc:{top:1},$push:{beWatch:stoc.beWatch}},function(err,items){
             if(err) throw err;
             //更新用户的表
-            user.stockUp(db,watchName,stoc.uid,true,function(err,items){
+            user.stockUp(watchName,stoc.uid,true,function(err,items){
               if(err) throw err;
               return callback({status:200,uid:stoc.uid});
             });
@@ -77,7 +77,7 @@ Stoc.prototype.watch=function(callback){
       collection.update({uid:stoc.uid},{$inc:{top:-1},$pull:{beWatch:stoc.beWatch}},function(err,items){
         if(err) throw err;
         //更新用户的表
-        user.stockUp(db,watchName,stoc.uid,false,function(err,items){
+        user.stockUp(watchName,stoc.uid,false,function(err,items){
           if(err) throw err;
           return callback({status:200,uid:stoc.uid});
         });
