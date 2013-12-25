@@ -184,15 +184,13 @@ User.watchPage=function(name,callback){
   }); 
 };
 
+//热门用户
 User.hotPeople=function(callback){
   global.db.collection('user',function(err,collection){
     if(err){ 
       return callback(err); 
     }
     collection.find().sort({top:-1}).limit(10).toArray(function(err,items){
-      if(err){
-        return callback(err); 
-      }
       if(!!items){//存在
         callback(items);
       }else{
@@ -202,6 +200,7 @@ User.hotPeople=function(callback){
   });
 };
 
+//更新用户信息
 User.setInfo=function(name,info,callback){
   //读取 users 集合 
   global.db.collection('user', function(err, collection){ 
@@ -215,6 +214,7 @@ User.setInfo=function(name,info,callback){
   });  
 };
 
+//修改密码
 User.password=function(name,old,newP,callback){
   //读取 users 集合 
   global.db.collection('user', function(err, collection){ 
@@ -226,14 +226,13 @@ User.password=function(name,old,newP,callback){
       if(doc){ 
         if(doc.password==old){
           collection.update({name:name},{$set:{password:newP}},function(err,items){
-            
             if(err){
               callback(err);//失败！返回null
             }
-            callback("修改成功");
+            callback(err,"修改成功");
           });
         }else{
-          callback("原始密码不正确");
+          callback(err,"原始密码不正确");
         }
       } else {
         callback(err);//失败！返回null 

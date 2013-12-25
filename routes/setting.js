@@ -79,14 +79,19 @@ setting.post=function(req,res){
 				}
 			};
 			//地址存入数据库
-			User.setInfo(name,info,function(err){
+			User.setInfo(name,info,function(err,items){
 				if(err){
 					req.flash('error', err); 
 					return res.redirect('/setting'); 
 				}
-				req.flash('error', "修改信息成功"); 
-				req.session.user.info=info;
-				res.redirect('/setting');
+				if(items>0){
+					req.flash('error', "修改信息成功"); 
+					req.session.user.info=info;
+					res.redirect('/setting');
+				}else{
+					req.flash('error', err); 
+					return res.redirect('/setting'); 
+				}
 			});
 		});
 	}else{
@@ -98,14 +103,19 @@ setting.post=function(req,res){
 				pic:req.session.user.info.pic
 			};
 			//地址存入数据库
-			User.setInfo(name,info,function(err){
+			User.setInfo(name,info,function(err,items){
 				if(err){
 					req.flash('error', err); 
 					return res.redirect('/setting'); 
 				}
-				req.flash('error', "修改信息成功"); 
-				req.session.user.info=info;
-				res.redirect('/setting');
+				if(items>0){
+					req.flash('error', "修改信息成功"); 
+					req.session.user.info=info;
+					res.redirect('/setting');
+				}else{
+					req.flash('error', err); 
+					return res.redirect('/setting');
+				}
 			});		
 		});	
 	}
@@ -123,8 +133,12 @@ setting.setPassword=function(req,res){
 	}
 	var md52 = crypto.createHash('md5');
 	newPassword=md52.update(newPassword).digest('hex');
-	User.password(name,oldPassword,newPassword,function(message){
-		req.flash('error', message); 
+	User.password(name,oldPassword,newPassword,function(err,message){
+		if(err){
+			req.flash('error', err); 
+		}else{
+			req.flash('error', message);
+		}
 		return res.redirect('/setting'); 
 	});
 };

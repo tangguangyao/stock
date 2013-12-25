@@ -9,9 +9,11 @@ var topic={};
 
 module.exports = topic;
 //话题数据库
+
+//添加新话题
 topic.addTopic=function(obj,callback){
 	global.db.collection('topic',function(err,collection){
-		//增加一个自增uid
+		//增加一个自增uid，官方有优化
 		collection.find().sort({_id: -1}).limit(1).toArray(function(err,items){
 			if(items.length>0){
 				obj.uid=items[0].uid+1;
@@ -33,9 +35,10 @@ topic.addTopic=function(obj,callback){
 				});
 			}	
 		});
-    });
+  });
 };
 
+//获取用户的话题
 topic.myTopic=function(name,size,num,callback){
 	global.db.collection('topic',function(err,collection){
 		collection.find({name:name,hide:false}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
@@ -48,6 +51,7 @@ topic.myTopic=function(name,size,num,callback){
 	});
 };
 
+//用户关注对象的话题
 topic.aboutTopic=function(name,size,num,callback){
 	//先查找这个用户关注对象
 	global.db.collection('user',function(err,collection){
@@ -77,6 +81,7 @@ topic.aboutTopic=function(name,size,num,callback){
 	});
 };
 
+//@ 股票的话题
 topic.stockTopic=function(uid,stockName,size,num,callback){
 	global.db.collection('topic',function(err,collection){
 		collection.find({$or:[{aboutStockcode:uid},{aboutStockName:stockName}]}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
@@ -89,6 +94,7 @@ topic.stockTopic=function(uid,stockName,size,num,callback){
 	});
 };
 
+//用户关注的股票的相关话题
 topic.aboutStockTopic=function(name,size,num,callback){
 	//先查找这个用户关注的股票
 	global.db.collection('user',function(err,collection){
@@ -119,6 +125,7 @@ topic.aboutStockTopic=function(name,size,num,callback){
 	});
 };
 
+//@ 我的话题
 topic.atmeTopic=function(name,size,num,callback){
 	global.db.collection('topic',function(err,collection){
 		collection.find({$or:[{aboutPeople:name}]}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
@@ -134,23 +141,26 @@ topic.atmeTopic=function(name,size,num,callback){
 /*
 评论数据库
 */
-//添加评论
+//添加话题的评论
 topic.addComment=function(isForward,obj,callback){
 	global.db.collection('comment',function(err,collection){
 		collection.insert(obj,{safe: true},function(err,topicItem){
 			if(!err){
-				callback({isOk:true,data:topicItem});
 				if(isForward){
 					//topic 评论量+1,转发+1操作
 					global.db.collection('topic',function(err,collection){
 						var pid=Number(obj.pid);
-						collection.update({uid:pid},{$inc:{comment:1,forward:1}},function(err,items){});
+						collection.update({uid:pid},{$inc:{comment:1,forward:1}},function(err,items){
+							callback({isOk:true,data:topicItem,add:"commentAndForward"});
+						});
 					});
 				}else{
 					//topic 评论量+1操作
 					global.db.collection('topic',function(err,collection){
 						var pid=Number(obj.pid);
-						collection.update({uid:pid},{$inc:{comment:1}},function(err,items){});
+						collection.update({uid:pid},{$inc:{comment:1}},function(err,items){
+							callback({isOk:true,data:topicItem,add:"comment"});
+						});
 					});
 				}
 			}

@@ -16,10 +16,11 @@ describe('models user', function(){
 	
 	//先创建测试用户
 	before(function () {
-		user.save(function (err, _user) {
-		});
-		user2.save(function (err, _user) {
-		});
+    //留下50毫秒等待连接上数据库，存在一个全局变量global.db
+    setTimeout(function () {
+  		user.save(function (err, _user) {});
+  		user2.save(function (err, _user) {});
+    },50);
 	});
 	//删除测试用户
 	after(function () {
@@ -31,12 +32,15 @@ describe('models user', function(){
 	//读取用户信息
 	describe('User.get', function(){
   	it('get name', function (done) {
-      User.get(name, function (err,user) {
-        should.not.exist(err);
-        user.name.should.equal(name);
-        user.admin.should.equal(100);
-        done();
-      });
+      //留下50毫秒+10毫秒等待连接上数据库和创建完成用户，存在一个全局变量global.db
+      setTimeout(function () {
+        User.get(name, function (err,user) {
+          should.not.exist(err);
+          user.name.should.equal(name);
+          user.admin.should.equal(100);
+          done();
+        });
+      },60);
     });
 
     it('get name empty', function (done) {
@@ -149,7 +153,59 @@ describe('models user', function(){
 				done();
 			});
 		});
-
 	})
+
+  //热门用户
+  describe('User.hotPeople : get hot people', function(){
+    it('hotPeople yes', function (done) {
+      User.hotPeople(function (items) {
+        if(items){
+          items.length.should.be.above(0);
+          done();
+        }else{
+          done();
+        }
+      });
+    });
+  });
+
+  //更新用户信息
+  describe('User.setInfo : set info of user', function(){
+    it('setInfo yes', function (done) {
+      var info={
+        Spec: "test",
+        email: "test",
+        interest: "test",
+        pic: {
+          big: "/user/big/test.jpg",
+          small: "user/small/test.jpg"
+        }
+      }
+      User.setInfo(name,info,function (err,items) {
+        should.not.exist(err);
+        items.should.equal(1);
+        done();
+      });
+    });
+  });
+
+  //修改密码
+  describe('User.password : change password', function(){
+    it('old password is ok', function (done){
+      User.password(name,1,2,function (err,items) {
+        should.not.exist(err);
+        items.should.equal("修改成功");
+        done();
+      });
+    });
+
+    it('old password is err', function (done){
+      User.password(name,1,2,function (err,items) {
+        should.not.exist(err);
+        items.should.equal("原始密码不正确");
+        done();
+      });
+    });
+  });
 })
 
