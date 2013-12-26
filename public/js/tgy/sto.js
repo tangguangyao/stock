@@ -249,6 +249,7 @@ function FetchCtrl($scope, $http, $templateCache) {
   };
   //查看聊天室早期内容
   $scope.lookTalkMessage=function(){
+    //historyNum 有bug,当保存了少有historyCache 出现
     historyNum=parseInt($(".talkNum").length/historyCache);
     $http({method: "GET", url: "TalkHistory?stock="+pathUrl+"&num="+historyNum, cache: $templateCache}).
       success(function(data, status){

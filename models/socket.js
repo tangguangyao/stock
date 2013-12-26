@@ -27,7 +27,7 @@ module.exports = function(io){
           });
           //如果room.text长度很长，就清空并且存入数据库
           if(stockRoom[i].text.length==cacheNum){
-            room.stockRoom(stockRoom[i],function(){
+            room.stockRoom(stockRoom[i],function(err){
               stockRoom[i].text.length=0;
             });
           }
@@ -49,7 +49,6 @@ module.exports = function(io){
           }
         }
 			});
-
     });
 
     //接受用户加入聊天室消息，并且分组
@@ -95,10 +94,10 @@ module.exports = function(io){
             var index=stockRoom[i].user.indexOf(user);
             if(index>-1){
               stockRoom[i].user.splice(index,1);
-              if(stockRoom[i].user===0){
+              if(stockRoom[i].user.length===0){
                 //如果用户为0，数据存入数据库
-                room.stockRoom(stockRoom[i],function(){
-                  stockRoom.splice(i,1);
+                room.stockRoom(stockRoom[i],function(err){
+                  stockRoom[i].text.length=0;
                 });
                 //并且移除stockRoom[i]
                 return;

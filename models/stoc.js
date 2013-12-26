@@ -52,8 +52,8 @@ Stoc.prototype.watch=function(callback){
         }else{
           //防止前端bug重复添加同一用户
           for(var i=0,l=items[0].beWatch.length;i<l;i++){
-            if(items[0].beWatch[i]==stoc.beWatch){
-              return;
+            if(items[0].beWatch[i].name==stoc.beWatch.name){
+              return callback({status:200,uid:stoc.uid,message:'已添加'});
             }
           }
           //更新股票的表

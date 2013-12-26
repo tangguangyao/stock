@@ -13,7 +13,6 @@ describe('models user', function(){
 	var user=new User({name:name,password:1,admin:100});
 	var name2="test"
 	var user2=new User({name:name2,password:1,admin:100});
-	
 	//先创建测试用户
 	before(function () {
     //留下50毫秒等待连接上数据库，存在一个全局变量global.db

@@ -20,6 +20,7 @@
     "grunt-contrib-jshint": "~0.7.2",
     "grunt-contrib-watch": "~0.5.3",
     "mocha":"*",
-    "should":"*"
+    "should":"*",
+    "supertest": "*"
   }
 }

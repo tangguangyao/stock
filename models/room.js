@@ -20,7 +20,7 @@ room.stockRoom=function(stock,callback){
 			};
 			collection.insert(room,{safe: true},function(err,stocItem){
 				if(err) throw err;
-				callback();
+				callback(err);
 			});
 		});
 	}
@@ -28,7 +28,6 @@ room.stockRoom=function(stock,callback){
 
 room.talkHistory=function(uid,count,callback){
 	global.db.collection('room',function(err,collection){
-		//collection.find({uid:uid}).skip(count).limit(size)
 		collection.find({uid:uid}).sort({_id: -1}).skip(count).limit(1).toArray(function(err,items){
 			callback(items);
 		});
