@@ -27,6 +27,5 @@ angularjs和seajs 混用感觉不怎么好，去掉seajs了
 qunit前端单元测试
 mocha后端单元测试
 
-
-
-
+总结mocha单元测试经验
+http://hi.baidu.com/tang_guangyao/item/302a9d1a9976c06ae65e0643
