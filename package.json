@@ -12,7 +12,8 @@
     "connect-mongo": "*",
     "connect-flash": "*",
     "socket.io": "*",
-    "gm": "*"
+    "gm": "*",
+    "async":"*"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

@@ -1,9 +1,10 @@
 /*
 用户信息数据库
 */
-
 var mongodb = require('./db');
 var connect=require('./connect');
+
+var async = require('async');
 
 function User(user){ 
   this.name = user.name; 
@@ -17,6 +18,7 @@ function User(user){
 }
 
 module.exports = User; 
+
 User.prototype.save=function(callback){ 
   //callback 是执行玩保存后的回调函数
   var user = { 
@@ -44,8 +46,8 @@ User.prototype.save=function(callback){
     //连接失败会将错误信息返回给回调函数，并且关闭数据库连接
     if(err){ 
       return callback(err); 
-    } 
-     //插入新的数据
+    }
+    //插入新的数据
     collection.insert(user,{safe: true},function(err,result){        
       //如果错误err有错误信息，将err和user返回给回调函数
       callback(err, user);//成功！返回插入的用户信息 
@@ -54,6 +56,7 @@ User.prototype.save=function(callback){
 };
 //读取用户信息 
 User.get = function(name, callback){ 
+
   //读取 users 集合 
   global.db.collection('user', function(err, collection){ 
     if(err){  
@@ -69,6 +72,31 @@ User.get = function(name, callback){
       } 
     }); 
   });
+
+  // async.waterfall([
+  //   function(cb){
+  //     global.db.collection('user', function(err, collection){
+  //       cb(err, collection);
+  //     });
+  //   },
+  //   function(collection,cb){
+  //     //查找用户名 name 值为 name文档 
+  //     collection.findOne({name: name},function(err, doc){  
+  //       if(doc){ 
+  //         var user = new User(doc); 
+  //         cb(err, user);//成功！返回查询的用户信息 
+  //       } else { 
+  //         cb(err, null);//失败！返回null 
+  //       } 
+  //     }); 
+  //   }
+  // ], function (err, result) {
+  //    //var l;
+  //   callback(null, result);
+  //    // result now equals 'done'    
+  // });
+
+
 };
 
 //点击股票关注，更新表
@@ -216,6 +244,7 @@ User.setInfo=function(name,info,callback){
 
 //修改密码
 User.password=function(name,old,newP,callback){
+
   //读取 users 集合 
   global.db.collection('user', function(err, collection){ 
     if(err){ 
@@ -239,4 +268,6 @@ User.password=function(name,old,newP,callback){
       } 
     }); 
   }); 
+
 };
+

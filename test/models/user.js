@@ -50,6 +50,7 @@ describe('models user', function(){
         done();
       });
     });
+    
   })
 
 	//点击股票关注，更新表
