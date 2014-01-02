@@ -62,6 +62,8 @@ people.watchPeople=function(req,res){
 
 people.unwatchPeople=function(req,res){
 	var name=req.query.name;
+	var fromName=req.session.user.name;
+  var watch=req.session.user.watch;
 	User.watch(false,fromName,watch,name,function(err,data){
 		if(err){
 			res.send({ok:false});

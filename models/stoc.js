@@ -4,7 +4,7 @@
 var mongodb = require('./db');
 var user = require('./user');
 var connect=require('./connect');
-
+var async = require('async');
 function Stoc(sto){ 
   this.name = sto.name; 
   this.uid = sto.uid; 
@@ -29,12 +29,58 @@ Stoc.prototype.watch=function(callback){
   //连接数据库中的名为user的表，没有就创建
   if(stoc.top==1){//增加热度
     //更新,新增股票的表
-    global.db.collection('sto',function(err,collection){ 
-      if(err){
-        return callback(err); 
-      }
-      collection.find({uid:stoc.uid}).toArray(function(err,items){ 
-        if(err) throw err; 
+    // global.db.collection('sto',function(err,collection){ 
+    //   if(err){
+    //     return callback(err); 
+    //   }
+    //   collection.find({uid:stoc.uid}).toArray(function(err,items){ 
+    //     if(err) throw err; 
+    //     if(items.length===0){
+    //       //创建一个新的
+    //       stoc.beWatch=[stoc.beWatch];
+    //       stoc.top=1;
+    //       collection.insert(stoc,{safe: true},function(err,stocItem){
+    //         if(err){ 
+    //           return callback(err); 
+    //         }
+    //         //更新用户的表
+    //         user.stockUp(watchName,stoc.uid,true,function(err,items){
+    //           if(err) throw err;
+    //           return callback({status:200,uid:stoc.uid});
+    //         });
+    //       }); 
+    //     }else{
+    //       //防止前端bug重复添加同一用户
+    //       for(var i=0,l=items[0].beWatch.length;i<l;i++){
+    //         if(items[0].beWatch[i].name==stoc.beWatch.name){
+    //           return callback({status:200,uid:stoc.uid,message:'已添加'});
+    //         }
+    //       }
+    //       //更新股票的表
+    //       collection.update({uid:stoc.uid},{$inc:{top:1},$push:{beWatch:stoc.beWatch}},function(err,items){
+    //         if(err) throw err;
+    //         //更新用户的表
+    //         user.stockUp(watchName,stoc.uid,true,function(err,items){
+    //           if(err) throw err;
+    //           return callback({status:200,uid:stoc.uid});
+    //         });
+    //       });
+    //     }
+    //   });
+    // });
+    async.waterfall([
+      function(cb){
+        //更新,新增股票的表
+        global.db.collection('sto',function(err,collection){ 
+          if(err){
+            return callback(err); 
+          }
+          collection.find({uid:stoc.uid}).toArray(function(err,items){ 
+            cb(null,items,collection,err);
+          });
+        })
+      },
+      function(items,collection,err,cb){
         if(items.length===0){
           //创建一个新的
           stoc.beWatch=[stoc.beWatch];
@@ -66,8 +112,8 @@ Stoc.prototype.watch=function(callback){
             });
           });
         }
-      });
-    });
+      }
+    ]);
   }else{//减少热度
     global.db.collection('sto',function(err,collection){
       if(err){ 

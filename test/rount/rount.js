@@ -5,7 +5,7 @@ var request = require('supertest');
 var app = require('../../app');
 
 var http;
-describe('models user', function(){
+describe('nologin rount', function(){
 	//先创建测试用户
 	before(function () {
     app.listen(0);
@@ -17,9 +17,47 @@ describe('models user', function(){
   });
 
 	//访问首页
-	describe('rount', function(){
+	describe('get /', function(){
   	it('get / 200 or 302', function (done) {
       http.get('/').expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            res.headers.location.should.equal("/login");
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          res.headers.location.should.equal("/login");
+          done();
+        }
+      })
+    });
+  });
+
+  //访问登录页
+  describe('get /login', function(){
+    it('get /login 200 or 302', function (done) {
+      http.get('/login').expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            should.not.exist(res.header.location);
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          should.not.exist(res.header.location);
+          done();
+        }
+      })
+    });
+  });
+
+  //访问用户页面
+  describe('get /people/:name', function(){
+    it('get /people/tang', function (done) {
+      http.get('/people/tang').expect(200,function(err,res){
         if(err) {
           if(res.status==302){
             done();
@@ -33,10 +71,97 @@ describe('models user', function(){
     });
   });
 
+  //访问设置页面
+  describe('get /setting', function(){
+    it('get /setting', function (done) {
+      http.get('/setting').expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            res.header.location.should.equal("/login");
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          res.header.location.should.equal("/login");
+          done();
+        }
+      })
+    });
+  });
+
+  //访问股票页面
+  describe('get /stock/:uid', function(){
+    it('get /stock/sh600171', function (done) {
+      http.get('/stock/sh600171').expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          done();
+        }
+      })
+    });
+  });
+
+  //注册测试用户
+  describe('post /sign', function(){
+    it('post /sign password_re is err', function (done) {
+      http.post('/sign').send({name:"tang",password:"1",repassword:"2"}).expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            res.header.location.should.equal("/login");
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          res.header.location.should.equal("/login");
+          done();
+        }
+      })
+    });
+
+    it('post /sign user is exist', function (done) {
+      http.post('/sign').send({name:"tang",password:"1",repassword:"1"}).expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            res.header.location.should.equal("/login");
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          res.header.location.should.equal("/login");
+          done();
+        }
+      })
+    });
+
+    it('post /sign user is ok', function (done) {
+      http.post('/sign').send({name:"testuser",password:"1",repassword:"1"}).expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            res.header.location.should.equal("/");
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          res.header.location.should.equal("/");
+          done();
+        }
+      })
+    });
+  });
+
   //访问post登录页面
   describe('post login', function(){
     it('login right user / 200 or 302', function (done) {
-      http.post('/login').send({name:"tang",password:"1234"}).expect(200,function(err,res){
+      http.post('/login').send({name:"testuser",password:"1"}).expect(200,function(err,res){
         if(err) {
           if(res.status==302){
             res.header.location.should.equal("/");
@@ -51,7 +176,7 @@ describe('models user', function(){
     });
 
     it('login err password / 200 or 302', function (done) {
-      http.post('/login').send({name:"tang",password:"12345"}).expect(200,function(err,res){
+      http.post('/login').send({name:"testuser",password:"123"}).expect(200,function(err,res){
         if(err) {
           if(res.status==302){
             res.header.location.should.equal("/login");
@@ -80,75 +205,8 @@ describe('models user', function(){
       })
     });
   });
-
-  //ajax loginOut 登出
-  describe('ajax get loginOut', function(){
-    it('loginOut / 200 or 302', function (done) {
-      http.get('/loginOut').expect(200,function(err,res){
-        if(err) {
-          if(res.status==302){
-            //data.ok=true;
-            res.body.ok.should.equal(true);
-            done();
-          }else{
-            done(err);
-          }
-        } else {
-          res.body.ok.should.equal(true);
-          done();
-        }
-      })
-    });
-  });
   
-  describe('get /people/:name', function(){
-    it('get /people/tang', function (done) {
-      http.get('/people/tang').expect(200,function(err,res){
-        if(err) {
-          if(res.status==302){
-            done();
-          }else{
-            done(err);
-          }
-        } else {
-          done();
-        }
-      })
-    });
-  });
-
-  describe('get /setting', function(){
-    it('get /setting', function (done) {
-      http.get('/setting').expect(200,function(err,res){
-        if(err) {
-          if(res.status==302){
-            done();
-          }else{
-            done(err);
-          }
-        } else {
-          done();
-        }
-      })
-    });
-  });
-
-  describe('get /stock/:uid', function(){
-    it('get /setting', function (done) {
-      http.get('/stock/sh600171').expect(200,function(err,res){
-        if(err) {
-          if(res.status==302){
-            done();
-          }else{
-            done(err);
-          }
-        } else {
-          done();
-        }
-      })
-    });
-  });
-
+  //异步登录
   describe('ajax post /loginAjax', function(){
     it('ajax err user', function (done) {
       http.post('/loginAjax').send({name:"tang111",password:"1234"}).expect(200,function(err,res){
@@ -187,50 +245,43 @@ describe('models user', function(){
     });
 
     it('ajax right ok', function (done) {
-      http.post('/loginAjax').send({name:"tang",password:"1234"}).expect(200,function(err,res){
+      http.post('/loginAjax').send({name:"testuser",password:"1"}).expect(200,function(err,res){
         if(err) {
           if(res.status==302){
             res.body.ok.should.equal(true);
-            res.body.info.name.should.equal("tang");
+            res.body.info.name.should.equal("testuser");
             done();
           }else{
             done(err);
           }
         } else {
           res.body.ok.should.equal(true);
-          res.body.info.name.should.equal("tang");
+          res.body.info.name.should.equal("testuser");
           done();
         }
       })
     });
-
   });
 
-  // describe('ajax post /submitTopic', function(){
-  //   it('post submitTopic', function (done) {
-  //     var commentObj={
-  //       aboutPeople: ['yao'],
-  //       aboutStockName: ['上海贝岭'],
-  //       aboutStockcode: ['sh600171'],
-  //       name: "tang",
-  //       topic: "asdasd$上海贝岭$,$sh600171$, @guang !"
-  //     }
 
-  //     http.post('/submitTopic').send(commentObj).expect(200,function(err,res){
-  //       if(err) {
-  //         if(res.status==302){
-  //           //res.body.isOk.should.equal(true);
-  //           done();
-  //         }else{
-  //           done(err);
-  //         }
-  //       } else {
-  //         //res.body.isOk.should.equal(true);
-  //         done();
-  //       }
-  //     })
-  //   });
-  // });  
+
+  describe('get /stock/:uid', function(){
+    it('get /setting', function (done) {
+      http.get('/stock/sh600171').expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          done();
+        }
+      })
+    });
+  });
+
+  
 
   describe('ajax get /aboutStockTopic', function(){
     it('get aboutStockTopic', function (done) {

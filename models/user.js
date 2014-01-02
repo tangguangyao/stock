@@ -56,7 +56,6 @@ User.prototype.save=function(callback){
 };
 //读取用户信息 
 User.get = function(name, callback){ 
-
   //读取 users 集合 
   global.db.collection('user', function(err, collection){ 
     if(err){  
@@ -72,31 +71,6 @@ User.get = function(name, callback){
       } 
     }); 
   });
-
-  // async.waterfall([
-  //   function(cb){
-  //     global.db.collection('user', function(err, collection){
-  //       cb(err, collection);
-  //     });
-  //   },
-  //   function(collection,cb){
-  //     //查找用户名 name 值为 name文档 
-  //     collection.findOne({name: name},function(err, doc){  
-  //       if(doc){ 
-  //         var user = new User(doc); 
-  //         cb(err, user);//成功！返回查询的用户信息 
-  //       } else { 
-  //         cb(err, null);//失败！返回null 
-  //       } 
-  //     }); 
-  //   }
-  // ], function (err, result) {
-  //    //var l;
-  //   callback(null, result);
-  //    // result now equals 'done'    
-  // });
-
-
 };
 
 //点击股票关注，更新表
@@ -122,24 +96,61 @@ User.watch=function(wat,fromName,watch,name,callback){
   //打开数据库
   var toName=name;
   //读取 users 集合 
-  global.db.collection('user', function(err, collection){ 
-    if(err){  
-      return callback(err); 
-    }
-    if(wat){//wat为true表示加关注
-      //判断下是否已经关注过
-      for(var i=0,l=watch.length;i<l;i++){
-        if(watch[i]==toName){
-          
-          var message="您已经关注该用户";
-          callback(err,{ok:false,message:message});
-          return;
+  if(wat){//wat为true表示加关注
+    // global.db.collection('user', function(err, collection){ 
+    //   if(err){  
+    //     return callback(err); 
+    //   }
+    //   //判断下是否已经关注过
+    //   for(var i=0,l=watch.length;i<l;i++){
+    //     if(watch[i]==toName){
+    //       var message="您已经关注该用户";
+    //       callback(err,{ok:false,message:message});
+    //       return;
+    //     }
+    //   }
+    //   collection.update({name:toName},{$inc:{top:1},$push:{beWatch:fromName}},function(err,items){
+    //     if(err){      
+    //       return callback(err); 
+    //     }
+    //     if(items>0){
+    //       collection.update({name:fromName},{$push:{watch:toName}},function(err,items){
+    //         if(err){       
+    //           return callback(err); 
+    //         } 
+    //         callback(err,{ok:true});
+    //       });
+    //     }else{
+    //       var message="该用户不存在";
+    //       callback(err,{ok:false,message:message});
+    //     }
+    //   });
+    // });
+    async.waterfall([
+      function(cb){
+        //判断下是否已经关注过
+        for(var i=0,l=watch.length;i<l;i++){
+          if(watch[i]==toName){
+            var message="您已经关注该用户";
+            callback(null,{ok:false,message:message});
+            return;
+          }
         }
-      }
-      collection.update({name:toName},{$inc:{top:1},$push:{beWatch:fromName}},function(err,items){
-        if(err){      
-          return callback(err); 
-        }
+        //被关注的用户top+1操作
+        global.db.collection('user', function(err, collection){ 
+          if(err){  
+            return callback(err); 
+          }
+          collection.update({name:toName},{$inc:{top:1},$push:{beWatch:fromName}},function(err,items){
+            if(err){      
+              return callback(err); 
+            }
+            cb(null,items,collection,err);
+          }); 
+        });
+      },
+      function(items,collection,err,cb){
+        //判断被关注用户是否存在，存在就更新关注用户
         if(items>0){
           collection.update({name:fromName},{$push:{watch:toName}},function(err,items){
             if(err){       
@@ -151,12 +162,45 @@ User.watch=function(wat,fromName,watch,name,callback){
           var message="该用户不存在";
           callback(err,{ok:false,message:message});
         }
-      });
-    }else{
-      collection.update({name:toName},{$inc:{top:-1},$pull:{beWatch:fromName}},function(err,items){
-        if(err){         
-          return callback(err); 
-        }
+      }
+    ]);
+  }else{
+    // global.db.collection('user', function(err, collection){ 
+    //   if(err){  
+    //     return callback(err); 
+    //   }
+    //   collection.update({name:toName},{$inc:{top:-1},$pull:{beWatch:fromName}},function(err,items){
+    //     if(err){         
+    //       return callback(err); 
+    //     }
+    //     if(items>0){
+    //       collection.update({name:fromName},{$pull:{watch:toName}},function(err,items){
+    //         if(err){      
+    //           return callback(err); 
+    //         } 
+    //         callback(err,items);
+    //       });
+    //     }else{
+    //       var message="该用户不存在";
+    //       callback(err,{ok:false,message:message});
+    //     }
+    //   });
+    // });
+    async.waterfall([
+      function(cb){
+        global.db.collection('user', function(err, collection){ 
+          if(err){  
+            return callback(err); 
+          }
+          collection.update({name:toName},{$inc:{top:-1},$pull:{beWatch:fromName}},function(err,items){
+            if(err){         
+              return callback(err); 
+            }
+            cb(null,items,collection,err);
+          });
+        });
+      },
+      function(items,collection,err,cb){
         if(items>0){
           collection.update({name:fromName},{$pull:{watch:toName}},function(err,items){
             if(err){      
@@ -168,9 +212,9 @@ User.watch=function(wat,fromName,watch,name,callback){
           var message="该用户不存在";
           callback(err,{ok:false,message:message});
         }
-      });
-    }
-  });
+      }
+    ]);
+  }
 };
 
 //是否关注过用户
@@ -244,14 +288,45 @@ User.setInfo=function(name,info,callback){
 
 //修改密码
 User.password=function(name,old,newP,callback){
+  // //读取 users 集合 
+  // global.db.collection('user', function(err, collection){ 
+  //   if(err){ 
+  //     return callback(err); 
+  //   } 
+  //   //查找用户名 name 值为 name文档 
+  //   collection.findOne({name: name},function(err, doc){ 
+  //     if(doc){ 
+  //       if(doc.password==old){
+  //         collection.update({name:name},{$set:{password:newP}},function(err,items){
+  //           if(err){
+  //             callback(err);//失败！返回null
+  //           }
+  //           callback(err,"修改成功");
+  //         });
+  //       }else{
+  //         callback(err,"原始密码不正确");
+  //       }
+  //     } else {
+  //       callback(err);//失败！返回null 
+  //     } 
+  //   }); 
+  // }); 
 
-  //读取 users 集合 
-  global.db.collection('user', function(err, collection){ 
-    if(err){ 
-      return callback(err); 
-    } 
-    //查找用户名 name 值为 name文档 
-    collection.findOne({name: name},function(err, doc){ 
+  async.waterfall([
+    function(cb){
+      //读取 users 集合 
+      global.db.collection('user', function(err, collection){ 
+        if(err){ 
+          return callback(err); 
+        } 
+        //查找用户名 name 值为 name文档 
+        collection.findOne({name: name},function(err, doc){
+          cb(null,doc,collection,err);
+        }); 
+      }); 
+    },
+    function(doc,collection,err,cb){
+      //判断是否修改密码
       if(doc){ 
         if(doc.password==old){
           collection.update({name:name},{$set:{password:newP}},function(err,items){
@@ -266,8 +341,6 @@ User.password=function(name,old,newP,callback){
       } else {
         callback(err);//失败！返回null 
       } 
-    }); 
-  }); 
-
+    }
+  ]);
 };
-
