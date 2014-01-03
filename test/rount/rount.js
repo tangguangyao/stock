@@ -14,6 +14,10 @@ describe('nologin rount', function(){
 	//删除测试股票
 	after(function () {
     //app.close();
+    //删除测试用户
+    global.db.collection('user',function(err,collection){
+      collection.remove({name:"testuser"},function(err){});
+    });
   });
 
 	//访问首页
@@ -206,7 +210,7 @@ describe('nologin rount', function(){
     });
   });
   
-  //异步登录
+  //异步登录测试
   describe('ajax post /loginAjax', function(){
     it('ajax err user', function (done) {
       http.post('/loginAjax').send({name:"tang111",password:"1234"}).expect(200,function(err,res){

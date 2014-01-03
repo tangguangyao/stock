@@ -3,6 +3,7 @@ var should = require('should');
 
 var request = require('supertest');
 var app = require('../../app');
+var Stoc = require('../../models/stoc');
 
 var http;
 var cookie;
@@ -14,33 +15,58 @@ describe('login rount', function(){
   // var name2="test"
   // var user2=new User({name:name2,password:1,admin:100});
 
+  var teststock=new Stoc({
+    beWatch:{
+      name: "testname",
+      top: "2"
+    },
+    name: "测试股票",
+    uid: "sh999999",
+    top: "1"
+  });
+
 	//先创建测试用户
-	before(function (done) {
-    request(app).post('/loginAjax').send({name:"tang",password:"1234"}).end(function(err,res){
-        //res.should.have.status(200);
-        cookie = res.headers['set-cookie'];
-        done();        
-      });
+	before(function (done) {    
+    // request(app).post('/loginAjax').send({name:"testuser",password:"1"}).end(function(err,res){
+    //   //res.should.have.status(200);
+    //   cookie = res.headers['set-cookie'];
+    //   done();        
+    // });
+
+    //创建一个测试股票
+    //teststock.watch(function (user) {});
+    //创建一个测试用户，并且保存cookie
+    request(app).post('/sign').send({name:"testuser",password:"1",repassword:"1"}).expect(200,function(err,res){
+      cookie = res.headers['set-cookie'];
+      done(); 
+    });
 	});
 	//删除测试股票
 	after(function () {
     //app.close();
+    //删除测试用户
+    global.db.collection('user',function(err,collection){
+      collection.remove({name:"testuser"},function(err){});
+    });
+    //删除测试股票
+    global.db.collection('sto',function(err,collection){
+      collection.remove({uid:'sh999999'},function(err){});
+    });
   });
 
+  //测试访问首页
   describe('login get /', function(){    
     it('user is login', function (done) {
       request(app).get('/').set('cookie', cookie).expect(200,function(err,res){
         if(err) {
           if(res.status==302){
             should.not.exist(res.header.location);
-            //res.body.isOk.should.equal(true);
             done();
           }else{
             done(err);
           }
         } else {
           should.not.exist(res.header.location);
-          //res.body.isOk.should.equal(true);
           done();
         }
       })
@@ -97,7 +123,7 @@ describe('login rount', function(){
     });
   });
 
-
+  //访问设置页面
   describe('get /setting', function(){
     it('get /setting', function (done) {
       request(app).get('/setting').set('cookie', cookie).expect(200,function(err,res){
@@ -115,6 +141,27 @@ describe('login rount', function(){
       })
     });
   });
+
+  //关注股票
+  describe('get /watchStock', function(){
+    //关注股票并且新建股票
+    it('watch stock and creat stock', function (done) {
+      request(app).get('/watchStock?uid=sh999999&name=测试股票&beWatchName=testuser&beWatchTop=1&add=1').set('cookie', cookie).expect(200,function(err,res){
+        if(err) {
+          if(res.status==302){
+            res.body.ok.should.equal(true);
+            done();
+          }else{
+            done(err);
+          }
+        } else {
+          res.body.ok.should.equal(true);
+          done();
+        }
+      })
+    });
+  });
+
 
 
 

@@ -13,7 +13,9 @@
     "connect-flash": "*",
     "socket.io": "*",
     "gm": "*",
-    "async":"*"
+    "async":"*",
+    "redis":"*",
+    "request":"*"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

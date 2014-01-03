@@ -9,6 +9,7 @@ var crypto = require('crypto'), //密码加密模块
     setting = require('./setting'),
     talk = require('./talk'),
     stockroom = require('./stockroom');
+    test = require('./test'),
 
 module.exports = function(app){
   app.get('/',function(req,res){
@@ -136,5 +137,9 @@ module.exports = function(app){
   //获取@我的话题
   app.get('/atmeTopic',function(req,res){
     talk.atmeTopic(req,res);
+  });
+
+  app.get('/test',function(req,res){
+    test.redis(req,res);
   });
 };
