@@ -33,3 +33,6 @@ http://hi.baidu.com/tang_guangyao/item/302a9d1a9976c06ae65e0643
 数据库对应模块单元测试完成
 
 加入async，对于需要多次回调查询数据库的进行重构
+
+使用外网免费数据库https://app.mongohq.com
+
