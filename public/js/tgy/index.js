@@ -37,7 +37,7 @@ function IndexCtrl($scope, $http, $templateCache) {
       //如果没有信息，就不请求
       return;
     }
-    $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&key=47bce5c74f&access_token=qPVhzoKJWIL1o3UCSgUfRK&_=1389259380479&callback=JSON_CALLBACK';
+    $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&key=47bce5c74f&access_token=qPVhzoKJWIL1o3UCSgUfRK&_=1389603586048&callback=JSON_CALLBACK';
     $scope.code = null;
     $scope.response = null;
     $http({method: $scope.method, url: $scope.url, cache: $templateCache}).
@@ -95,6 +95,11 @@ function IndexCtrl($scope, $http, $templateCache) {
         $scope.topList=topList=data.list;
       }
     });
+  //bigpipe请求热门股
+  var bigpipe=new Bigpipe();
+  bigpipe.ready('hotStock',function(data){
+    var l;
+  })
 
   //请求热门用户
   //由于后端同时请求了热门股票，会导致mongodb同时开启导致bug，暂时注释
@@ -214,7 +219,7 @@ function IndexCtrl($scope, $http, $templateCache) {
           $scope.topList=newTopList;
           //刷新我的收藏
           $scope.addMethod = 'JSONP';
-          $scope.addUrl = 'http://xueqiu.com/stock/quote.json?code='+topStockUid+'&key=47bce5c74f&access_token=gbQtYjUWioQ9DQWGpDIREK&_=1386664870607&callback=JSON_CALLBACK';
+          $scope.addUrl = 'http://xueqiu.com/stock/quote.json?code='+topStockUid+'&key=47bce5c74f&access_token=qPVhzoKJWIL1o3UCSgUfRK&_=1389603586048&callback=JSON_CALLBACK';
           $http({method: $scope.addMethod, url: $scope.addUrl, cache: $templateCache}).
             success(function(data, status) {
               //请求关注的数据
