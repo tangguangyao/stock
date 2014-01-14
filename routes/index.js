@@ -8,32 +8,50 @@ var crypto = require('crypto'), //密码加密模块
     people = require('./people'),
     setting = require('./setting'),
     talk = require('./talk'),
-    stockroom = require('./stockroom');
+    stockroom = require('./stockroom'),
     test = require('./test'),
+    async = require('async');
 
 module.exports = function(app){
   app.get('/',function(req,res){
     if(req.session.user){
+      //原始方式
       // res.render('index', { 
       //   user:req.session.user,
       //   isStock:true
       // });
 
-      //pipe替换
+      //pipe替换    
       res.render('index', {
           user:req.session.user,
           isStock:true
         },function (err, str) {
         //res.setHeader('content-type', 'text/html; charset=utf-8')
-        res.write(str)
-        // res.write('<section id="s1"></section><section id="s2"></section>')
+        res.write(str);
       })
-      var data={is:true};
-      setTimeout(function(){
-        res.write('111');
+      //bigpipe获取hotStock接口数据
+      async.parallel([
+        function(cb) {
+          stock.bigpipeHotStock(function(data){
+            res.write('<script>bigpipe.set("hotStock",'+JSON.stringify(data)+');</script>');
+          })
+        },
+        function(cb) {
+          people.bigpipeHotPeople(req,res,function(data){
+            res.write('<script>bigpipe.set("hotPeople",'+JSON.stringify(data)+');</script>');
+          })
+        }
+      ], function (err, results) {
         res.end();
-      }, 8000);
-      
+      });
+      // stock.bigpipeHotStock(function(data){
+      //   res.write('<script>bigpipe.set("hotStock",'+JSON.stringify(data)+');</script>');
+      //   res.end();
+      // });
+      // stock.bigpipeTalkHistory(req,res,function(data){
+      //   res.write('<script>bigpipe.set("hotStock",'+JSON.stringify(data)+');</script>');
+      // });
+
 
 
     }else{

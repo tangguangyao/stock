@@ -75,6 +75,13 @@ stock.hotStock=function(req,res){
 	});
 };
 
+stock.bigpipeHotStock=function(callback){
+	Stoc.hotStock(function(obj){
+		//res.send({ok:true,list:obj});
+		callback({ok:true,list:obj})
+	});
+};
+
 stock.talkHistory=function(req,res){
 	var uid=req.query.stock;
 	var num=req.query.num;

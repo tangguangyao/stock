@@ -219,6 +219,28 @@ people.hotPeople=function(req,res){
 	});
 };
 
+//bigpipe 获取热门用户
+people.bigpipeHotPeople=function(req,res,callback){
+	var myName=req.session.user.name;
+	var myWatch=req.session.user.watch;
+	User.hotPeople(function(obj){
+		for(var i=0,l=obj.length;i<l;i++){
+			obj[i].isWatch=false;
+			obj[i].password=null;
+			for(var j=0,l2=myWatch.length;j<l2;j++){
+				if(obj[i].name==myWatch[j]){
+					obj[i].isWatch=true;
+				}
+			}
+		}
+		//res.send({ok:true,list:obj});
+		//假设服务器慢，有个延迟
+		setTimeout(function(){
+			callback({ok:true,list:obj});
+		}, 8000);
+	});
+};
+
 //判断myName用户关注的用户myWatch是否在nameWatch中
 var watchPageOther=function(myName,myWatch,nameWatch,pageSize,pageNum){
 	var num=nameWatch.length>pageSize*(pageNum+1)?pageSize*(pageNum+1):nameWatch.length;

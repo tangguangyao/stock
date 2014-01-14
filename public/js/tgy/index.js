@@ -1,8 +1,9 @@
-
-angular.module('App', []);
+//先初始化需要的bigpipe模块
+var bigpipe=new Bigpipe();
 //需要的模块
 //var stock=require('tgy/topic');
 
+//IndexCtrl函数在页面加载完毕后执行
 function IndexCtrl($scope, $http, $templateCache) {
   var myName=$("#headShowName").text();
   //定时刷新列表
@@ -76,43 +77,79 @@ function IndexCtrl($scope, $http, $templateCache) {
   }
   start();
 
-  //请求热门股
-  $http({method: "GET", url: "/hotStock", cache: $templateCache}).
-    success(function(data,status){
-      if(data.ok){
-        for(var k=0,l3=data.list.length;k<l3;k++){
-          data.list[k].haveWatch=true;
-          data.list[k].num=k;
-        }
-        var userWatchList=$("#stockList").attr("my-stock").split(",");
-        for(var i=0,l=userWatchList.length;i<l;i++){
-          for(var j=0,l2=data.list.length;j<l2;j++){
-            if(userWatchList[i]==data.list[j].uid){
-              data.list[j].haveWatch=false;
-            }
+  /*
+  *angularjs 内部的ajax方式请求热门股
+  */
+  // $http({method: "GET", url: "/hotStock", cache: $templateCache}).
+  //   success(function(data,status){
+  //     if(data.ok){
+  //       for(var k=0,l3=data.list.length;k<l3;k++){
+  //         data.list[k].haveWatch=true;
+  //         data.list[k].num=k;
+  //       }
+  //       var userWatchList=$("#stockList").attr("my-stock").split(",");
+  //       for(var i=0,l=userWatchList.length;i<l;i++){
+  //         for(var j=0,l2=data.list.length;j<l2;j++){
+  //           if(userWatchList[i]==data.list[j].uid){
+  //             data.list[j].haveWatch=false;
+  //           }
+  //         }
+  //       }
+  //       $scope.topList=topList=data.list;
+  //     }
+  //   });
+  /*
+  *bigpipe-方式请求热门股
+  */
+  bigpipe.ready('hotStock',function(data){
+    if(data.ok){
+      for(var k=0,l3=data.list.length;k<l3;k++){
+        data.list[k].haveWatch=true;
+        data.list[k].num=k;
+      }
+      var userWatchList=$("#stockList").attr("my-stock").split(",");
+      for(var i=0,l=userWatchList.length;i<l;i++){
+        for(var j=0,l2=data.list.length;j<l2;j++){
+          if(userWatchList[i]==data.list[j].uid){
+            data.list[j].haveWatch=false;
           }
         }
-        $scope.topList=topList=data.list;
       }
-    });
-  //bigpipe请求热门股
-  var bigpipe=new Bigpipe();
-  bigpipe.ready('hotStock',function(data){
-    var l;
-  })
+      
+      //这里使用$apply()触发下更新，防止接口返回太慢导致不更新
+      //第二种写法
+      $scope.$apply(function(){
+        $scope.topList=topList=data.list;
+      });
+    }
+  });
 
   //请求热门用户
   //由于后端同时请求了热门股票，会导致mongodb同时开启导致bug，暂时注释
-  var topPeopleList;
-  $http({method: "GET", url: "/hotPeople", cache: $templateCache}).
-    success(function(data,status){
-      if(data.ok){
-        for(var i=0,l=data.list.length;i<l;i++){
-          data.list[i].num=i;
-        }
-        $scope.peoples=topPeopleList=data.list;
+  // var topPeopleList;
+  // $http({method: "GET", url: "/hotPeople", cache: $templateCache}).
+  //   success(function(data,status){
+  //     if(data.ok){
+  //       for(var i=0,l=data.list.length;i<l;i++){
+  //         data.list[i].num=i;
+  //       }
+  //       $scope.peoples=topPeopleList=data.list;
+  //     }
+  //   });
+  /*
+  *bigpipe方法请求热门用户
+  */
+  bigpipe.ready('hotPeople',function(data){
+    if(data.ok){
+      for(var i=0,l=data.list.length;i<l;i++){
+        data.list[i].num=i;
       }
-    });
+      $scope.peoples=topPeopleList=data.list;
+      //这里使用$apply()触发下更新，防止接口返回太慢导致不更新
+      $scope.$apply();
+    }
+  });
+
 
   //关注热门人物
   $scope.topPeople=function(people){
@@ -553,3 +590,6 @@ function IndexCtrl($scope, $http, $templateCache) {
   };
   atmeTopic.init();
 }
+
+//angular.module('App', []);
+angular.bootstrap(document.documentElement);

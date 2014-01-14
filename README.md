@@ -39,3 +39,5 @@ http://hi.baidu.com/tang_guangyao/item/302a9d1a9976c06ae65e0643
 测试部署分支
 
 尝试bigpige
+
+首页利用bigpipe，加载热门股票和热门用户，并且和angular结合使用
