@@ -1,8 +1,8 @@
 /*
- * 路由处理
+ * 璺敱澶勭悊
 */
-var crypto = require('crypto'), //密码加密模块
-    User = require('../models/user.js'), //引入用户登录函数
+var crypto = require('crypto'), //瀵嗙爜鍔犲瘑妯″潡
+    User = require('../models/user.js'), //寮曞叆鐢ㄦ埛鐧诲綍鍑芥暟
     login = require('./login'),
     stock = require('./stock'),
     people = require('./people'),
@@ -15,13 +15,13 @@ var crypto = require('crypto'), //密码加密模块
 module.exports = function(app){
   app.get('/',function(req,res){
     if(req.session.user){
-      //原始方式
+      //鍘熷鏂瑰紡
       // res.render('index', { 
       //   user:req.session.user,
       //   isStock:true
       // });
 
-      //pipe替换    
+      //pipe鏇挎崲    
       res.render('index', {
           user:req.session.user,
           isStock:true
@@ -29,16 +29,18 @@ module.exports = function(app){
         //res.setHeader('content-type', 'text/html; charset=utf-8')
         res.write(str);
       })
-      //bigpipe获取hotStock接口数据
+      //bigpipe鑾峰彇hotStock鎺ュ彛鏁版嵁
       async.parallel([
         function(cb) {
           stock.bigpipeHotStock(function(data){
             res.write('<script>bigpipe.set("hotStock",'+JSON.stringify(data)+');</script>');
+            cb(null);
           })
         },
         function(cb) {
           people.bigpipeHotPeople(req,res,function(data){
             res.write('<script>bigpipe.set("hotPeople",'+JSON.stringify(data)+');</script>');
+            cb(null);
           })
         }
       ], function (err, results) {
@@ -80,12 +82,12 @@ module.exports = function(app){
   });
 
   app.post('/sign',function(req,res){
-    //在post请求后的反应
+    //鍦╬ost璇锋眰鍚庣殑鍙嶅簲
     login.sign(req,res);
   });
 
   app.post('/login',function(req,res){
-    //在post请求后的反应
+    //鍦╬ost璇锋眰鍚庣殑鍙嶅簲
     login.login(req,res);
   });
   
@@ -137,27 +139,27 @@ module.exports = function(app){
     stockroom.talkHistory(req,res);
   });
 
-  //提交话题
+  //鎻愪氦璇濋
   app.post('/submitTopic',function(req,res){
     talk.submitTopic(req,res);
   });
 
-  //获取我的话题
+  //鑾峰彇鎴戠殑璇濋
   app.get('/myTopic',function(req,res){
     talk.myTopic(req,res);
   });
 
-  //提交评论
+  //鎻愪氦璇勮
   app.post('/submitCommentTopic',function(req,res){
     talk.submitCommentTopic(req,res);
   });
 
-  //获取话题评论
+  //鑾峰彇璇濋璇勮
   app.get('/getComment',function(req,res){
     talk.getComment(req,res);
   });
 
-  //获取相关话题
+  //鑾峰彇鐩稿叧璇濋
   app.get('/aboutTopic',function(req,res){
     talk.aboutTopic(req,res);
   });
@@ -166,11 +168,11 @@ module.exports = function(app){
     talk.stockTopic(req,res);
   });
 
-  //获取用户关注的股票的话题
+  //鑾峰彇鐢ㄦ埛鍏虫敞鐨勮偂绁ㄧ殑璇濋
   app.get('/aboutStockTopic',function(req,res){
     talk.aboutStockTopic(req,res);
   });
-  //获取@我的话题
+  //鑾峰彇@鎴戠殑璇濋
   app.get('/atmeTopic',function(req,res){
     talk.atmeTopic(req,res);
   });
