@@ -5,9 +5,9 @@
 //test models 数据库接口
 
 var topic=require('./models/user');
-// var topic=require('./models/topic');
-// var topic=require('./models/stoc');
-// var topic=require('./models/room');
+var topic=require('./models/topic');
+var topic=require('./models/stoc');
+var topic=require('./models/room');
 
 //test rount 路由
 

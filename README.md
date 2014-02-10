@@ -1,43 +1,30 @@
-stock
-=====
+功能：
 
-stock01
+1. 股票页面聊天室功能：
+a. 聊天室以股票为单位，同一个用户可以进入多个股票的聊天室进行聊天 
+b. 聊天记录可以设置缓存数量，默认为20条，如果超过20条会存储到数据库中,当聊天室中没有用户也会将聊天内容存入数据库中
 
-11.13
-ejs部署
-
-12.19
-前台基本功能完善
-
-具体股票页面聊天室功能，聊天记录能存储
-
-微博类似的话题，评论，回复，转发功能
-
-股票页面能查看讨论这个股票的话题
-
-个人页面能查看我关注的用户的话题，关注股票的相关话题，我的话题，@我的话题
+   聊天室代码：
+   https://github.com/tangguangyao/stock/blob/master/models/socket.js
 
 
-angularjs和seajs 混用感觉不怎么好，去掉seajs了
+2. 微博类似的话题，评论，回复，转发功能，前端使用angularjs绑定实现
 
-加入grunt
+3. 页面实时交互，包括关注股票，关注用户功能
 
-12.20 用jshint规范单元测试
+4. 股票页面能查看讨论这个股票的话题
 
-qunit前端单元测试
-mocha后端单元测试
+5. 个人页面能查看我关注的用户的话题，关注股票的相关话题，我的话题，@我的话题
 
-总结mocha单元测试经验
-http://hi.baidu.com/tang_guangyao/item/302a9d1a9976c06ae65e0643
+6. 加入grunt管理代码，引入uglify压缩代码，jshint检测代码规范，watch监听代码变化
 
-数据库对应模块单元测试完成
+7. 使用mocha检测后端代码
+   检测代码在test中
+   总结mocha单元测试经验
+   http://hi.baidu.com/tang_guangyao/item/302a9d1a9976c06ae65e0643
 
-加入async，对于需要多次回调查询数据库的进行重构
+8. 加入async流程控制，对于需要多次回调查询数据库的进行重构
 
-使用外网免费数据库https://app.mongohq.com
+9. 尝试bigpige，首页利用bigpipe，加载热门股票和热门用户，并且和angular结合使用
 
-测试部署分支
-
-尝试bigpige
-
-首页利用bigpipe，加载热门股票和热门用户，并且和angular结合使用
+10. 使用外网免费数据库https://app.mongohq.com

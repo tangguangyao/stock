@@ -19,7 +19,7 @@ describe('models user', function(){
     setTimeout(function () {
   		user.save(function (err, _user) {});
   		user2.save(function (err, _user) {});
-    },50);
+    },100);
 	});
 	//删除测试用户
 	after(function () {
@@ -39,7 +39,7 @@ describe('models user', function(){
           user.admin.should.equal(100);
           done();
         });
-      },60);
+      },110);
     });
 
     it('get name empty', function (done) {
