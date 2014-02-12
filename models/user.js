@@ -6,6 +6,23 @@ var connect=require('./connect');
 
 var async = require('async');
 
+//缓存
+var redis = require("redis"),
+    client = redis.createClient();
+
+
+//测试缓存链接
+client.lpush('list', 'key_0');
+client.lpush('list', 'key_1');
+
+client.lrange('list', '0', '-1', function(error, res){
+    if(error) {
+        console.log(error);
+    } else {
+        console.log(res);
+    }
+});
+
 function User(user){ 
   this.name = user.name; 
   this.password = user.password; 
