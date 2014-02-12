@@ -23,9 +23,9 @@ module.exports = function(app){
 
       //pipe替换    
       res.render('index', {
-          user:req.session.user,
-          isStock:true
-        },function (err, str) {
+        user:req.session.user,
+        isStock:true
+      },function (err, str) {
         //res.setHeader('content-type', 'text/html; charset=utf-8')
         res.write(str);
       })
@@ -46,16 +46,6 @@ module.exports = function(app){
       ], function (err, results) {
         res.end();
       });
-      // stock.bigpipeHotStock(function(data){
-      //   res.write('<script>bigpipe.set("hotStock",'+JSON.stringify(data)+');</script>');
-      //   res.end();
-      // });
-      // stock.bigpipeTalkHistory(req,res,function(data){
-      //   res.write('<script>bigpipe.set("hotStock",'+JSON.stringify(data)+');</script>');
-      // });
-
-
-
     }else{
       res.redirect('/login');
     }

@@ -1,4 +1,4 @@
-angular.module('App', []);
+//angular.module('App', []);
 
 function peopleCtrl($scope, $http, $templateCache){
   var selfName=$("#headShowName").text();
@@ -50,7 +50,7 @@ function peopleCtrl($scope, $http, $templateCache){
       //如果没有信息，就不请求
       return;
     }
-    $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&key=47bce5c74f&access_token=gbQtYjUWioQ9DQWGpDIREK&_=1386664870607&callback=JSON_CALLBACK';
+    $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&'+xueqiuUrl+'&callback=JSON_CALLBACK';
     $scope.code = null;
     $scope.response = null;
     $http({method: $scope.method, url: $scope.url, cache: $templateCache}).
@@ -210,3 +210,6 @@ function peopleCtrl($scope, $http, $templateCache){
   //初始化我的话题
   angular.init();
 }
+
+
+angular.bootstrap(document.documentElement);

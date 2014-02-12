@@ -1,4 +1,4 @@
-angular.module('App', []);
+//angular.module('App', []);
 
 function FetchCtrl($scope, $http, $templateCache) {
   //用户名
@@ -126,7 +126,7 @@ function FetchCtrl($scope, $http, $templateCache) {
 
   //定时获取实时数据
   $scope.method = 'JSONP';
-  $scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&access_token=qPVhzoKJWIL1o3UCSgUfRK&_=1389259380479&callback=JSON_CALLBACK';
+  $scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&'+xueqiuUrl+'&callback=JSON_CALLBACK';
   $scope.code = null;
   $scope.response = null;
 
@@ -348,3 +348,5 @@ function FetchCtrl($scope, $http, $templateCache) {
     stockTopic.init();
   };
 }
+
+angular.bootstrap(document.documentElement);
