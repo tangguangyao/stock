@@ -148,8 +148,8 @@ topic.aboutTopic=function(name,size,num,callback){
 							var arr=[];
 							obj.watch.forEach(function(k){
 								arr.push({name:k});
-								cb(null, arr);
 							});
+							cb(null, arr);
 						}else{
 							callback({isOk:true,data:[]});
 						}
