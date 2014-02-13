@@ -5,7 +5,20 @@
 var mongodb = require('./db');
 var connect=require('./connect');
 var async = require('async');
+
+//获取是否更新缓存的信息
+var redisCache=require('./redisCache');
+
 var topic={};
+
+//缓存
+var redis = require("redis"),
+    client = redis.createClient();
+
+client.on("error", function(error) {
+    console.log(error);
+});
+
 
 module.exports = topic;
 //话题数据库
@@ -40,15 +53,59 @@ topic.addTopic=function(obj,callback){
 
 //获取用户的话题
 topic.myTopic=function(name,size,num,callback){
-	global.db.collection('topic',function(err,collection){
-		collection.find({name:name,hide:false}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
-			if(err){
-				callback({isOk:false});
-			}else{
-				callback({isOk:true,data:items});
-			}
+	var getFromDB=function(){
+		global.db.collection('topic',function(err,collection){
+			collection.find({name:name,hide:false}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
+				if(err){
+					client.hmset("myTopic", {isOk:false},function(error, res){
+						if(error) {
+			                console.log(error);
+			            } else {
+			                console.log(res);
+			            }
+					});
+					callback({isOk:false});
+				}else{
+					var json=JSON.stringify(items);
+					client.hmset("myTopic", {isOk:true,data:json},function(error, res){
+						if(error) {
+			                console.log(error);
+			            } else {
+			                console.log(res);
+			            }
+					});
+					callback({isOk:true,data:items});
+				}
+			});
 		});
-	});
+	}
+
+	//插入redis判断
+	client.hgetall("myTopic", function (err, res) {
+        if(err) {
+            console.log(err);
+        } else {
+        	//首先判断缓存中是否有值，就是用缓存中内容
+        	if(res){
+        		//然后需要判断下是否有更新
+        		var l=redisCache;
+        		if(!redisCache.myTopic){//redisCache.myTopic为false表示缓存没有更新
+        			if(res.isOk=="true"){
+		            	var obj={isOk:true,data:JSON.parse(res.data)};
+		            	callback(obj);
+		            }
+        		}else{
+        			getFromDB();
+        			redisCache.myTopic=false;//更新缓存后，设置为false
+        		}
+        	}else{
+        		//到数据库中获取最新的值
+        		getFromDB();
+        		redisCache.myTopic=false;//更新缓存后，设置为false
+        	}
+            
+        }
+    });
 };
 
 //用户关注对象的话题

@@ -1,7 +1,5 @@
 //先初始化需要的bigpipe模块
 var bigpipe=new Bigpipe();
-//需要的模块
-//var stock=require('tgy/topic');
 
 //IndexCtrl函数在页面加载完毕后执行
 function IndexCtrl($scope, $http, $templateCache) {

@@ -1,9 +1,11 @@
 /*
 评论功能
 */
-var topic = require('../models/topic');
-var talk={};
 
+var topic = require('../models/topic');
+var redisCache = require('../models/redisCache');
+
+var talk={};
 module.exports = talk;
 
 //过滤显示到前台的话题
@@ -67,6 +69,8 @@ talk.submitTopic=function(req,res){
 	talkObj.forward=0;
 	topic.addTopic(talkObj,function(info){
 		var obj=filterTopic(info);
+		//增加一个redis属性，判断是否需要更新redis
+		redisCache.myTopic=true;
 		res.send(obj);
 	});
 };
@@ -190,3 +194,4 @@ talk.atmeTopic=function(req,res){
 		res.send(obj);
 	});
 };
+
