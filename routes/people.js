@@ -237,7 +237,7 @@ people.bigpipeHotPeople=function(req,res,callback){
 		//假设服务器慢，有个延迟
 		setTimeout(function(){
 			callback({ok:true,list:obj});
-		}, 10000);
+		}, 1000);
 	});
 };
 

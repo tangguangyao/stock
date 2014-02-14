@@ -46,15 +46,10 @@ function peopleCtrl($scope, $http, $templateCache){
 		$scope.method = 'JSONP';
     stockCode=$("#stockList").attr("my-stock");
     //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
-    if(stockCode===""){
+    if(stockCode!==""){
       //如果没有信息，就不请求
-      return;
-    }
-    $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&'+xueqiuUrl+'&callback=JSON_CALLBACK';
-    $scope.code = null;
-    $scope.response = null;
-    $http({method: $scope.method, url: $scope.url, cache: $templateCache}).
-      success(function(data, status) {
+      $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&'+xueqiuUrl+'&callback=JSON_CALLBACK';
+      $http({method: $scope.method, url: $scope.url, cache: $templateCache}).success(function(data, status) {
         for(var i=0,l=data.quotes.length;i<l;i++){
           data.quotes[i].volume=(data.quotes[i].volume/10000).toFixed(2);
           data.quotes[i].marketCapital=(data.quotes[i].marketCapital/100000000).toFixed(2);
@@ -73,8 +68,9 @@ function peopleCtrl($scope, $http, $templateCache){
             data.quotes[i].percentage=data.quotes[i].percentage+"%";
           }
         }
-        $scope.stocks=watchList=data.quotes;
+        $scope.stocks=data.quotes;
       });
+    }
 	}
 	ajaxStock();
   var hours;
