@@ -13,6 +13,17 @@ var crypto = require('crypto'), //密码加密模块
     async = require('async');
 
 module.exports = function(app){
+  /*
+  * 准备重构为单页面
+  */
+  // app.get('/',function(req,res){
+  //   res.render('index.html', { 
+  //     user:req.session.user,
+  //     isStock:true
+  //   });
+  // })
+
+
   app.get('/',function(req,res){
     if(req.session.user){
       //原始方式

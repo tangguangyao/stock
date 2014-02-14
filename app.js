@@ -17,6 +17,12 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+/*
+* 前端单页面重构
+*/
+//app.engine('html', require('ejs').renderFile);
+
 app.use(flash());
 app.use(express.favicon());
 app.use(express.logger('dev'));
