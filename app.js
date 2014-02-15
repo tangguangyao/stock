@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 /*
 * 前端单页面重构
 */
-//app.engine('html', require('ejs').renderFile);
+app.engine('html', require('ejs').renderFile);
 
 app.use(flash());
 app.use(express.favicon());

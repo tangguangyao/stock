@@ -16,12 +16,12 @@ module.exports = function(app){
   /*
   * 准备重构为单页面
   */
-  // app.get('/',function(req,res){
-  //   res.render('index.html', { 
-  //     user:req.session.user,
-  //     isStock:true
-  //   });
-  // })
+  app.get('/app',function(req,res){
+    res.render('app/app.html', { 
+      user:req.session.user,
+      isStock:true
+    });
+  })
 
 
   app.get('/',function(req,res){
