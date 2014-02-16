@@ -10,13 +10,13 @@
         </ol>
         <div class="carousel-inner">
           <div class="item active">
-            <img src="images/3.jpg">
+            <img src="images/1.png">
           </div>
           <div class="item">
-            <img src="images/3.jpg">
+            <img src="images/1.png">
           </div>
           <div class="item">
-            <img src="images/3.jpg">
+            <img src="images/1.png">
           </div>
         </div>
         <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -31,15 +31,15 @@
 
     <div class="col-md-3">
 
-            <!-- <div class="small red"><%= locals.error %> </div> -->
+        <div class="small red" ng-show="errorShow">{{ error }}</div>
 
-        <form role="form" id="login" action="/login" method="post" ng-show="{{formShow}}">
+        <form role="form" id="login" ng-submit="loginIn()" ng-show="formShow">
           <h3>用户登录</h3>
           <div class="form-group">
-            <input type="text" name="name" class="form-control" placeholder="用户名">
+            <input type="text" name="name" class="form-control" placeholder="用户名" ng-model="name" />
           </div>
           <div class="form-group">
-            <input type="password" name="password" class="form-control" placeholder="密码">
+            <input type="password" name="password" class="form-control" placeholder="密码" ng-model="password" />
           </div>
           <div class="row">
             <div class="col-md-5 small">
@@ -53,7 +53,7 @@
           <p class="text-primary small point" id="changeSign" ng-click="toggle()">没有账户，点击注册</p>
         </form>
 
-        <form role="form" id="sign"  action="/sign" method="post" ng-hide="{{formShow}}">
+        <form role="form" id="sign"  action="/sign" method="post" ng-hide="formShow">
           <h3>用户注册</h3>
 
           <div class="form-group">
@@ -91,18 +91,3 @@
     <h4>新闻</h4>
   </div>
 </div>
-
-<script>
-// $("#changeSign").on("click",function(){
-//   $("#login").hide();
-//   $("#sign").show();
-// });
-// $("#changeLogin").on("click",function(){
-//   $("#sign").hide();
-//   $("#login").show();
-// });
-
-// $('.carousel').carousel({
-//   interval: 8000
-// })
-</script>

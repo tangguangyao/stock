@@ -1,6 +1,6 @@
-var ngRoute=angular.module('ngView', ['ngRoute']);
+var app=angular.module('ngView', ['ngRoute']);
 
-ngRoute.config(function($routeProvider) {
+app.config(function($routeProvider) {
   $routeProvider.when('/index', {
     templateUrl: 'app/index.html'
   });
@@ -20,21 +20,17 @@ ngRoute.config(function($routeProvider) {
   });
 });
 
+// app.controller('ngView', function ($scope, $http) {
+//   $scope.resetLogin=function(){
+//     alert(1);
+//   }
+// })
+
 function IndexCtrl($scope, $http, $templateCache) {
 
 }
 
-function loginCtrl($scope, $http, $templateCache){
-  $scope.formShow=true;
-  $scope.toggle=function(){
-    if($scope.formShow==true){
-      $scope.formShow=false;
-    }else{
-      $scope.formShow=true;
-    }
-    
-  }
-}
+
 
 function settingCtrl($scope, $routeParams) {
   $scope.name = $routeParams.name;

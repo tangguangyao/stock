@@ -71,7 +71,7 @@ login.login=function(req,res){
 		if(user){ 
 			//如果存在，就返回用户的所有信息，取出password来和post过来的password比较
 			if(user.password != password){ 
-				req.flash('error','密码不正确'); 
+				req.flash('error','密码不正确');
 				res.redirect('/login'); 
 			}else{ 
 				req.session.user = user; 

@@ -67,14 +67,14 @@
 
 **访问网站：**
 
-  -http://localhost:3000/ 访问为使用ejs的nodejs模板，使用angularjs作为数据绑定用，由于这是第一次在复杂项目中使用angularjs，所以没有使用好angularjs，文档非常烂。
+  - http://localhost:3000/ 访问为使用ejs的nodejs模板，使用angularjs作为数据绑定用，由于这是第一次在复杂项目中使用angularjs，所以没有使用好angularjs，文档非常烂。
 
-  -http://localhost:3000/app/app.html 是对前端使用angularjs的一个重新规划，目前正在学习angularjs重构中
+  - http://localhost:3000/app/app.html 是对前端使用angularjs的一个重新规划，目前正在学习angularjs重构中
 
 
 
 
 **备注：**
-  -由于第一次正式尝试angularjs，所以没有用好，仅仅用上了数据绑定的功能，这个项目如果用angularjs做前端的话，其实做单页更加好，这样可以省掉后端的ejs模板。
-  -下一步重构可以考虑合并为单页模式。
-  -另外angularjs的每个控制模块太大，里面包含功能太多，也需要拆分。
+  - 由于第一次正式尝试angularjs，所以没有用好，仅仅用上了数据绑定的功能，这个项目如果用angularjs做前端的话，其实做单页更加好，这样可以省掉后端的ejs模板。
+  - 下一步重构可以考虑合并为单页模式。
+  - 另外angularjs的每个控制模块太大，里面包含功能太多，也需要拆分。
