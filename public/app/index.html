@@ -1,0 +1,130 @@
+<div class="container " style="padding-top:70px;" ng-controller="IndexCtrl">
+	<div class="row">
+	  <div class="col-md-2">
+	  	<div class="list-group">
+        <a href="#" class="list-group-item active">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+        <a href="#" class="list-group-item">Link</a>
+      </div>
+	  </div>
+	  <div class="col-md-7">
+      <div>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="stockUid" placeholder="代码">
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="search()">选择</button>
+      </div>
+
+      <h3>我的选择</h3>
+      <table class="table table-bordered table-hover table-condensed">
+        <thead>
+          <tr>
+            <th>股票</th>
+            <th>当前价</th>
+            <th>涨跌额</th>
+            <th>涨跌幅</th>
+            <th>成交量</th>
+            <th>市值</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody my-stock="<%= user.stock%>" id="stockList">
+          
+          <!-- 第一层循环 -->
+          
+          <tr class="{{stock.zdBack}} {{stock.zdClass}}" ng-repeat="stock in stocks">
+            <td><a href="stock/{{stock.symbol}}">{{stock.name}}({{stock.symbol}})</a></td>
+            <td>{{stock.current}}</td>
+            <td>{{stock.change | number:2}}</td>
+            <td>{{stock.percentage}}</td>
+            <td>{{stock.volume}}万</td>
+            <td>{{stock.marketCapital}}亿</td>
+            <td><button type="button" class="btn btn-danger btn-xs" ng-click="delStock(stock)">删除</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>发布评论</h3>
+      <textarea id="comment" ng-model="sayCom"></textarea>
+      <button type="button" class="btn btn-primary navbar-right" ng-click="submitCom()">发布</button>
+
+      <div class="clearfix"></div>
+
+      <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#home" data-toggle="tab">我的关注</a></li>
+        <li><a href="#stock" data-toggle="tab" ng-click="aboutStockTopic()">我的股票</a></li>
+        <li><a href="#profile" data-toggle="tab" ng-click="myTopic()">我的评论</a></li>
+        <li><a href="#messages" data-toggle="tab" ng-click="atTopic()">@我</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="home">
+          <%- include mode/topic %>
+        </div>
+        <div class="tab-pane" id="stock">
+          <%- include mode/aboutstocktopic %>
+        </div>
+        <div class="tab-pane" id="profile">
+          <%- include mode/mytopic %>
+        </div>
+        <div class="tab-pane" id="messages">
+          <%- include mode/atmetopic %>
+        </div>
+      </div>
+
+    </div>
+	  <div class="col-md-3">
+	  	<h3>整体</h3>
+      <ul class="nav nav-tabs" id="all">
+        <li class="active"><a href="#shanghai" data-toggle="tab">上海</a></li>
+        <li><a href="#shengzheng" data-toggle="tab">深圳</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="shanghai">...home</div>
+        <div class="tab-pane" id="shengzheng">.profile..</div>
+      </div>
+	  	<h3>新闻</h3>
+	  	<ul class="list-group">
+        <li class="list-group-item">Cras justo odio</li>
+      </ul>
+
+	  	<h3>热门</h3>
+	  	<ul class="list-group">
+        <li class="list-group-item" ng-repeat="list in topList">
+          <a href="stock/{{ list.uid }}">{{ list.name }}({{ list.top }})</a>
+          <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="topWatch(list)" ng-show="{{list.haveWatch}}">关注</button>
+          <span class="pull-right" ng-hide="{{list.haveWatch}}">已关注</span>
+        </li>
+      </ul>
+
+	  	<h3>推荐</h3>
+	  	<ul class="list-group">
+        <li>后台推荐1</li>
+        <li>后台推荐1</li>
+        <li>后台推荐1</li>
+      </ul>
+
+      <h3>推荐用户</h3>
+      <ul class="list-group">
+        <li class="list-group-item"  ng-repeat="people in peoples">
+          <a href="people/{{ people.name }}">{{ people.name }}({{ people.top }})</a>
+          <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="topPeople(people)" ng-hide="{{people.isWatch}}">关注</button>
+          <span class="pull-right" ng-show="{{people.isWatch}}">已关注</span>
+        </li>
+      </ul>
+	  </div>
+	</div>
+</div>
+
+
+<!-- <script src="js/underscore.js"></script>
+<script src="js/bigpipe.js"></script>
+<script src="js/tgy/topic.js"></script>
+<script src="js/tgy/index.js"></script> -->

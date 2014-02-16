@@ -1,39 +1,43 @@
-angular.module('ngViewExample', ['ngRoute'])
- 
-.config(function($routeProvider, $locationProvider) {
-  $routeProvider.when('/Book/:bookId', {
-    templateUrl: 'index.html',
-    controller: BookCntl,
-    resolve: {
-      // I will cause a 1 second delay
-      delay: function($q, $timeout) {
-        var delay = $q.defer();
-        $timeout(delay.resolve, 1000);
-        return delay.promise;
-      }
-    }
+var ngRoute=angular.module('ngView', ['ngRoute']);
+
+ngRoute.config(function($routeProvider) {
+  $routeProvider.when('/index', {
+    templateUrl: 'app/index.html'
   });
-  $routeProvider.when('/Book/:bookId/ch/:chapterId', {
-    templateUrl: 'login.html',
-    controller: ChapterCntl
+  $routeProvider.when('/login', {
+    templateUrl: 'app/login.html',
+    controller:loginCtrl
   });
- 
-  // configure html5 to get links working on jsfiddle
-  $locationProvider.html5Mode(true);
+  $routeProvider.when('/stock', {
+    templateUrl: 'app/stock.html'
+  });
+  $routeProvider.when('/people', {
+    templateUrl: 'app/people.html'
+  });
+  $routeProvider.when('/setting/:name', {
+    templateUrl: 'app/setting.html',
+    controller:settingCtrl
+  });
 });
- 
-function MainCntl($scope, $route, $routeParams, $location) {
-  $scope.$route = $route;
-  $scope.$location = $location;
-  $scope.$routeParams = $routeParams;
+
+function IndexCtrl($scope, $http, $templateCache) {
+
 }
- 
-function BookCntl($scope, $routeParams) {
-  $scope.name = "BookCntl";
-  $scope.params = $routeParams;
+
+function loginCtrl($scope, $http, $templateCache){
+  $scope.formShow=true;
+  $scope.toggle=function(){
+    if($scope.formShow==true){
+      $scope.formShow=false;
+    }else{
+      $scope.formShow=true;
+    }
+    
+  }
 }
- 
-function ChapterCntl($scope, $routeParams) {
-  $scope.name = "ChapterCntl";
-  $scope.params = $routeParams;
+
+function settingCtrl($scope, $routeParams) {
+  $scope.name = $routeParams.name;
+  
+
 }

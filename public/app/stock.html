@@ -1,0 +1,135 @@
+<div class="container " style="padding-top:70px;">
+	<div class="row">
+	  <div class="col-md-2">
+	  	<div class="list-group">
+        <h4>公司概况</h4>
+        <a href="http://stockpage.10jqka.com.cn/<%= locals.id%>/company/#detail" class="list-group-item text-primary">公司简介</a>
+        <a href="http://stockpage.10jqka.com.cn/<%= locals.id %>/company/#manager" class="list-group-item">公司高管</a>
+        <a href="http://stock.jrj.com.cn/share,<%= locals.id %>,zgsms.shtml" class="list-group-item">IPO文件</a>
+        <h4>股权信息</h4>
+        <a href="http://hq.emoney.cn/f10/Wf10/gdyj/<%= locals.id%>.html" class="list-group-item">股权结构</a>
+        <a href="http://stock.jrj.com.cn/share,<%= locals.id%>,sdgd.shtml" class="list-group-item">十大股东</a>
+        <a href="http://stock.jrj.com.cn/share,<%= locals.id%>,jjcg.shtml" class="list-group-item">基金持股</a>
+        <a href="http://hq.emoney.cn/f10/Wf10/ggda/<%= locals.id%>.html" class="list-group-item">高管持股</a>
+        <a href="http://stock.jrj.com.cn/share,<%= locals.id%>,xsgd.shtml" class="list-group-item">限售股份</a>
+        <h4>股票交易</h4>
+        <a href="http://stockhtm.finance.qq.com/sstock/quotpage/q/<%= locals.id%>.htm#detail" class="list-group-item">成交明细</a>
+        <a href="http://stockhtm.finance.qq.com/sstock/quotpage/q/<%= locals.id%>.htm#price" class="list-group-item">分价表</a>
+        <a href="http://quotes.money.163.com/trade/ddtj_<%= locals.id%>.html" class="list-group-item">大单统计</a>
+        <a href="http://data.10jqka.com.cn/market/longhu/cjmx/<%= locals.id%>/" class="list-group-item">龙虎榜数据</a>
+        <a href="http://stockdata.stock.hexun.com/rzrq/" class="list-group-item">融资融券</a>
+        <a href="http://q.stock.sohu.com/cn/<%= locals.id%>/lshq.shtml" class="list-group-item">历史行情</a>
+      </div>
+	  </div>
+	  <div class="col-md-7">
+      <h2 name="{{stock.name}}" id="stockName">{{stock.name}}
+        <span style="display:none" id="iswatch"><%= locals.isWatch%></span>
+        <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()" id="butIswatch">关注</button>
+        <button type="button" class="btn btn-info col-md-offset-4" ng-click="unWatchStock()" id="butNowatch">取消</button>
+      </h2>
+      <p class="{{stock.zdClass}} lead">
+        <strong data-current="{{stock.current}}">￥{{stock.current}}</strong>
+        <span class="stockDown">
+          <span>{{ stock.zdf }}{{stock.change| number:2}}</span>
+          <span class="quote-percentage">&nbsp;&nbsp;({{ stock.zdf }}{{stock.percentage| number:2}}%)</span>
+        </span>
+      </p>
+      <p>
+        <span id="timeInfo">{{stock.time | date:'yyyy-MM-dd HH:mm:ss' }} (北京时间)&nbsp;&nbsp;</span>
+        <span>实时行情</span>
+      </p>
+      <table class="table" id="stockTableShow">
+        <tbody>
+          <tr>
+            <td>今开：<span>{{stock.open}}</span></td>
+            <td>昨收：<span>{{stock.last_close}}</span></td>
+            <td>最高：<span id="quote-high">{{stock.high}}</span></td>
+            <td>最低：<span id="quote-low">{{stock.low}}</span></td>
+          </tr>
+          <tr>
+            <td title="当日成交量，单位：股">成交量：<span id="quote-volume">{{stock.volume}}万</span></td>
+            <td title="过去30个交易日平均成交量，单位：股">30日均量：<span>{{stock.volumeAverage}}万</span></td>
+            <td>52周最低：<span>{{stock.low52week}}</span></td>
+            <td>52周最高：<span>{{stock.high52week}}</span></td>
+          </tr>
+          <tr>
+            <td>成交额：<span>{{stock.amount}}万</span></td>
+            <td title="市盈率LYR：当前价/最近年度摊簿每股收益，市盈率TTM：当前价/最近四个季度摊簿每股收益之和。">市盈率LYR/TTM：<span>{{stock.pe_lyr|number:2}}/{{stock.pe_ttm|number:2}}</span></td>
+            <td title="上一年度基本每股收益，单位：人民币">每股收益：<span>{{stock.eps}}</span></td>
+            <td title="最近报告期每股净资产，单位：人民币">每股净资产：<span>{{stock.net_assets}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>图标</h3>
+
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="addTalk()" addTalk="{{addRoom}}">加入聊天室</a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="showTalkCom">
+                <p class="lookTalkMessage" ng-click="lookTalkMessage()">查看更早内容</p>
+              </div>
+              <textarea style="width:100%;height:55px;margin-bottom:10px;margin-top:10px;" id="talkText"></textarea>
+              <button type="button" class="btn btn-primary navbar-right" ng-click="talkSubmit()">发布</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>发布评论</h3>
+      <textarea style="width:100%;height:80px;margin-bottom:10px;" ng-model="sayCom" >({{stock.symbol}})${{stock.name}}$ :</textarea>
+      <button type="button" class="btn btn-primary navbar-right" ng-click="submitCom()">发布</button>
+      <div class="clearfix"></div>
+      <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#home" data-toggle="tab">相关</a></li>
+        <li><a href="#profile" data-toggle="tab">新闻</a></li>
+        <li><a href="#messages" data-toggle="tab">全部</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="home">
+          <%- include mode/stocktopic %>
+        </div>
+        <div class="tab-pane" id="profile">
+          <ul class="list-group">
+            <li>新闻</li>
+          </ul>
+        </div>
+        <div class="tab-pane" id="messages">
+          <ul class="list-group">
+            <li>全部</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <h3>简介</h3>
+      <p>variable in expression track by tracking_expression – You can also provide an optional tracking function which can be used to associate the objects in the collection with the DOM elements. If no tracking function is specified the ng-repeat associates elements by identity in the collection. It is an error to have more than one tracking function to resolve to the same key. (This would mean that two distinct objects are mapped to the same DOM element, which is not possible.) Filters should be applied to the expression, before specifying a tracking expression.</p>
+      <h3>关注的人</h3>
+      <div ng-show="haveAboutName">
+        <button type="button" class="btn btn-info pull-right" ng-show="change" ng-click="changeAboutName()">换一批</button>
+        <div class="clearfix"></div>
+        <ul class="list-group" id="stockAdoutName">
+          <li class="list-group-item" ng-repeat="adoutName in adoutNames">
+            <a href="people/{{adoutName.name}}">{{adoutName.name}}</a>
+          </li>
+        </ul>
+      </div>
+      <div ng-hide="haveAboutName">
+        暂无相关用户
+      </div>
+      <h3>相关</h3>
+    </div>
+	</div>
+</div>
+<script>
+$(".collapse").collapse()
+</script>
+
+<!-- 
+<script src="js/tgy/topic.js"></script>
+<script src="js/tgy/sto.js"></script> -->
