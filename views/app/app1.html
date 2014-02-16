@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+<meta charset='utf-8'>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>money</title>
+<base href="/" />
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-theme.css" rel="stylesheet">
+<link href="css/index.css" rel="stylesheet">
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/angular.min.js"></script>
+<!-- <script src="js/angular-route.min.js"></script> -->
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var xueqiuUrl="key=47bce5c74f&access_token=S8nfhytJNtRNHoV9ntmtHY&_=1392196535991";
+//雪球接口长变化的参数
+</script>
+</head>
+<body ng-app="AMail">
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="/" class="navbar-brand">Money</a>
+    </div>
+    <nav class="navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/">首页</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">广场<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/baike">行情</a></li>
+              <li><a href="/baike">行情</a></li>
+              <li><a href="/baike">行情</a></li>
+              <li><a href="/baike">行情</a></li>
+            </ul>
+        </li>
+
+<!--         <li>
+          <a href="people/<%= user.name %>">个人主页</a>
+        </li> -->
+
+      </ul>
+
+      <div class="navbar-form navbar-right" id="isloginOut" style="display:none">
+        <div class="form-group ">
+          <input type="text" placeholder="用户名" class="form-control" id="headName">
+        </div>
+        <div class="form-group">
+          <input type="password" placeholder="密码" class="form-control" id="headPassword">
+        </div>
+        <button type="submit" class="btn btn-success" id="headerLogin">登陆</button>
+        <a href="/login" class="btn btn-default" role="button">注册</a>
+        </ul>
+      </div>
+      <ul class="nav navbar-nav navbar-right" id="islogin">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="headShowName" top="top" login="in">name</span><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="setting">设置</a></li>
+              <li><a id="loginOut" loginOut="target">注销</a></li>
+              <!-- <li><a id="loginOut">注销</a></li> -->
+            </ul>
+        </li>
+      </ul>
+
+<!--       <div class="navbar-form navbar-right" id="isloginOut">
+        <div class="form-group ">
+          <input type="text" placeholder="用户名" class="form-control" id="headName">
+        </div>
+        <div class="form-group">
+          <input type="password" placeholder="密码" class="form-control" id="headPassword">
+        </div>
+        <button type="submit" class="btn btn-success" id="headerLogin">登陆</button>
+        <a href="/login" class="btn btn-default" role="button">注册</a>
+        </ul>
+      </div>
+      <ul class="nav navbar-nav navbar-right" id="islogin" style="display:none">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="headShowName" login="out" ></span><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/baike">设置</a></li>
+              <li><a id="loginOut">注销</a></li>
+            </ul>
+        </li>
+      </ul>
+ -->      
+    </nav>
+
+  </div>
+</header>
+
+<script src="js/min/header.min.js"></script>
+
+<div ng-view></div>
+
+
+
+<script src="js/app/controllers.js"></script>
+</body>
+</html>
