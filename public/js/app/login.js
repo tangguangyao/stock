@@ -1,4 +1,4 @@
-function loginCtrl($scope, $http, $location){
+function loginCtrl($scope, $http, $location, User){
   $scope.formShow=true;
   $scope.errorShow=false;
   $scope.toggle=function(){
@@ -8,15 +8,15 @@ function loginCtrl($scope, $http, $location){
     if(this.name&&this.password){
       $http.post("/loginAjax", {name:this.name,password:this.password}).success(function(data,status){
         if(data.ok){
-          // $scope.$parent.resetLogin();
           //http://blog.jobbole.com/54817/
+          //数据传到外部
+          User.set(data.info)
           $location.path("/index");
         }else{
           $scope.errorShow=true;
-          $scope.error=data.message
+          $scope.error=data.message;
         }
       });
     }
-    
   }
 }

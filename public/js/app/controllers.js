@@ -2,7 +2,8 @@ var app=angular.module('ngView', ['ngRoute']);
 
 app.config(function($routeProvider) {
   $routeProvider.when('/index', {
-    templateUrl: 'app/index.html'
+    templateUrl: 'app/index.html',
+    controller:IndexCtrl
   });
   $routeProvider.when('/login', {
     templateUrl: 'app/login.html',
@@ -20,15 +21,19 @@ app.config(function($routeProvider) {
   });
 });
 
-// app.controller('ngView', function ($scope, $http) {
-//   $scope.resetLogin=function(){
-//     alert(1);
-//   }
-// })
 
-function IndexCtrl($scope, $http, $templateCache) {
+app.factory('User', [function() {
+  User={
+    set:function(info){
+      this.info=info;
+    },
+    get:function(){
+      return this.info;
+    }
+  }
+  return User;
+}]);
 
-}
 
 
 
