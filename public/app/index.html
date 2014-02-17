@@ -35,7 +35,7 @@
             <th>操作</th>
           </tr>
         </thead>
-        <tbody my-stock="<%= user.stock%>" id="stockList">
+        <tbody id="stockList" ng-controller='timeStock'>
           
           <!-- 第一层循环 -->
           
@@ -96,7 +96,7 @@
       </ul>
 
 	  	<h3>热门</h3>
-	  	<ul class="list-group">
+	  	<ul class="list-group" ng-controller='topStock'>
         <li class="list-group-item" ng-repeat="list in topList">
           <a href="stock/{{ list.uid }}">{{ list.name }}({{ list.top }})</a>
           <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="topWatch(list)" ng-show="{{list.haveWatch}}">关注</button>

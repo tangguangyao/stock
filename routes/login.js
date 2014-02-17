@@ -121,3 +121,18 @@ login.loginOut=function(req,res){
 	data.ok=true;
 	res.send(data);
 };
+
+/*
+*重构新增接口
+*/
+login.isOnline=function(req,res){
+	if(req.session.user){
+		res.send({ok:true,info:{
+			name:user.name,
+			stock:user.stock,
+			top:user.top
+		}});
+	}else{
+		res.send({ok:false});
+	}
+}

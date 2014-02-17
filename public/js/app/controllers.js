@@ -2,8 +2,7 @@ var app=angular.module('ngView', ['ngRoute']);
 
 app.config(function($routeProvider) {
   $routeProvider.when('/index', {
-    templateUrl: 'app/index.html',
-    controller:IndexCtrl
+    templateUrl: 'app/index.html'
   });
   $routeProvider.when('/login', {
     templateUrl: 'app/login.html',
@@ -33,7 +32,6 @@ app.factory('User', [function() {
   }
   return User;
 }]);
-
 
 
 

@@ -170,4 +170,11 @@ module.exports = function(app){
   app.get('/test',function(req,res){
     test.redis(req,res);
   });
+
+  /*
+  *重构angularjs新增app接口
+  */
+  app.get('/isOnline',function(req,res){
+    login.isOnline(req,res);
+  });
 };
