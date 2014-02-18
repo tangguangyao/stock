@@ -64,9 +64,7 @@
       </ul>
 
       <div class="tab-content">
-        <div class="tab-pane active" id="home">
-          <%- include mode/topic %>
-        </div>
+        <div class="tab-pane active" id="home" ng-include="'app/mode/topic.html'" ng-controller="topic"></div>
         <div class="tab-pane" id="stock">
           <%- include mode/aboutstocktopic %>
         </div>
@@ -112,7 +110,7 @@
       </ul>
 
       <h3>推荐用户</h3>
-      <ul class="list-group">
+      <ul class="list-group" ng-controller='topUser'>
         <li class="list-group-item"  ng-repeat="people in peoples">
           <a href="people/{{ people.name }}">{{ people.name }}({{ people.top }})</a>
           <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="topPeople(people)" ng-hide="{{people.isWatch}}">关注</button>

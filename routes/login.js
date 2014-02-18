@@ -128,9 +128,9 @@ login.loginOut=function(req,res){
 login.isOnline=function(req,res){
 	if(req.session.user){
 		res.send({ok:true,info:{
-			name:user.name,
-			stock:user.stock,
-			top:user.top
+			name:req.session.user.name,
+			stock:req.session.user.stock,
+			top:req.session.user.top
 		}});
 	}else{
 		res.send({ok:false});
