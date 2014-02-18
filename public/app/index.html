@@ -58,21 +58,18 @@
 
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home" data-toggle="tab">我的关注</a></li>
-        <li><a href="#stock" data-toggle="tab" ng-click="aboutStockTopic()">我的股票</a></li>
-        <li><a href="#profile" data-toggle="tab" ng-click="myTopic()">我的评论</a></li>
-        <li><a href="#messages" data-toggle="tab" ng-click="atTopic()">@我</a></li>
+        <li><a href="#stock" data-toggle="tab" id="aboutStockTopic">我的股票</a></li>
+        <li><a href="#profile" data-toggle="tab" id="myTopic">我的评论</a></li>
+        <li><a href="#messages" data-toggle="tab" id="atTopic">@我</a></li>
       </ul>
 
       <div class="tab-content">
         <div class="tab-pane active" id="home" ng-include="'app/mode/topic.html'" ng-controller="topic"></div>
-        <div class="tab-pane" id="stock">
-          <%- include mode/aboutstocktopic %>
+        <div class="tab-pane" id="stock" ng-include="'app/mode/aboutstocktopic.html'" ng-controller="aboutstocktopic">
         </div>
-        <div class="tab-pane" id="profile">
-          <%- include mode/mytopic %>
+        <div class="tab-pane" id="profile" ng-include="'app/mode/mytopic.html'" ng-controller="mytopic">
         </div>
-        <div class="tab-pane" id="messages">
-          <%- include mode/atmetopic %>
+        <div class="tab-pane" id="messages" ng-include="'app/mode/atmetopic.html'" ng-controller="atmetopic">
         </div>
       </div>
 

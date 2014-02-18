@@ -1,0 +1,56 @@
+<ul class="list-group">
+
+  <!-- 第一层循环 -->
+
+  <li class="myTopiclist" ng-repeat="myTopic in atmeTopicList">
+    <div class="myTopic">
+      <img width="45" heigth="45" ng-src="{{ '/images/user/small/pic_' + myTopic.name +'.jpg' }}" />
+      <a ng-href="{{ '/people/' + myTopic.name }}">{{myTopic.name}}</a>: {{myTopic.topic}}
+    </div>
+    <div class="forwardTopic" ng-show="{{myTopic.isForward}}">
+      <span>{{myTopic.forwardObj.name}}</span>
+      <p>{{myTopic.forwardObj.topic}}({{myTopic.forwardObj.time}})</p>
+    </div>
+    <div class="tool">
+      <div class="tool-time">{{myTopic.time}}</div>
+      <div class="tool-do">
+        <span>转发({{myTopic.forward}})</span>
+        <span ng-click="commentTopic(myTopic,$event)" class="toolComment" data-first="yes">评论(<em>{{myTopic.comment}}</em>)</span>
+      </div>
+    </div>
+    <div class="topicComment" ng-show="myTopic.toCoShow">
+      <textarea class="topicCommentText" ng-model="myTopic.topicCommentText"></textarea>
+      <div>
+        <span><input type="checkbox" ng-model="myTopic.ifForward"/>同时转发到我的微博</span>
+        <button type="button" class="btn btn-primary navbar-right btn-xs" ng-click="submitComAtmeTopic($event,myTopic)">评论</button>
+      </div>
+      <ul class="topicCommentlist" data-show="0">
+
+        <!-- 第二层循环 -->
+        
+        <li ng-repeat="comment in myTopic.comlist">
+          <div class="CommentlistCom">
+            <div class="CommentlistPic"><img width="30" heigth="30" ng-src="{{ '/images/user/small/pic_' + comment.name +'.jpg' }}" /></div>
+            <p><a ng-href="{{ '/people/' + comment.name }}">{{comment.name}}</a>:{{comment.topic}}({{comment.time}})</p>
+            <span class="clickRe" ng-click="comRe(comment)">回复</span>
+            <div style="clear:both"></div>
+            <div class="commentRe" ng-show="comment.reShow">
+              <textarea ng-model="comment.commentReText"></textarea>
+              <div>
+                <span><input type="checkbox" ng-model="myTopic.ifForwardRe"/>同时转发到我的微博</span>
+                <button type="button" class="btn btn-primary navbar-right btn-xs" ng-click="comAtmeRe(comment,myTopic)">评论</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- 第二层循环结束 -->
+
+      </ul>
+    </div>
+  </li>
+
+  <!-- 第一层循环结束 -->
+
+</ul>
+<div id="atmeTopicMore" ng-show="atmeTopicMore" num="1" ng-click="getStockTopicMore($event)">加载更多</div>

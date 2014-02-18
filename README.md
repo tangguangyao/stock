@@ -69,7 +69,7 @@
 
   - http://localhost:3000/ 访问为使用ejs的nodejs模板，使用angularjs作为数据绑定用，由于这是第一次在复杂项目中使用angularjs，所以没有使用好angularjs，文档非常烂。
 
-  - http://localhost:3000/app/app.html 是对前端使用angularjs的一个重新规划，目前正在学习angularjs重构中
+  - http://localhost:3000/app/app.html#/index 是对前端使用angularjs的一个重新规划，目前正在学习angularjs重构中
 
 
 
