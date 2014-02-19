@@ -92,6 +92,5 @@ stock.talkHistory=function(req,res){
 		}else{
 			res.send({ok:false});
 		}
-		
 	});
 };

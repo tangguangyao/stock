@@ -8,11 +8,26 @@ function indexCtrl ($scope, $http, $location ,User) {
 		$scope.$emit("loginIn", $scope.userInfo);
 	}
 
+  //监听转发事件
+  $scope.$on("forwardTopic",function (event,msg) {
+    $scope.$broadcast("addMyTopic", msg);
+  });
+
+  //监听关注股票事件
+  $scope.$on("addStockTime",function (event,msg) {
+    $scope.$broadcast("refreshStockTime", msg);
+  });
+
+  //监听删除股票事件
+  $scope.$on("delStockTime",function (event,msg) {
+    $scope.$broadcast("delTopStock", msg);
+  });
 }
 
 //定时刷新控制器
 function timeStock($scope, $http) {
 	var userInfo=$scope.$parent.userInfo;
+  var time;
 	if(!userInfo){
 		//$location.path("/login");
 		return;
@@ -49,39 +64,150 @@ function timeStock($scope, $http) {
 	  hours = now.getHours();
 	  if(hours>9&&hours<20){
 	  	ajaxStock();
-	    setTimeout(function(){
+	    time=setTimeout(function(){
 	      startGetStock();
 	    },5000);
 	  }
 	}
 	startGetStock();
+
+  //订阅股票刷新消息
+  $scope.$on("refreshStockTime",function (event,msg) {
+    userInfo.stock.push(msg.uid);
+    ajaxStock();
+  });
+
+  //路由跳转后暂停加载
+  $scope.$on('$routeChangeStart', function(next, current) {
+    clearTimeout(time);
+  });
+
+
+  //删除股票
+  $scope.delStock = function(Stock) {
+    var delStockUid=Stock.symbol.toLowerCase();
+    var delWatchUrl="watchStock?uid="+delStockUid+"&name="+Stock.name+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=0";
+    $http({method: "GET", url: delWatchUrl}).success(function(data, status) {
+      if(data.ok){
+
+        //删除后，实时股票数据代码更新
+        //$scope.stocks=stock.index.delStockTime($scope.stocks,Stock.name);
+        var newlist=[];
+        for(var i=0,l=$scope.stocks.length;i<l;i++){
+          if($scope.stocks[i].name!=Stock.name){
+            newlist.push($scope.stocks[i]);
+          }
+        }
+        $scope.stocks=newlist;
+
+        //在$("#stockList").attr("my-stock") 中减少删除数据,减少定时关注数据
+        //stock.index.delStockList(delStockUid);
+        var oldUserStock=$scope.$parent.userInfo.stock;
+        var newUserStock=[];
+        for(var i=0,l=oldUserStock.length;i<l;i++){
+          if(oldUserStock[i]!==delStockUid){
+            newUserStock.push(oldUserStock[i]);
+          }
+        }
+        $scope.$parent.userInfo.stock=newUserStock;
+
+
+        //热门股票处理,可能会有热门股票中包含已删除股票的内容
+        // stock.index.delStockInTop(delStockUid,$scope.topList,function(newArrtop){
+        //   $scope.topList=newArrtop;
+        // });
+
+        $scope.$emit("delStockTime", {uid:delStockUid});
+
+      }else{
+        alert("出错了");
+      }
+    });
+  };
 }
 
 //热门股票
 function topStock($scope, $http){
 	var userInfo=$scope.$parent.userInfo;
 	$http({method: "GET", url: "/hotStock"}).success(function(data,status){
-      if(data.ok){
-        for(var k=0,l3=data.list.length;k<l3;k++){
-          data.list[k].haveWatch=true;
-          data.list[k].num=k;
-        }
-        var userWatchList=userInfo.stock;
-        for(var i=0,l=userWatchList.length;i<l;i++){
-          for(var j=0,l2=data.list.length;j<l2;j++){
-            if(userWatchList[i]==data.list[j].uid){
-              data.list[j].haveWatch=false;
-            }
+    if(data.ok){
+      for(var k=0,l3=data.list.length;k<l3;k++){
+        data.list[k].haveWatch=true;
+        data.list[k].num=k;
+      }
+      var userWatchList=userInfo.stock;
+      for(var i=0,l=userWatchList.length;i<l;i++){
+        for(var j=0,l2=data.list.length;j<l2;j++){
+          if(userWatchList[i]==data.list[j].uid){
+            data.list[j].haveWatch=false;
           }
         }
-        $scope.topList=topList=data.list;
+      }
+      $scope.topList=topList=data.list;
+    }
+  });
+
+  //关注一个热门股票，会显示到及时更新数据中
+  $scope.topWatch=function(list){
+    var topStockUid=list.uid.toLowerCase();
+    var topWatchUrl="watchStock?uid="+topStockUid+"&name="+list.name+"&beWatchName="+$("#headShowName").text()+"&beWatchTop="+$("#headShowName").attr("top")+"&add=1";
+    $http({method: "GET", url: topWatchUrl }).success(function(data, status) {
+      if(data.ok){
+        //刷新热门列表
+        //$scope.topList=stock.index.addTopWatchList($scope.topList,list);
+        var topList=$scope.topList;
+        var newTopList=[];
+        for(var m=0,l3=topList.length;m<l3;m++){
+          newTopList[m]={
+            haveWatch:topList[m].haveWatch,
+            name:topList[m].name,
+            top:topList[m].top,
+            uid:topList[m].uid,
+            num:topList[m].num
+          };
+        }
+        newTopList[list.num].haveWatch=topList[list.num].haveWatch=false;
+        //关注数增加1
+        newTopList[list.num].top++;
+        topList[list.num].top++;
+        $scope.topList=newTopList;
+
+        //发布更新消息
+        $scope.$emit("addStockTime", {uid:topStockUid});
+      }else{
+        alert("出错了");
       }
     });
+  };
+
+  //订阅删除股票事件
+  $scope.$on("delTopStock",function (event,msg) {
+    //delStockUid,topList,callback
+    var delStockUid=msg.uid;
+    var topList=$scope.topList;
+    for(var h=0,l5=topList.length;h<l5;h++){
+      if(delStockUid==topList[h].uid){
+        topList[h].haveWatch=true;
+        topList[h].top--;
+        newArrtop=[];
+        for(var h2=0,l6=topList.length;h2<l6;h2++){
+          newArrtop.push({
+            uid:topList[h2].uid,
+            name:topList[h2].name,
+            top:topList[h2].top,
+            haveWatch:topList[h2].haveWatch,
+            num:topList[h2].num
+          });
+        }
+        $scope.topList=newArrtop;
+      }
+    }
+  });
 }
 
 //热门人物
 function topUser($scope, $http){
-    $http({method: "GET", url: "/hotPeople"}).success(function(data,status){
+  $http({method: "GET", url: "/hotPeople"}).success(function(data,status){
 	  if(data.ok){
 	    for(var i=0,l=data.list.length;i<l;i++){
 	      data.list[i].num=i;
@@ -89,13 +215,39 @@ function topUser($scope, $http){
 	    $scope.peoples=data.list;
 	  }
 	});
+
+  //关注热门人物
+  $scope.topPeople=function(people){
+    var name=people.name;
+    var num=people.num;
+    if($("#headShowName").text()==name){
+      alert("不能关注自己");
+    }else{
+      $http({method: "GET", url: "/watchPeople?name="+name }).success(function(data,status){
+        if(data.ok){
+          //$scope.peoples=stock.index.watchTopPeopleData($scope.peoples,num);
+          var newArrayTop=[];
+          for(var i=0,l=$scope.peoples.length;i<l;i++){
+            newArrayTop.push({
+              num:$scope.peoples[i].num,
+              name:$scope.peoples[i].name,
+              top:$scope.peoples[i].top,
+              isWatch:$scope.peoples[i].isWatch
+            });
+          }
+          newArrayTop[num].isWatch=true;
+          newArrayTop[num].top++;
+          $scope.peoples=newArrayTop;
+        }
+      });
+    }
+  };
 }
 
-//我的关注话题
+/*
+我关注的用户话题模块
+*/
 function topic($scope, $http,topicFun){
-  /*
-  我关注的用户话题模块
-  */
   var myName=$scope.$parent.userInfo.name;
   var selfName=$scope.$parent.userInfo.name;
   var adoutTopic=topicFun.angular($http,$scope,myName,selfName);
@@ -131,20 +283,25 @@ function topic($scope, $http,topicFun){
     //提交话题评论
     $scope.submitComAboutTopic=function(e,myTopic){
       _this.subComTop(e,myTopic,function(data){
-        if(!!$scope.myTopicList){
-          //在我的话题栏目展示刚刚转发内容
-          $scope.myTopicList.unshift(data);
-        }
+        // if(!!$scope.myTopicList){
+        //   //在我的话题栏目展示刚刚转发内容
+        //   $scope.myTopicList.unshift(data);
+        // }
+        //修改为控制器间的通信
+        $scope.$emit("forwardTopic", data);
       });
     };
 
     //提交回复评论
     $scope.comAboutRe=function(comment,myTopic){
       _this.comRe(comment,myTopic,function(data){
-        if(!!$scope.myTopicList){
-          //在我的话题栏目展示刚刚转发内容
-          $scope.myTopicList.unshift(data);
-        }
+        // if(!!$scope.myTopicList){
+        //   //在我的话题栏目展示刚刚转发内容
+        //   $scope.myTopicList.unshift(data);
+        // }
+
+        //修改为控制器间的通信
+        $scope.$emit("forwardTopic", data);
       });
     };
     //加载更多
@@ -157,10 +314,10 @@ function topic($scope, $http,topicFun){
   adoutTopic.init();
 }
 
+/*
+我关注的股票话题模块
+*/
 function aboutstocktopic($scope, $http,topicFun){
-  /*
-  我关注的股票话题模块
-  */
   var myName=$scope.$parent.userInfo.name;
   var selfName=$scope.$parent.userInfo.name;
   var openAboutStockTopic=true;
@@ -208,20 +365,22 @@ function aboutstocktopic($scope, $http,topicFun){
     //提交话题评论
     $scope.submitComAboutStockTopic=function(e,myTopic){
       _this.subComTop(e,myTopic,function(data){
-        if(!!$scope.myTopicList){
-          //在我的话题栏目展示刚刚转发内容
-          $scope.myTopicList.unshift(data);
-        }
+        // if(!!$scope.myTopicList){
+        //   //在我的话题栏目展示刚刚转发内容
+        //   $scope.myTopicList.unshift(data);
+        // }
+        $scope.$emit("forwardTopic", data);
       });
     };
 
     //提交回复评论
     $scope.comAboutStockRe=function(comment,myTopic){
       _this.comRe(comment,myTopic,function(data){
-        if(!!$scope.myTopicList){
-          //在我的话题栏目展示刚刚转发内容
-          $scope.myTopicList.unshift(data);
-        }
+        // if(!!$scope.myTopicList){
+        //   //在我的话题栏目展示刚刚转发内容
+        //   $scope.myTopicList.unshift(data);
+        // }
+        $scope.$emit("forwardTopic", data);
       });
     };
 
@@ -235,10 +394,10 @@ function aboutstocktopic($scope, $http,topicFun){
   adoutStockTopic.init();
 }
 
-function mytopic($scope, $http,topicFun){
-  /*
-  我的话题模块
-  */
+/*
+我的话题模块
+*/
+function mytopic($scope, $http, topicFun){
   //初始化stock.angular函数，传入这个作用域内需要用到的函数
   var myName=$scope.$parent.userInfo.name;
   var selfName=$scope.$parent.userInfo.name;
@@ -311,12 +470,20 @@ function mytopic($scope, $http,topicFun){
   };
   //初始化我的话题
   angular.init();
+
+  //订阅消息
+  $scope.$on("addMyTopic",function (event,msg) {
+    if(!!$scope.myTopicList){
+      //在我的话题栏目展示刚刚转发内容
+      $scope.myTopicList.unshift(msg);
+    }
+  });
 }
 
+/*
+@我话题模块
+*/
 function atmetopic($scope, $http,topicFun){
-  /*
-  @我话题模块
-  */
   var myName=$scope.$parent.userInfo.name;
   var selfName=$scope.$parent.userInfo.name;
   var openAtmeTopic=true;
@@ -364,20 +531,22 @@ function atmetopic($scope, $http,topicFun){
     //提交话题评论
     $scope.submitComAtmeTopic=function(e,myTopic){
       _this.subComTop(e,myTopic,function(data){
-        if(!!$scope.myTopicList){
-          //在我的话题栏目展示刚刚转发内容
-          $scope.myTopicList.unshift(data);
-        }
+        // if(!!$scope.myTopicList){
+        //   //在我的话题栏目展示刚刚转发内容
+        //   $scope.myTopicList.unshift(data);
+        // }
+        $scope.$emit("forwardTopic", data);
       });
     };
 
     //提交回复评论
     $scope.comAtmeRe=function(comment,myTopic){
       _this.comRe(comment,myTopic,function(data){
-        if(!!$scope.myTopicList){
-          //在我的话题栏目展示刚刚转发内容
-          $scope.myTopicList.unshift(data);
-        }
+        // if(!!$scope.myTopicList){
+        //   //在我的话题栏目展示刚刚转发内容
+        //   $scope.myTopicList.unshift(data);
+        // }
+        $scope.$emit("forwardTopic", data);
       });
     };
 

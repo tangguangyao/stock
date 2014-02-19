@@ -90,7 +90,7 @@
         <li class="list-group-item">Cras justo odio</li>
       </ul>
 
-	  	<h3>热门</h3>
+	  	<h3>热门股票</h3>
 	  	<ul class="list-group" ng-controller='topStock'>
         <li class="list-group-item" ng-repeat="list in topList">
           <a href="stock/{{ list.uid }}">{{ list.name }}({{ list.top }})</a>
@@ -106,7 +106,7 @@
         <li>后台推荐1</li>
       </ul>
 
-      <h3>推荐用户</h3>
+      <h3>热门用户</h3>
       <ul class="list-group" ng-controller='topUser'>
         <li class="list-group-item"  ng-repeat="people in peoples">
           <a href="people/{{ people.name }}">{{ people.name }}({{ people.top }})</a>

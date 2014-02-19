@@ -81,6 +81,7 @@ topic.myTopic=function(name,size,num,callback){
 	}
 
 	//插入redis判断
+	//这边redis存储需要详细命名，目前有bug
 	client.hgetall("myTopic", function (err, res) {
         if(err) {
             console.log(err);

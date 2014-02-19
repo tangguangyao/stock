@@ -78,12 +78,12 @@ function peopleCtrl($scope, $http, $templateCache){
   function start(){
      now = new Date();
      hours = now.getHours();
-     if(hours>9&&hours<15){
+     if(hours>9&&hours<20){
         ajaxStock();
         setTimeout(start,10000);
      }
   }
-
+  start();
   //展示关注的用户
   //没做分页效果
   $scope.watchTab=function(){

@@ -177,4 +177,9 @@ module.exports = function(app){
   app.get('/isOnline',function(req,res){
     login.isOnline(req,res);
   });
+
+  app.get('/peopleAjax',function(req,res){
+    people.showAjax(req,res);
+  });
+
 };

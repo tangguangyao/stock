@@ -13,7 +13,8 @@ app.config(function($routeProvider) {
     templateUrl: 'app/stock.html'
   });
   $routeProvider.when('/people/:name', {
-    templateUrl: 'app/people.html'
+    templateUrl: 'app/people.html',
+    controller:peopleCtrl
   });
   $routeProvider.when('/setting', {
     templateUrl: 'app/setting.html',

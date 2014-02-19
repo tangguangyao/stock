@@ -259,3 +259,39 @@ var watchPageOther=function(myName,myWatch,nameWatch,pageSize,pageNum){
 	}
 	return watchArr;
 };
+
+
+/*
+*重构前端ajax接口
+*/
+people.showAjax=function(req,res){
+	var name=req.query.name;
+	if(req.session.user){//已登录用户
+		var myName=req.session.user.name;
+		User.get(name,function(err,data){
+			if(name==myName){
+				res.send('people', {
+					user:req.session.user,
+					people:data,
+					isWatch:"myself"
+				});
+			}else{
+				User.isWatch(myName,name,function(info){
+					res.send('people', {
+						user:req.session.user,
+						people:data,
+						isWatch:info
+					});
+				});
+			}
+		});
+	}else{
+		User.get(name,function(err,data){
+			res.send('people', {
+				user:req.session.user,
+				people:data,
+				isWatch:false
+			});
+		});
+	}
+};

@@ -127,6 +127,8 @@ talk.submitCommentTopic=function(req,res){
 				//返回两个以存储数据
 				var topicObj=filterTopic(data);
 				var comObj=filterComment(info);
+				//增加一个redis属性，判断是否需要更新redis
+				redisCache.myTopic=true;
 				res.send({isok:true,topic:topicObj,comment:comObj});
 			});
 		});
