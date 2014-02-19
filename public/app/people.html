@@ -6,7 +6,7 @@
         <img ng-src="{{people.info.pic.big}}" style="width:100%"/>
       </div>
       <div class="col-md-8">
-        <p isWatch="iswatch" id="watchP" ng-hide="myself">
+        <p isWatch="iswatch" id="watchP" ng-hide="myself" ng-controller="watchPeople">
           <button type="button" class="btn btn-info col-md-offset-4" ng-hide="iswatch" ng-click="watchPeo()" id="watchOk">关注</button>
           <button type="button" class="btn btn-info col-md-offset-4" ng-show="iswatch" ng-click="unwatchPeo()" id="watchNo">取消关注</button>
         </p>
@@ -16,7 +16,7 @@
 
       <div class="clearfix"></div>
       <h3>我的选择</h3>
-      <table class="table table-bordered table-hover table-condensed" ng-controller="timeStock">
+      <table class="table table-bordered table-hover table-condensed" ng-controller="timeStockUser">
         <thead>
           <tr>
             <th>股票</th>
@@ -51,14 +51,14 @@
       </ul>
 
       <div class="tab-content">
-        <div class="tab-pane active" id="home" ng-include="'app/mode/mytopic.html'" ng-controller="mytopic">
+        <div class="tab-pane active" id="home" ng-include="'app/mode/mytopic.html'" ng-controller="mytopicUser">
         </div>
         <div class="tab-pane" id="profile">
           <ul class="list-group">
             <li>Profile</li>
           </ul>
         </div>
-        <div class="tab-pane" id="messages">
+        <div class="tab-pane" id="messages" ng-controller="lookname">
           <ul class="list-group">
             <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="look in looks">
               {{look.name}}
@@ -67,7 +67,7 @@
             </li>
           </ul>
         </div>
-        <div class="tab-pane" id="settings">
+        <div class="tab-pane" id="settings" ng-controller="fenname">
           <ul class="list-group">
             <li class="list-group-item col-md-3 col-md-offset-1" ng-repeat="fen in fens">
               {{fen.name}}

@@ -13,6 +13,10 @@ function peopleCtrl($scope, $routeParams, $http, $location ,User){
 	$http({method: "GET", url: "/peopleAjax?name="+lookName}).success(function(data,status){
 		data.user.info.pic.big="/images/"+data.user.info.pic.big;
 		$scope.people=data.user;
+		$scope.lookPeople=data.people;
+		//发出加载消息
+		$scope.$broadcast("openTimeStock");
+
 		if(data.isWatch=="myself"){
 			$scope.myself=true;
 		}else{
@@ -21,40 +25,90 @@ function peopleCtrl($scope, $routeParams, $http, $location ,User){
 	});
 }
 
-function timeStock($scope, $http){
+function watchPeople($scope, $http){
+  var myName=$scope.$parent.name;
+  $scope.watchPeo=function(){
+    $http({method: "GET", url: "/watchPeople?name="+myName}).success(function(data,status){
+      if(data.ok){
+        $scope.iswatch=true;
+      }else{
+        alert(data.message);
+      }
+    });
+  }
+  $scope.unwatchPeo=function(){
+    $http({method: "GET", url: "/unwatchPeople?name="+myName}).success(function(data,status){
+      if(data.ok){
+        $scope.iswatch=false;
+      }
+    });
+  }
+}
+
+function lookname($scope, $http,watchAndFens){
+  var pageNum=0;
+  var pageSize=10;
+  var name=$scope.$parent.name;
+  $http({method: "GET", url: "/peopleWatchTab?name="+name+"&pageNum="+pageNum+"&pageSize="+pageSize}).success(function(data,status){
+    if(data.ok){
+      watchAndFens.fn(data.list);
+      $scope.looks=data.list;
+    }
+  });
+}
+function fenname($scope, $http,watchAndFens){
+  var pageNum2=0;
+  var pageSize2=10;
+  var name=$scope.$parent.name;
+  $http({method: "GET", url: "/peopleFensTab?name="+name+"&pageNum="+pageNum2+"&pageSize="+pageSize2}).success(function(data,status){
+    if(data.ok){
+      watchAndFens.fn(data.list);
+      $scope.fens=data.list;
+    }
+  });
+}
+
+function timeStockUser($scope, $http){
 	//股票实时数据
-	var userInfo=$scope.$parent.userInfo;
 	var time;
 	function ajaxStock(){
-	    stockCode=userInfo.stock.join(",");
-	    //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
-	    if(stockCode!==""){
-	      //如果没有信息，就不请求
-	      $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&'+xueqiuUrl+'&callback=JSON_CALLBACK';
-	      $http({ method: "JSONP", url: $scope.url }).success(function(data, status) {
-	        for(var i=0,l=data.quotes.length;i<l;i++){
-	          data.quotes[i].volume=(data.quotes[i].volume/10000).toFixed(2);
-	          data.quotes[i].marketCapital=(data.quotes[i].marketCapital/100000000).toFixed(2);
-	          if(Number(data.quotes[i].change)>0){
-	            data.quotes[i].zdClass="red";
-	            data.quotes[i].zdBack="danger";
-	            data.quotes[i].change="+"+data.quotes[i].change;
-	            data.quotes[i].percentage="+"+data.quotes[i].percentage+"%";
-	          }else if(Number(data.quotes[i].change)===0){
-	            data.quotes[i].zdClass="";
-	            data.quotes[i].zdBack="";
-	            data.quotes[i].percentage=data.quotes[i].percentage+"%";
-	          }else{
-	            data.quotes[i].zdClass="green";
-	            data.quotes[i].zdBack="success";
-	            data.quotes[i].percentage=data.quotes[i].percentage+"%";
-	          }
-	        }
-	        $scope.stocks=data.quotes;
-	      });
-	    }
+		var userInfo=$scope.$parent.lookPeople;
+    stockCode=userInfo.stock.join(",");
+    //$scope.url = 'http://xueqiu.com/stock/quote.json?code='+pathUrl+'&callback=JSON_CALLBACK';
+    if(stockCode!==""){
+      //如果没有信息，就不请求
+      $scope.url = 'http://xueqiu.com/stock/quote.json?code='+stockCode+'&'+xueqiuUrl+'&callback=JSON_CALLBACK';
+      $http({ method: "JSONP", url: $scope.url }).success(function(data, status) {
+        for(var i=0,l=data.quotes.length;i<l;i++){
+          data.quotes[i].volume=(data.quotes[i].volume/10000).toFixed(2);
+          data.quotes[i].marketCapital=(data.quotes[i].marketCapital/100000000).toFixed(2);
+          if(Number(data.quotes[i].change)>0){
+            data.quotes[i].zdClass="red";
+            data.quotes[i].zdBack="danger";
+            data.quotes[i].change="+"+data.quotes[i].change;
+            data.quotes[i].percentage="+"+data.quotes[i].percentage+"%";
+          }else if(Number(data.quotes[i].change)===0){
+            data.quotes[i].zdClass="";
+            data.quotes[i].zdBack="";
+            data.quotes[i].percentage=data.quotes[i].percentage+"%";
+          }else{
+            data.quotes[i].zdClass="green";
+            data.quotes[i].zdBack="success";
+            data.quotes[i].percentage=data.quotes[i].percentage+"%";
+          }
+        }
+        $scope.stocks=data.quotes;
+      });
+    }
 	}
-	ajaxStock();
+
+	//订阅消息
+	$scope.$on("openTimeStock",function (event) {
+    ajaxStock();
+    start();
+  });
+	
+	
 	var hours;
 	var now;
 	function start(){
@@ -65,7 +119,7 @@ function timeStock($scope, $http){
 			time=setTimeout(start,10000);
 		}
 	}
-	start();
+	
 
 	//路由跳转后暂停加载
 	$scope.$on('$routeChangeStart', function(next, current) {
@@ -76,7 +130,7 @@ function timeStock($scope, $http){
 /*
 话题模块
 */
-function mytopic($scope, $http, topicFun){
+function mytopicUser($scope, $http, topicFun){
 
   //初始化stock.angular函数，传入这个作用域内需要用到的函数
   //var selfName=myName;//selfName登陆用户

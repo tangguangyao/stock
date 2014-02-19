@@ -1,5 +1,5 @@
 //index页面父控制器
-function indexCtrl ($scope, $http, $location ,User) {
+function indexCtrl ($scope, $http, $location ,User,textExtract) {
 	$scope.userInfo=User.get();
 	if(!$scope.userInfo){
 		$location.path("/login");
@@ -22,6 +22,26 @@ function indexCtrl ($scope, $http, $location ,User) {
   $scope.$on("delStockTime",function (event,msg) {
     $scope.$broadcast("delTopStock", msg);
   });
+
+  $scope.submitCom=function(){
+    if(!$scope.sayCom){
+      alert("请填写内容");
+    }else{
+      var commentObj=textExtract($scope.sayCom,$scope.userInfo.name);
+      $http.post("/submitTopic", commentObj).success(function(data,status){
+        if(data.isOk){
+          $scope.sayCom="";
+          // if(!!$scope.myTopicList){//已经加载了我的评论页面
+          //   //插入到第一个
+          //   $scope.myTopicList.unshift(data.data[0]);
+          // }
+          $scope.$broadcast("addMyTopic", data.data[0]);
+        }else{
+          alert("提交失败!");
+        }
+      });
+    }
+  }
 }
 
 //定时刷新控制器

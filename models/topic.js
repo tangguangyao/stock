@@ -57,22 +57,16 @@ topic.myTopic=function(name,size,num,callback){
 		global.db.collection('topic',function(err,collection){
 			collection.find({name:name,hide:false}).sort({_id: -1}).skip(num).limit(size).toArray(function(err,items){
 				if(err){
-					client.hmset("myTopic", {isOk:false},function(error, res){
-						if(error) {
-			                console.log(error);
-			            } else {
-			                console.log(res);
-			            }
-					});
 					callback({isOk:false});
 				}else{
 					var json=JSON.stringify(items);
-					client.hmset("myTopic", {isOk:true,data:json},function(error, res){
+					var key="myTopic"+name;
+					client.hmset(key, {isOk:true,data:json},function(error, res){
 						if(error) {
-			                console.log(error);
-			            } else {
-			                console.log(res);
-			            }
+              console.log(error);
+            } else {
+              console.log(res);
+            }
 					});
 					callback({isOk:true,data:items});
 				}
@@ -81,32 +75,31 @@ topic.myTopic=function(name,size,num,callback){
 	}
 
 	//插入redis判断
-	//这边redis存储需要详细命名，目前有bug
-	client.hgetall("myTopic", function (err, res) {
-        if(err) {
-            console.log(err);
-        } else {
-        	//首先判断缓存中是否有值，就是用缓存中内容
-        	if(res){
-        		//然后需要判断下是否有更新
-        		var l=redisCache;
-        		if(!redisCache.myTopic){//redisCache.myTopic为false表示缓存没有更新
-        			if(res.isOk=="true"){
-		            	var obj={isOk:true,data:JSON.parse(res.data)};
-		            	callback(obj);
-		            }
-        		}else{
-        			getFromDB();
-        			redisCache.myTopic=false;//更新缓存后，设置为false
-        		}
-        	}else{
-        		//到数据库中获取最新的值
-        		getFromDB();
-        		redisCache.myTopic=false;//更新缓存后，设置为false
-        	}
-            
-        }
-    });
+	client.hgetall("myTopic"+name, function (err, res) {
+	  if(err) {
+      console.log(err);
+    } else {
+    	//首先判断缓存中是否有值，就是用缓存中内容
+    	if(res){
+    		//然后需要判断下是否有更新
+    		var l=redisCache;
+    		if(!redisCache.myTopic){//redisCache.myTopic为false表示缓存没有更新
+    			if(res.isOk=="true"){
+            	var obj={isOk:true,data:JSON.parse(res.data)};
+            	callback(obj);
+            }
+    		}else{
+    			getFromDB();
+    			redisCache.myTopic=false;//更新缓存后，设置为false
+    		}
+    	}else{
+    		//到数据库中获取最新的值
+    		getFromDB();
+    		redisCache.myTopic=false;//更新缓存后，设置为false
+    	}
+        
+    }
+  });
 };
 
 //用户关注对象的话题
