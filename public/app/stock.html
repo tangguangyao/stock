@@ -3,66 +3,68 @@
 	  <div class="col-md-2">
 	  	<div class="list-group">
         <h4>公司概况</h4>
-        <a href="http://stockpage.10jqka.com.cn/<%= locals.id%>/company/#detail" class="list-group-item text-primary">公司简介</a>
-        <a href="http://stockpage.10jqka.com.cn/<%= locals.id %>/company/#manager" class="list-group-item">公司高管</a>
-        <a href="http://stock.jrj.com.cn/share,<%= locals.id %>,zgsms.shtml" class="list-group-item">IPO文件</a>
+        <a href="http://stockpage.10jqka.com.cn/{{ uid }}/company/#detail" class="list-group-item text-primary">公司简介</a>
+        <a href="http://stockpage.10jqka.com.cn/{{ uid }}/company/#manager" class="list-group-item">公司高管</a>
+        <a href="http://stock.jrj.com.cn/share,{{ uid }},zgsms.shtml" class="list-group-item">IPO文件</a>
         <h4>股权信息</h4>
-        <a href="http://hq.emoney.cn/f10/Wf10/gdyj/<%= locals.id%>.html" class="list-group-item">股权结构</a>
-        <a href="http://stock.jrj.com.cn/share,<%= locals.id%>,sdgd.shtml" class="list-group-item">十大股东</a>
-        <a href="http://stock.jrj.com.cn/share,<%= locals.id%>,jjcg.shtml" class="list-group-item">基金持股</a>
-        <a href="http://hq.emoney.cn/f10/Wf10/ggda/<%= locals.id%>.html" class="list-group-item">高管持股</a>
-        <a href="http://stock.jrj.com.cn/share,<%= locals.id%>,xsgd.shtml" class="list-group-item">限售股份</a>
+        <a href="http://hq.emoney.cn/f10/Wf10/gdyj/{{ uid }}.html" class="list-group-item">股权结构</a>
+        <a href="http://stock.jrj.com.cn/share,{{ uid }},sdgd.shtml" class="list-group-item">十大股东</a>
+        <a href="http://stock.jrj.com.cn/share,{{ uid }},jjcg.shtml" class="list-group-item">基金持股</a>
+        <a href="http://hq.emoney.cn/f10/Wf10/ggda/{{ uid }}.html" class="list-group-item">高管持股</a>
+        <a href="http://stock.jrj.com.cn/share,{{ uid }},xsgd.shtml" class="list-group-item">限售股份</a>
         <h4>股票交易</h4>
-        <a href="http://stockhtm.finance.qq.com/sstock/quotpage/q/<%= locals.id%>.htm#detail" class="list-group-item">成交明细</a>
-        <a href="http://stockhtm.finance.qq.com/sstock/quotpage/q/<%= locals.id%>.htm#price" class="list-group-item">分价表</a>
-        <a href="http://quotes.money.163.com/trade/ddtj_<%= locals.id%>.html" class="list-group-item">大单统计</a>
-        <a href="http://data.10jqka.com.cn/market/longhu/cjmx/<%= locals.id%>/" class="list-group-item">龙虎榜数据</a>
+        <a href="http://stockhtm.finance.qq.com/sstock/quotpage/q/{{ uid }}.htm#detail" class="list-group-item">成交明细</a>
+        <a href="http://stockhtm.finance.qq.com/sstock/quotpage/q/{{ uid }}.htm#price" class="list-group-item">分价表</a>
+        <a href="http://quotes.money.163.com/trade/ddtj_{{ uid }}.html" class="list-group-item">大单统计</a>
+        <a href="http://data.10jqka.com.cn/market/longhu/cjmx/{{ uid }}/" class="list-group-item">龙虎榜数据</a>
         <a href="http://stockdata.stock.hexun.com/rzrq/" class="list-group-item">融资融券</a>
-        <a href="http://q.stock.sohu.com/cn/<%= locals.id%>/lshq.shtml" class="list-group-item">历史行情</a>
+        <a href="http://q.stock.sohu.com/cn/{{ uid }}/lshq.shtml" class="list-group-item">历史行情</a>
       </div>
 	  </div>
 	  <div class="col-md-7">
-      <h2 name="{{stock.name}}" id="stockName">{{stock.name}}
-        <span style="display:none" id="iswatch"><%= locals.isWatch%></span>
-        <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()" id="butIswatch">关注</button>
-        <button type="button" class="btn btn-info col-md-offset-4" ng-click="unWatchStock()" id="butNowatch">取消</button>
-      </h2>
-      <p class="{{stock.zdClass}} lead">
-        <strong data-current="{{stock.current}}">￥{{stock.current}}</strong>
-        <span class="stockDown">
-          <span>{{ stock.zdf }}{{stock.change| number:2}}</span>
-          <span class="quote-percentage">&nbsp;&nbsp;({{ stock.zdf }}{{stock.percentage| number:2}}%)</span>
-        </span>
-      </p>
-      <p>
-        <span id="timeInfo">{{stock.time | date:'yyyy-MM-dd HH:mm:ss' }} (北京时间)&nbsp;&nbsp;</span>
-        <span>实时行情</span>
-      </p>
-      <table class="table" id="stockTableShow">
-        <tbody>
-          <tr>
-            <td>今开：<span>{{stock.open}}</span></td>
-            <td>昨收：<span>{{stock.last_close}}</span></td>
-            <td>最高：<span id="quote-high">{{stock.high}}</span></td>
-            <td>最低：<span id="quote-low">{{stock.low}}</span></td>
-          </tr>
-          <tr>
-            <td title="当日成交量，单位：股">成交量：<span id="quote-volume">{{stock.volume}}万</span></td>
-            <td title="过去30个交易日平均成交量，单位：股">30日均量：<span>{{stock.volumeAverage}}万</span></td>
-            <td>52周最低：<span>{{stock.low52week}}</span></td>
-            <td>52周最高：<span>{{stock.high52week}}</span></td>
-          </tr>
-          <tr>
-            <td>成交额：<span>{{stock.amount}}万</span></td>
-            <td title="市盈率LYR：当前价/最近年度摊簿每股收益，市盈率TTM：当前价/最近四个季度摊簿每股收益之和。">市盈率LYR/TTM：<span>{{stock.pe_lyr|number:2}}/{{stock.pe_ttm|number:2}}</span></td>
-            <td title="上一年度基本每股收益，单位：人民币">每股收益：<span>{{stock.eps}}</span></td>
-            <td title="最近报告期每股净资产，单位：人民币">每股净资产：<span>{{stock.net_assets}}</span></td>
-          </tr>
-        </tbody>
-      </table>
-      <h3>图标</h3>
+      <div ng-controller="stockDetail">
+        <h2 name="{{stockName}}" id="stockName">{{stockName}}
+          <span style="display:none" id="iswatch"><%= locals.isWatch%></span>
+          <button type="button" class="btn btn-info col-md-offset-4" ng-click="watchStock()" id="butIswatch" ng-hide="isWatch">关注</button>
+          <button type="button" class="btn btn-info col-md-offset-4" ng-click="unWatchStock()" id="butNowatch" ng-show="isWatch">取消</button>
+        </h2>
+        <p class="{{stock.zdClass}} lead">
+          <strong data-current="{{stock.current}}">￥{{stock.current}}</strong>
+          <span class="stockDown">
+            <span>{{ stock.zdf }}{{stock.change| number:2}}</span>
+            <span class="quote-percentage">&nbsp;&nbsp;({{ stock.zdf }}{{stock.percentage| number:2}}%)</span>
+          </span>
+        </p>
+        <p>
+          <span id="timeInfo">{{stock.time | date:'yyyy-MM-dd HH:mm:ss' }} (北京时间)&nbsp;&nbsp;</span>
+          <span>实时行情</span>
+        </p>
+        <table class="table" id="stockTableShow">
+          <tbody>
+            <tr>
+              <td>今开：<span>{{stock.open}}</span></td>
+              <td>昨收：<span>{{stock.last_close}}</span></td>
+              <td>最高：<span id="quote-high">{{stock.high}}</span></td>
+              <td>最低：<span id="quote-low">{{stock.low}}</span></td>
+            </tr>
+            <tr>
+              <td title="当日成交量，单位：股">成交量：<span id="quote-volume">{{stock.volume}}万</span></td>
+              <td title="过去30个交易日平均成交量，单位：股">30日均量：<span>{{stock.volumeAverage}}万</span></td>
+              <td>52周最低：<span>{{stock.low52week}}</span></td>
+              <td>52周最高：<span>{{stock.high52week}}</span></td>
+            </tr>
+            <tr>
+              <td>成交额：<span>{{stock.amount}}万</span></td>
+              <td title="市盈率LYR：当前价/最近年度摊簿每股收益，市盈率TTM：当前价/最近四个季度摊簿每股收益之和。">市盈率LYR/TTM：<span>{{stock.pe_lyr|number:2}}/{{stock.pe_ttm|number:2}}</span></td>
+              <td title="上一年度基本每股收益，单位：人民币">每股收益：<span>{{stock.eps}}</span></td>
+              <td title="最近报告期每股净资产，单位：人民币">每股净资产：<span>{{stock.net_assets}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>图标</h3>
+      </div>
 
-      <div class="panel-group" id="accordion">
+      <div class="panel-group" id="accordion" ng-controller="talkCtrl">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
@@ -82,7 +84,7 @@
       </div>
 
       <h3>发布评论</h3>
-      <textarea style="width:100%;height:80px;margin-bottom:10px;" ng-model="sayCom" >({{stock.symbol}})${{stock.name}}$ :</textarea>
+      <textarea style="width:100%;height:80px;margin-bottom:10px;" ng-model="sayCom"></textarea>
       <button type="button" class="btn btn-primary navbar-right" ng-click="submitCom()">发布</button>
       <div class="clearfix"></div>
       <ul class="nav nav-tabs" id="myTab">
@@ -91,8 +93,7 @@
         <li><a href="#messages" data-toggle="tab">全部</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="home">
-          <%- include mode/stocktopic %>
+        <div class="tab-pane active" id="home" ng-controller="stocktopic" ng-include="'app/mode/stocktopic.html'">
         </div>
         <div class="tab-pane" id="profile">
           <ul class="list-group">

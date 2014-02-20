@@ -94,3 +94,25 @@ stock.talkHistory=function(req,res){
 		}
 	});
 };
+
+/*
+*重构
+*/
+stock.showAjax = function(req,res){
+	req.params.uid=req.params.uid.toLowerCase();//统一小写后处理
+	var id=/[0-9]{6}/.exec(req.params.uid);//左边导航需要
+	var isWatch=false;
+	if(req.session.user){
+		for(var i=0,l=req.session.user.stock.length;i<l;i++){
+			if(req.params.uid==req.session.user.stock[i]){
+				isWatch=true;
+			}
+		}
+	}
+	
+	res.send({
+		id:id,
+		isWatch:isWatch,
+		user:req.session.user
+	});
+};

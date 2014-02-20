@@ -40,7 +40,7 @@
           <!-- 第一层循环 -->
           
           <tr class="{{stock.zdBack}} {{stock.zdClass}}" ng-repeat="stock in stocks">
-            <td><a href="stock/{{stock.symbol}}">{{stock.name}}({{stock.symbol}})</a></td>
+            <td><a href="/app/app.html#/stock/{{stock.symbol}}">{{stock.name}}({{stock.symbol}})</a></td>
             <td>{{stock.current}}</td>
             <td>{{stock.change | number:2}}</td>
             <td>{{stock.percentage}}</td>

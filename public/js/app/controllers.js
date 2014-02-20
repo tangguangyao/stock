@@ -9,8 +9,9 @@ app.config(function($routeProvider) {
     templateUrl: 'app/login.html',
     controller:loginCtrl
   });
-  $routeProvider.when('/stock', {
-    templateUrl: 'app/stock.html'
+  $routeProvider.when('/stock/:uid', {
+    templateUrl: 'app/stock.html',
+    controller:stockCtrl
   });
   $routeProvider.when('/people/:name', {
     templateUrl: 'app/people.html',

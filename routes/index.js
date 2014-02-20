@@ -182,4 +182,8 @@ module.exports = function(app){
     people.showAjax(req,res);
   });
 
+  app.get('/stockAjax/:uid',function(req,res){
+    stock.showAjax(req,res);
+  });
+
 };
