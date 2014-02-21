@@ -270,14 +270,14 @@ people.showAjax=function(req,res){
 		var myName=req.session.user.name;
 		User.get(name,function(err,data){
 			if(name==myName){
-				res.send('people', {
+				res.send({
 					user:req.session.user,
 					people:data,
 					isWatch:"myself"
 				});
 			}else{
 				User.isWatch(myName,name,function(info){
-					res.send('people', {
+					res.send({
 						user:req.session.user,
 						people:data,
 						isWatch:info
@@ -287,7 +287,7 @@ people.showAjax=function(req,res){
 		});
 	}else{
 		User.get(name,function(err,data){
-			res.send('people', {
+			res.send({
 				user:req.session.user,
 				people:data,
 				isWatch:false

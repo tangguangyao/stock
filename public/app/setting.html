@@ -5,31 +5,29 @@
   </ul>
 
   <div class="tab-content">
-    <% if (locals.error) { %>
-      <div class="big red"><%= locals.error %> </div>
-    <% } %>
+    <div class="big red">{{message}}</div>
     <div class="tab-pane active" id="info">
       <div class="col-md-1">
-        <p style="margin-top: 30px;"><img src="/images/<%= user.info.pic.big %>" style="width:100%"/></p>
+        <p style="margin-top: 30px;"><img src="{{ user.info.pic.big }}" style="width:100%"/></p>
       </div>
-      <div class="col-md-6">
-        <form action="setting" class="form-horizontal" role="form" method="post" enctype="multipart/form-data" style="margin-top:20px;">
+      <div class="col-md-6" ng-controller="changeInfoCtrl">
+        <form action="/settingAjax?r=app/callback.html" target="upImg" class="form-horizontal" role="form" method="post" enctype="multipart/form-data" style="margin-top:20px;">
           <div class="form-group">
             <label for="Spec" class="col-sm-2 control-label">特长</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="Spec" value="<%= user.info.Spec %>" >
+              <input type="text" class="form-control" name="Spec" value="{{user.info.Spec}}" >
             </div>
           </div>
           <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">兴趣</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="interest" value="<%= user.info.interest %>">
+              <input type="text" class="form-control" name="interest" value="{{user.info.interest }}">
             </div>
           </div>
           <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">邮箱</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="email" value="<%= user.info.email %>">
+              <input type="text" class="form-control" name="email" value="{{user.info.email }}">
             </div>
           </div>
           <div class="form-group">
@@ -44,27 +42,28 @@
             </div>
           </div>
         </form>
+        <iframe id="upImg" name="upImg" style="display:none"></iframe>
       </div>
     </div>
-    <div class="tab-pane" id="password">
+    <div class="tab-pane" id="password" ng-controller="changePassport">
       <div class="col-md-6">
-        <form action="setPassword" class="form-horizontal" role="form" style="margin-top:20px;" method="post">
+        <form class="form-horizontal" role="form" style="margin-top:20px;" ng-submit="subPassword()">
           <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">原始密码</label>
             <div class="col-sm-10">
-              <input type="password" class="form-control" name="oldPassword" placeholder="原始密码">
+              <input type="password" class="form-control" name="oldPassword" ng-model="oldPassword" placeholder="原始密码">
             </div>
           </div>
           <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
             <div class="col-sm-10">
-              <input type="password" class="form-control" name="newPassword" placeholder="新密码">
+              <input type="password" class="form-control" name="newPassword" ng-model="newPassword" placeholder="新密码">
             </div>
           </div>
           <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
             <div class="col-sm-10">
-              <input type="password" class="form-control" name="reNewPassword" placeholder="确认密码">
+              <input type="password" class="form-control" name="reNewPassword" ng-model="reNewPassword" placeholder="确认密码">
             </div>
           </div>
           <div class="form-group">

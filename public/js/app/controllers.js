@@ -113,26 +113,3 @@ app.factory('textExtract', [function() {
   };
   return textExtract;
 }]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function settingCtrl($scope, $routeParams) {
-  $scope.name = $routeParams.name;
-}

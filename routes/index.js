@@ -186,4 +186,16 @@ module.exports = function(app){
     stock.showAjax(req,res);
   });
 
+  app.get('/settingAjax',function(req,res){
+    setting.showAjax(req,res);
+  });
+
+  app.post('/setPasswordAjax',function(req,res){
+    setting.setPasswordAjax(req,res);
+  });
+
+
+  app.post('/settingAjax',function(req,res){
+    setting.postAjax(req,res);
+  });
 };

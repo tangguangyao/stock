@@ -111,17 +111,19 @@
       <h3>简介</h3>
       <p>variable in expression track by tracking_expression – You can also provide an optional tracking function which can be used to associate the objects in the collection with the DOM elements. If no tracking function is specified the ng-repeat associates elements by identity in the collection. It is an error to have more than one tracking function to resolve to the same key. (This would mean that two distinct objects are mapped to the same DOM element, which is not possible.) Filters should be applied to the expression, before specifying a tracking expression.</p>
       <h3>关注的人</h3>
-      <div ng-show="haveAboutName">
-        <button type="button" class="btn btn-info pull-right" ng-show="change" ng-click="changeAboutName()">换一批</button>
-        <div class="clearfix"></div>
-        <ul class="list-group" id="stockAdoutName">
-          <li class="list-group-item" ng-repeat="adoutName in adoutNames">
-            <a href="people/{{adoutName.name}}">{{adoutName.name}}</a>
-          </li>
-        </ul>
-      </div>
-      <div ng-hide="haveAboutName">
-        暂无相关用户
+      <div ng-controller="userWatchStock">
+        <div ng-show="haveAboutName">
+          <button type="button" class="btn btn-info pull-right" ng-show="change" ng-click="changeAboutName()">换一批</button>
+          <div class="clearfix"></div>
+          <ul class="list-group" id="stockAdoutName" >
+            <li class="list-group-item" ng-repeat="adoutName in adoutNames">
+              <a href="people/{{adoutName.name}}">{{adoutName.name}}</a>
+            </li>
+          </ul>
+        </div>
+        <div ng-hide="haveAboutName">
+          暂无相关用户
+        </div>
       </div>
       <h3>相关</h3>
     </div>
