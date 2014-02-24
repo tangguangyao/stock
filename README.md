@@ -8,6 +8,7 @@
   - socket实现及时通信；
   - mocha实现单元测试
   - 还有前端使用angularjs
+  - 增加requirejs模块化
 
 
 **功能：**
@@ -50,9 +51,11 @@
 
 **更新说明：**
 
-  -因为股票具体数据是跨域请求的雪球网接口，雪球接口的参数会定时改变，所以对接口参数处理了一下，放入views的top.ejs文件中。
+  - 因为股票具体数据是跨域请求的雪球网接口，雪球接口的参数会定时改变，所以对接口参数处理了一下，放入views的top.ejs文件中。
 
-  -重构部分前端
+  - 重构部分前端
+  
+  - 增加requirejs模块化
 
 
 **安装方法：**
@@ -71,7 +74,10 @@
   -访问为使用ejs的nodejs模板，使用angularjs作为数据绑定用，由于这是第一次在复杂项目中使用angularjs，所以没有使用好angularjs，文档非常烂。
 
   - [http://localhost:3000/app/app.html#/index](http://localhost:3000/app/app.html#/index)
-  -是对前端使用angularjs的一个重新规划，目前正在学习angularjs重构中
+  -是对前端使用angularjs的一个重新规划，已经重构完成
+
+  - [http://localhost:3000/app/req.html#/index](http://localhost:3000/app/req.html#/index)
+  -是对前端使用requirejs的一个模块化开发，正在重构
 
 
 
