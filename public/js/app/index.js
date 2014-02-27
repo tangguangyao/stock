@@ -78,16 +78,16 @@ function timeStock($scope, $http) {
 		});
 	}
 
-	ajaxStock();
+
 	function startGetStock(){
 		var now = new Date();
-	  hours = now.getHours();
-	  if(hours>9&&hours<20){
-	  	ajaxStock();
+	  var hours = now.getHours();
+	  if(hours>9&&hours<15){
 	    time=setTimeout(function(){
 	      startGetStock();
 	    },5000);
 	  }
+    ajaxStock();
 	}
 	startGetStock();
 

@@ -32,7 +32,7 @@ requirejs(['jquery','angular','angularRoute','bootstrap','header','app','index']
   //路由
   app.config(function($routeProvider) {
     $routeProvider.when('/index', {
-      templateUrl: 'app/index.html',
+      templateUrl: 'app/index.html'
       controller:indexCtrl
     });
     // $routeProvider.when('/login', {
